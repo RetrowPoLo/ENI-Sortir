@@ -18,21 +18,30 @@ WORKDIR /app
 # persistent / runtime deps
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
-		acl \
-		file \
-		gettext \
-		git \
+	acl \
+	file \
+	gettext \
+	git \
+	nodejs \
+	npm \
+	yarn \
 	;
 
 RUN set -eux; \
 	install-php-extensions \
-		apcu \
-		intl \
-		opcache \
-		zip \
+	apcu \
+	intl \
+	opcache \
+	zip \
 	;
 
 ###> recipes ###
+###> doctrine/doctrine-bundle ###
+RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
+	docker-php-ext-install -j"$(nproc)" pdo_pgsql; \
+	apk add --no-cache --virtual .pgsql-rundeps so:libpq.so.5; \
+	apk del .pgsql-deps
+###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
 COPY --link frankenphp/conf.d/app.ini $PHP_INI_DIR/conf.d/
@@ -60,7 +69,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 RUN set -eux; \
 	install-php-extensions \
-		xdebug \
+	xdebug \
 	;
 
 COPY --link frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
