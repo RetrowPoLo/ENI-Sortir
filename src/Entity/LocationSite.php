@@ -18,10 +18,10 @@ class LocationSite
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'locationSite', targetEntity: Event::class)]
+    #[ORM\OneToMany(mappedBy: 'locationSiteEvent', targetEntity: Event::class)]
     private Collection $locationSite;
 
-    #[ORM\OneToMany(mappedBy: 'locationSite', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'locationSiteUser', targetEntity: User::class)]
     private Collection $users;
 
     public function __construct()

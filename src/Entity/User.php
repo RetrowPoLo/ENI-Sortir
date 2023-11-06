@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?LocationSite $locationSite = null;
+    private ?LocationSite $locationSiteUser = null;
 
     #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'users')]
     private Collection $registred;

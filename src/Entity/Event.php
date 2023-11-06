@@ -37,7 +37,7 @@ class Event
 
     #[ORM\ManyToOne(inversedBy: 'locationSite')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?LocationSite $locationSite = null;
+    private ?LocationSite $locationSiteEvent = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'registred')]
     private Collection $users;
