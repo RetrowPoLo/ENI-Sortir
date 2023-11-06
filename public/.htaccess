@@ -18,6 +18,13 @@ DirectoryIndex index.php
 </IfModule>
 
 <IfModule mod_rewrite.c>
+<<<<<<< HEAD
+=======
+    # This Option needs to be enabled for RewriteRule, otherwise it will show an error like
+    # 'Options FollowSymLinks or SymLinksIfOwnerMatch is off which implies that RewriteRule directive is forbidden'
+    Options +FollowSymlinks
+
+>>>>>>> origin/main-theo
     RewriteEngine On
 
     # Determine the RewriteBase automatically and set it as environment variable.
@@ -63,4 +70,8 @@ DirectoryIndex index.php
         RedirectMatch 307 ^/$ /index.php/
         # RedirectTemp cannot be used instead
     </IfModule>
+<<<<<<< HEAD
 </IfModule>
+=======
+</IfModule>
+>>>>>>> origin/main-theo
