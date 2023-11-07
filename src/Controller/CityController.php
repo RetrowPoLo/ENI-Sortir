@@ -7,7 +7,6 @@ use App\Form\CitySearchType;
 use App\Form\CityType;
 use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CityController extends AbstractController
 {
-    //SEULEMENT ACCESSIBLE SI ADMIN
     #[Route('/villes/gerer', name: 'app_city')]
     public function index(CityRepository $cityRepository, Request $request, EntityManagerInterface $entityManager, $cities=null): Response
     {
@@ -28,7 +26,6 @@ class CityController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_city');
         }
-
 
         $formSearch = $this->createForm(CitySearchType::class, $city);
         $formSearch->handleRequest($request);
