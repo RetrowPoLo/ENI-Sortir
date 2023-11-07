@@ -21,8 +21,6 @@ class LocationSite
     #[ORM\OneToMany(mappedBy: 'locationSiteEvent', targetEntity: Event::class)]
     private Collection $locationSite;
 
-    #[ORM\OneToMany(mappedBy: 'locationSiteUser', targetEntity: User::class)]
-    private Collection $users;
 
     public function __construct()
     {
@@ -71,36 +69,6 @@ class LocationSite
             // set the owning side to null (unless already changed)
             if ($locationSite->getLocationSite() === $this) {
                 $locationSite->setLocationSite(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setLocationSite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getLocationSite() === $this) {
-                $user->setLocationSite(null);
             }
         }
 

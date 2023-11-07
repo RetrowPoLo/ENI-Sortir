@@ -45,10 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isActive = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?LocationSite $locationSiteUser = null;
-
     #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'users')]
     private Collection $registred;
 
@@ -187,18 +183,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    public function getLocationSite(): ?LocationSite
-    {
-        return $this->locationSite;
-    }
-
-    public function setLocationSite(?LocationSite $locationSite): static
-    {
-        $this->locationSite = $locationSite;
 
         return $this;
     }

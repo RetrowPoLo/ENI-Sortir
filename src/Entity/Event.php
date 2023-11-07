@@ -31,10 +31,6 @@ class Event
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $duration = null;
 
-    #[ORM\ManyToOne(inversedBy: 'etat')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?State $state = null;
-
     #[ORM\ManyToOne(inversedBy: 'locationSite')]
     #[ORM\JoinColumn(nullable: false)]
     private ?LocationSite $locationSiteEvent = null;
@@ -115,26 +111,14 @@ class Event
         return $this;
     }
 
-    public function getState(): ?State
+    public function getLocationSiteEvent(): ?LocationSite
     {
-        return $this->state;
+        return $this->locationSiteEvent;
     }
 
-    public function setState(?State $state): static
+    public function setLocationSiteEvent(?LocationSite $locationSiteEvent): static
     {
-        $this->state = $state;
-
-        return $this;
-    }
-
-    public function getLocationSite(): ?LocationSite
-    {
-        return $this->locationSite;
-    }
-
-    public function setLocationSite(?LocationSite $locationSite): static
-    {
-        $this->locationSite = $locationSite;
+        $this->locationSiteEvent = $locationSiteEvent;
 
         return $this;
     }
