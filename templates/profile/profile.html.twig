@@ -1,0 +1,28 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Profil de {{ app.user.username }}{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <h1>Profil de {{ app.user.username }}</h1>
+        <div class="row">
+            <div class="col-md-4">
+{#                <img src="{{ app.user.avatar }}" alt="Avatar de {{ app.user.username }}" class="img-fluid">#}
+            </div>
+            <div class="col-md-8">
+                <ul>
+                    <li><strong>Pseudo :</strong> {{ app.user.username }}</li>
+                    <li><strong>Nom :</strong> {{ app.user.name }}</li>
+                    <li><strong>Prénom :</strong> {{ app.user.firstName }}</li>
+                    <li><strong>Email :</strong> {{ app.user.email }}</li>
+                    <li><strong>Téléphone :</strong> {{ app.user.phone }}</li>
+                    <li><strong>Ville de rattachement :</strong> {{ app.user.SitesNoSite }}</li>
+{#                    <li><strong>Ma photo :</strong> {{ app.user.photo }}</li>#}
+                </ul>
+            </div>
+        </div>
+        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">Modifier</a>
+    </div>
+
+{% endblock %}
