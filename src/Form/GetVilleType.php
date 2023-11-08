@@ -14,8 +14,15 @@ class GetVilleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class, ['label' => false])
-            ->add('save', SubmitType::class, ['label' => 'Ajouter'])
+            ->add('name',TextType::class, [
+				'label' => false
+			])
+            ->add('save', SubmitType::class, [
+				'label' => 'Ajouter',
+				'attr' => [
+					'class' => 'btn btn-primary'
+				],
+			])
         ;
     }
 
