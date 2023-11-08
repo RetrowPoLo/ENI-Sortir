@@ -45,6 +45,9 @@ class Event
     #[ORM\Column(type: "string", enumType: State::class)]
     private State $state;
 
+    #[ORM\Column]
+    private ?int $nb_inscription_max = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -211,6 +214,18 @@ class Event
     public function setState(State $state): self
     {
         $this->state = $state;
+        return $this;
+    }
+
+    public function getNbInscriptionMax(): ?int
+    {
+        return $this->nb_inscription_max;
+    }
+
+    public function setNbInscriptionMax(int $nb_inscription_max): static
+    {
+        $this->nb_inscription_max = $nb_inscription_max;
+
         return $this;
     }
 }

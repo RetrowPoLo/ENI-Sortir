@@ -16,7 +16,6 @@ class SiteController extends AbstractController
     #[Route('/site', name: 'app_site')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // creates a task object and initializes some data for this example
         $ville = new LocationSite();
         $site = new LocationSite();
 
@@ -39,7 +38,9 @@ class SiteController extends AbstractController
             $contain = $form->get("name")->getData();
             return $this->redirectToRoute('app_site', ['contain' => $contain]);
         }
+
         $contain = $request->query->get('contain');
+
         return $this->render('site/index.html.twig', [
             'form' => $form,
             'formVille' => $formVille,
