@@ -20,20 +20,21 @@
                         <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}"> Accueil </a>
                     </li>
                     {% if not app.user %}
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="{{ path('app_login') }}"> Connexion </a>
-                    </li>
+                        <li class="nav-item mx-3">
+                            <a class="nav-link" href="{{ path('app_login') }}"> Connexion </a>
+                        </li>
                     {% endif %}
                     {% if app.user %}
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="{{ path('app_logout') }}"> Mon profil </a>
-                    </li>
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="{{ path('app_logout') }}"> Déconnexion </a>
-                    </li>
+                        <li class="nav-item mx-3">
+                            <a class="nav-link" href="{{ path('app_logout') }}"> Mon profil </a>
+                        </li>
+                        <li class="nav-item mx-3">
+                            <a class="nav-link" href="{{ path('app_logout') }}"> Déconnexion </a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
+    <h1 class="text-center">Créer une sortie</h1>
 {% endblock %}
