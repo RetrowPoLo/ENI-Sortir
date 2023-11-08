@@ -11,11 +11,6 @@
             </button>
             <div class="collapse navbar-collapse d-flex justify-content-end">
                 <ul class="navbar-nav">
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item mx-3">
-                            <a class="nav-link active" aria-current="page" href="{{ path('app_site') }}"> Sites </a>
-                        </li>
-                    {% endif %}
                     <li class="nav-item mx-3">
                         <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}"> Accueil </a>
                     </li>
@@ -25,11 +20,6 @@
                         </li>
                     {% endif %}
                     {% if app.user %}
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <li class="nav-item mx-3">
-                                <a class="nav-link" href="{{ path('app_register') }}"> Inscrire un utilisateur </a>
-                            </li>
-                        {% endif %}
                         <li class="nav-item mx-3">
                             <a class="nav-link" href="{{ path('app_logout') }}"> Mon profil </a>
                         </li>
@@ -41,4 +31,47 @@
             </div>
         </div>
     </nav>
+    <h1 class="text-center pt-5">Gérer les sites</h1>
+    <h2 class="pt-3">Filtrer les sites</h2>
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="col" id="some-custom-id">
+                {{ form_row(form.save) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+    <div style="height: 200px;width: 500px; overflow:auto">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Ville</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            <h1>{{ contain }}</h1>
+                {% for ville in villes %}
+                    {% if contain == '' or contain|lower in ville.name|lower %}
+                        <tr>
+                            <td>
+                                {{ ville.name }}
+                            </td>
+                            <td>
+                                <a href="">modifier</a>-<a href="{{ path('app_delete_site', {'id': ville.id}) }}">supprimer</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr>
+                    {{ form_start(formVille) }}
+                        <td>{{ form_row(formVille.name) }}</td>
+                        <td>{{ form_row(formVille.save) }}</td>
+                    {{ form_end(formVille) }}
+                </tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

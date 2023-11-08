@@ -25,11 +25,6 @@
                         </li>
                     {% endif %}
                     {% if app.user %}
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <li class="nav-item mx-3">
-                                <a class="nav-link" href="{{ path('app_register') }}"> Inscrire un utilisateur </a>
-                            </li>
-                        {% endif %}
                         <li class="nav-item mx-3">
                             <a class="nav-link" href="{{ path('app_logout') }}"> Mon profil </a>
                         </li>
@@ -41,4 +36,5 @@
             </div>
         </div>
     </nav>
+    <h1 class="text-center">Créer une sortie</h1>
 {% endblock %}
