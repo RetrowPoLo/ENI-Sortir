@@ -29,10 +29,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
 	#[ORM\Column(length: 180, unique: true)]
+
 	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
 	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
 	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
 	private ?string $username = null;
+
 
     #[ORM\Column]
     private array $roles = [];
