@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les villes{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="text-center">
+            <h2>Gérer les villes</h2>
+        </div>
+        <h3>Filtrer les villes</h3>
+
+        {{ form_start(formSearch) }}
+        <div class="row mb-3">
+            <div class="col-6">
+                {{ form_row(formSearch.name) }}
+            </div>
+            <button class="col-3 btn btn-primary" type="submit" >Recherche</button>
+        </div>
+        {{ form_end(formSearch) }}
+
+        {{ form_start(form) }}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Ville</th>
+                <th>Code postale</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for city in cities %}
+                <tr>
+                    <td>{{ city.name }}</td>
+                    <td>{{ city.zipcode }}</td>
+                    <td><a href="/eni_projet/public/villes/modifier/{{ city.id }}">modifier</a> <a href="/eni_projet/public/villes/supprimer/{{ city.id }}">supprimer</a></td>
+                </tr>
+
+            {% endfor %}
+            <tr>
+                <td>{{ form_widget(form.name) }}</td>
+                <td>{{ form_widget(form.zipcode) }}</td>
+                <td><button class="btn btn-primary" type="submit">Ajouter</button></td>
+            </tr>
+            </tbody>
+        </table>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -19,6 +19,9 @@
                         <li class="nav-item mx-3">
                             <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_register' ? 'aria-current="page"' : '' }} href="{{ path('app_register') }}"> Inscrire un utilisateur </a>
                         </li>
+                        <li class="nav-item mx-3">
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_city' ? 'aria-current="page"' : '' }} href="{{ path('app_register') }}"> Villes </a>
+                        </li>
                     {% endif %}
                     <li class="nav-item mx-3">
                         <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Mon profil </a>
