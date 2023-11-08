@@ -196,7 +196,7 @@ class Event
         return $this->limitDateInscription > new \DateTime('now');
     }
 
-    public function getIsInscrit(User $currentUser): bool
+    public function getIsSub(User $currentUser): bool
     {
         return $this->users->exists(function($key, $user) use($currentUser){
            return ($user->getId() == $currentUser->getId());

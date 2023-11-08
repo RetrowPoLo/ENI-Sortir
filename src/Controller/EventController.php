@@ -17,6 +17,8 @@ class EventController extends AbstractController
     public function index(EventRepository $eventRepository): Response
     {
         $events = $eventRepository->findAll();
+        var_dump($events[0]->getIsTooLateToSubscribe());
+        var_dump($events[1]->getIsTooLateToSubscribe());
         return $this->render('event/index.html.twig', [
             'events' => $events,
         ]);
@@ -50,4 +52,16 @@ class EventController extends AbstractController
     {
         return $this->redirectToRoute('app_event_new');
     }
+
+    #[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
+    public function cancel(EventRepository $eventRepository, int $id): Response
+    {
+        return $this->redirectToRoute('app_event_new');
+    }
+    #[Route('/sortie/cancel/{id}', name: 'app_event_publish')]
+    public function publish(EventRepository $eventRepository, int $id): Response
+    {
+        return $this->redirectToRoute('app_event_new');
+    }
+
 }
