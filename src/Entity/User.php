@@ -6,11 +6,15 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cette adresse email !')]
+#[UniqueEntity(fields: ['username'], message: 'Il existe déjà un compte avec ce nom d\'utilisateur !')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -19,18 +23,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+	#[Assert\NotNull(message: 'Veuillez saisir une adresse email !')]
+	#[Assert\NotBlank(message: 'Veuillez saisir une adresse email !')]
+	#[Assert\Email(message: 'L\'adresse email suivante {{ value }} n\'est pas valide !')]
     private ?string $email = null;
 
 	#[ORM\Column(length: 180, unique: true)]
-                                                                                    	private ?string $username = null;
+	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
+	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
+	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
+	private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      */
     #[ORM\Column]
+	#[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères !')]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -74,17 +85,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-	public function getEUsername(): ?string
-                                                                                    	{
-                                                                                    		return $this->username;
-                                                                                    	}
+	public function getUsername(): ?string
+	{
+		return $this->username;
+	}
 
 	public function setUsername(string $username): static
-                                                                                    	{
-                                                                                    		$this->username = $username;
-                                                                                    
-                                                                                    		return $this;
-                                                                                    	}
+	{
+		$this->username = $username;
+
+		return $this;
+	}
 
 	/**
 	 * A visual identifier that represents this user.
@@ -92,9 +103,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @see UserInterface
 	 */
 	public function getUserIdentifier(): string
-                                                                                    	{
-                                                                                    		return (string) $this->email;
-                                                                                    	}
+                                                                                          	{
+                                                                                          		return (string) $this->email;
+                                                                                          	}
 
     /**
      * @see UserInterface
