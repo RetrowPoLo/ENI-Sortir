@@ -3,44 +3,54 @@
 {% block title %}Gérer les villes{% endblock %}
 
 {% block body %}
+    {% include('components/_navbar.html.twig') %}
+
     <div class="container mt-5">
         <div class="text-center">
             <h2>Gérer les villes</h2>
         </div>
-        <h3>Filtrer les villes</h3>
 
-        {{ form_start(formSearch) }}
-        <div class="row mb-3">
-            <div class="col-6">
-                {{ form_row(formSearch.name) }}
+        <div class="mt-4">
+            <h4>Filtrer les villes</h4>
+
+            {{ form_start(formSearch) }}
+            <div class="row mb-3">
+                <div class="col-6">
+                    {{ form_row(formSearch.name) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(formSearch.save) }}
+                </div>
             </div>
-            <button class="col-3 btn btn-primary" type="submit" >Recherche</button>
+            {{ form_end(formSearch) }}
         </div>
-        {{ form_end(formSearch) }}
 
         {{ form_start(form) }}
-        <table class="table">
+        <table class="table table-striped">
             <thead>
-            <tr>
-                <th>Ville</th>
-                <th>Code postale</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Ville</th>
+                    <th>Code postal</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody>
             {% for city in cities %}
                 <tr>
                     <td>{{ city.name }}</td>
                     <td>{{ city.zipcode }}</td>
-                    <td><a href="/eni_projet/public/villes/modifier/{{ city.id }}">modifier</a> <a href="/eni_projet/public/villes/supprimer/{{ city.id }}">supprimer</a></td>
+                    <td>
+                        <a href="{{ path('app_city_edit', {'id': city.id}) }}">modifier</a>
+                        -
+                        <a href="{{ path('app_city_delete', {'id': city.id}) }}">supprimer</a>
+                    </td>
                 </tr>
-
             {% endfor %}
-            <tr>
-                <td>{{ form_widget(form.name) }}</td>
-                <td>{{ form_widget(form.zipcode) }}</td>
-                <td><button class="btn btn-primary" type="submit">Ajouter</button></td>
-            </tr>
+                <tr>
+                    <td>{{ form_widget(form.name) }}</td>
+                    <td>{{ form_widget(form.zipcode) }}</td>
+                    <td>{{ form_widget(form.save) }}</td>
+                </tr>
             </tbody>
         </table>
         {{ form_end(form) }}

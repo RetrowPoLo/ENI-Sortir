@@ -26,12 +26,7 @@ class RegistrationController extends AbstractController
 		// If the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
 			// Set the user's data
-			$user->setEmail($form->get('email')->getData());
-			$user->setName($form->get('name')->getData());
-			$user->setFirstName($form->get('firstName')->getData());
-			$user->setPhone($form->get('phone')->getData());
-			$user->setIsActive($form->get('isActive')->getData());
-			$user->setUsername($form->get('username')->getData());
+			$user = $form->getData();
 			$user->setRoles(['ROLE_USER']);
 
             // encode the plain password

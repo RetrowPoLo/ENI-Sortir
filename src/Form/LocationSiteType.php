@@ -14,8 +14,16 @@ class LocationSiteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class, ['label' => 'Le nom contient : '])
-            ->add('save', SubmitType::class, ['label' => 'Rechercher'])
+            ->add('name',TextType::class, [
+				'required' => false,
+				'label' => false
+			])
+            ->add('save', SubmitType::class, [
+				'label' => 'Rechercher',
+				'attr' => [
+					'class' => 'btn btn-primary px-3 mb-3'
+				]
+			])
         ;
     }
 

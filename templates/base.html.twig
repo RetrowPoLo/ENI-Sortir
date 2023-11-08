@@ -7,11 +7,13 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('./build/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-node_modules_bootstrap_dist_cs-f20b8b.css') }}">
             <link rel="stylesheet" href="{{ asset('./build/app.css') }}">
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
             <script src="{{ asset('./build/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-node_modules_bootstrap_dist_cs-f20b8b.js') }}"></script>
             <script src="{{ asset('./build/app.js') }}"></script>
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
