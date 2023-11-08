@@ -208,4 +208,9 @@ class Event
         $this->state = $state;
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 }

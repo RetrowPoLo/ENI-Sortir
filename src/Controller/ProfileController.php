@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\User;
+use App\Entity\User;
 use App\Form\EditUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,25 @@ class ProfileController extends AbstractController
 
     }
 
-    #[Route('/editProfile/{userid}', name: 'app_profile_edit')]
+//    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+//    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+//    {
+//        $form = $this->createForm(UserType::class, $user);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $entityManager->flush();
+//
+//            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->render('user/edit.html.twig', [
+//            'user' => $user,
+//            'form' => $form,
+//        ]);
+//    }
+
+    #[Route('/editProfile/{userid}', name: 'app_profile_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
@@ -44,8 +62,6 @@ class ProfileController extends AbstractController
                     $userModif,
                     $userModif->getPassword()
                 );
-
-//                $user->setSitesNoSite($userModif->getSitesNoSite());
                 $user->setPassword($hashedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -55,12 +71,20 @@ class ProfileController extends AbstractController
 
             return $this->render('profile/edit.html.twig', [
                 'form' => $form->createView(),
+                'user' => $user,
+//            'form' => $form,
             ]);
         } else {
             $this->addFlash('error', 'Vous ne pouvez pas modifier le profil d\'un autre utilisateur.');
             return $this->redirectToRoute('app_profile', ['id' => $user->getId()]);
         }
 
-
     }
+//    #[Route('/uploadImage', name: 'user_upload')]
+//    public function image(Request $request): Response
+//    {
+//        $user = $this->getUser();
+//        return 'ok';
+//
+//    }
 }
