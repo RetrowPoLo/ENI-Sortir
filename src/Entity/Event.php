@@ -41,9 +41,13 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'organizer')]
     private ?User $user = null;
 
+    #[ORM\Column(type: "string", enumType: State::class)]
+    private State $state;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->state = State::Created;
     }
 
     public function getId(): ?int
@@ -159,6 +163,24 @@ class Event
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    /**
+     * @return State
+     */
+    public function getState(): State
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param State $state
+     * @return Event
+     */
+    public function setState(State $state): self
+    {
+        $this->state = $state;
         return $this;
     }
 }
