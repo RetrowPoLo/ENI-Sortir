@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les villes{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn-primary btn" type="submit">Modifier</button>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
