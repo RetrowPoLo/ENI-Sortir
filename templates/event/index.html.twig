@@ -9,8 +9,8 @@
     <div class="row">
         <div class="col">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown button
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Site
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="#">Action</a></li>
@@ -18,12 +18,46 @@
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
             </div>
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="inputSearchEvent" class="form-label">Recherche une sortie</label>
+                    <input type="text" class="form-control" id="inputSearchEvent" placeholder="Cinéma">
+                </div>
+            </div>
+            <div class="date-style">
+                <label for="start_date">Entre </label>
+                <input type="date" id="start_date" name="trip-start" value="" />
+            </div>
+            <div class="date-style">
+                <label for="end_date">et </label>
+                <input type="date" id="end_date" name="trip-start" value=""  />
+            </div>
+
+            <button class="col-3 btn btn-primary" type="submit" >Recherche</button>
         </div>
         <div class="col">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="chkOrg">
                 <label class="form-check-label" for="chkOrg">
                     Sorties dont je suis l'organisateur/trice
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="chkInscrit">
+                <label class="form-check-label" for="chkInscrit">
+                    Sorties auxquelles je suis inscrit/e
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="chkPasInscrit">
+                <label class="form-check-label" for="chkPasInscrit">
+                    Sorties auxquelles je ne suis pas inscrit/e
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="chkPassed">
+                <label class="form-check-label" for="chkPassed">
+                    Sorties passées
                 </label>
             </div>
         </div>
@@ -37,22 +71,24 @@
                 <th scope="col">Clotûre</th>
                 <th scope="col">inscrits/places</th>
                 <th scope="col">Etat</th>
-                <th scope="col">Inscrits</th>
+                <th scope="col">Inscrit</th>
                 <th scope="col">Organisateur</th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
             <tbody>
+            {% for event in events %}
             <tr>
-                <td>test</td>
-                <td>test</td>
-                <td>test</td>
-                <td>test</td>
-                <td>test</td>
-                <td>test</td>
-                <td>test</td>
+                <td>{{ event.name }}</td>
+                <td>{{ event.startDateTime|date("d/m/Y") }}</td>
+                <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
+                <td></td>
+                <td>{{ event.getStateStr() }}</td>
+                <td>{{ event.getIsInscrit(app.user) ? 'X' : '' }}</td>
+                <td>{{ event.user.getFullName }}</td>
                 <td>test</td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
