@@ -6,6 +6,7 @@ use App\Entity\City;
 use App\Entity\LocationSite;
 use App\Entity\User;
 use App\Repository\CityRepository;
+use ContainerMMVaBo8\getLocationSiteRepositoryService;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -38,19 +39,24 @@ class EditUserType extends AbstractType
             )
 
             ->add('name', TextType::class, [ 'disabled' => true ])
-            ->add('firstName', TextType::class)
+            ->add('firstName', TextType::class, [ 'disabled' => true ])
             ->add('phone', TelType::class)
-            ->add('sites',  EntityType::class, [
-                'mapped' => false,
-                'class' => LocationSite::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c');
-                },])
-//                'choice_value' => function (?LocationSite $entity) {
+//            ->add('sites',  ChoiceType::class, [
+//                'choice_value' => function (?LocationSite $entity): string {
 //                    return $entity ? $entity->getId() : '';
-//                },])
-//            ->add('isActive')
-//            ->add('registred')
+//                }
+////                'disabled' => true,
+////                'mapped' => false,
+////                'class' => LocationSite::class,
+////                'query_builder' => function (EntityRepository $er) {
+////                    return $er->createQueryBuilder('c');
+////                },])
+////                'choice_value' => function (?LocationSite $entity) {
+////                    return $entity ? $entity->getId() : '';
+////                },])
+////            ->add('isActive')
+////            ->add('registred')
+//        ])
         ;
     }
 

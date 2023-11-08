@@ -22,7 +22,7 @@
                 </ul>
             </div>
         </div>
-        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">Modifier</a>
+        <a href="{{ path('app_profile_edit', {'userid': app.user.id}) }}" class="btn btn-primary">Modifier</a>
     </div>
 
 {% endblock %}
