@@ -38,4 +38,16 @@ class EventController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/sortie/details/{id}', name: 'app_event_details')]
+    public function details(EventRepository $eventRepository, int $id): Response
+    {
+        return $this->redirectToRoute('app_event_new');
+    }
+
+    #[Route('/sortie/edit/{id}', name: 'app_event_edit')]
+    public function edit(EventRepository $eventRepository, int $id): Response
+    {
+        return $this->redirectToRoute('app_event_new');
+    }
 }

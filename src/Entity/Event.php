@@ -175,9 +175,9 @@ class Event
         return $this->state;
     }
 
-    public function getStateStr(): string
+    public function getStateDescription(): string
     {
-        return match ($this->state) {
+        return match ($this->state->value) {
             "OPEN" => "Ouvert",
             "CREATED" => "En création",
             "CLOSED" => "Fermé",
@@ -186,6 +186,11 @@ class Event
             "CANCELLED" => "Annulé",
             default => "type non reconnu",
         };
+    }
+
+    public function getIsTooLateToSubscribe(): bool
+    {
+        return $this->limitDateInscription > new \DateTime('now');
     }
 
     public function getIsInscrit(User $currentUser): bool

@@ -82,11 +82,19 @@
                 <td>{{ event.name }}</td>
                 <td>{{ event.startDateTime|date("d/m/Y") }}</td>
                 <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
-                <td></td>
-                <td>{{ event.getStateStr() }}</td>
+                <td>{{ event.users|length }}/nb max</td>
+                <td>{{ event.getStateDescription() }}</td>
                 <td>{{ event.getIsInscrit(app.user) ? 'X' : '' }}</td>
                 <td>{{ event.user.getFullName }}</td>
-                <td>test</td>
+                <td>
+                    {% if event.getIsInscrit(app.user) and event.getIsTooLateToSubscribe == false %}
+                        <a href="{{ event.state.value == "CREATED" ? path('app_event_edit', {(id):event.id}) : path('app_event_details', {id:event.id}) }}">{{ event.state.value == "CREATED" ? 'modifier' : 'afficher' }}</a>
+                    {% elseif event.state.value == "" %}
+                        <a href="{{ event.state.value == "CREATED" ? path('app_event_edit', {(id):event.id}) : path('app_event_details', {id:event.id}) }}">{{ event.state.value == "CREATED" ? 'modifier' : 'afficher' }}</a>
+                    {% else %}
+                        <a href="{{ event.state.value == "CREATED" ? path('app_event_edit', {(id):event.id}) : path('app_event_details', {id:event.id}) }}">{{ event.state.value == "CREATED" ? 'modifier' : 'afficher' }}</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
             </tbody>
