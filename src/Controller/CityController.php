@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CityController extends AbstractController
 {
     #[Route('/villes/gerer', name: 'app_city')]
-    public function index(CityRepository $cityRepository, Request $request, EntityManagerInterface $entityManager, $cities=null): Response
+    public function index(CityRepository $cityRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $city = new City();
         $form = $this->createForm(CityType::class, $city);
