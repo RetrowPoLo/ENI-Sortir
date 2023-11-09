@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sortie: {{ event.name }}{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>Créer une sortie</h2>
+    </div>
+    <div class="row mt-5">
+        <div class="col-8">
+            <div class="row">
+                <div class="col">
+                    <div class="row mb-3">
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Nom de la sortie: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">{{ event.name }}</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Date et heure de la sortie: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">{{ event.startDateTime|date("d/m/Y") }}</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Date limite d'inscription: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">{{ event.limitDateInscription|date("d/m/Y") }}</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Nombre de places: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">{{ event.users|length }}</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Durée: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">{{ event.duration|date("H:i") }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row mb-3">
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Ville organisatrice: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">"ville"</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Lieu: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">"lieu"</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">Rue: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">"rue"</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">code postal: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">"code postal"</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">latitude: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">"latitude"</label>
+                        </div>
+
+                        <label for="colFormLabel" class="col-sm-4 col-form-label">longitude: </label>
+                        <div class="col-sm-8">
+                            <label class="col-form-label">"longitude"</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <label for="descriptionEvent" class="col-sm-4 col-form-label">Description et infos: </label>
+            <div class="col-sm-8">
+                <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.eventInfo }}</textarea>
+            </div>
+        </div>
+        <div class="col">
+            <table class="table ">
+                <thead>
+                <tr>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Nom</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in event.users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.getFullName }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

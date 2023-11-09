@@ -43,7 +43,9 @@ class SiteController extends AbstractController
 			// Redirect to the site page
             return $this->redirectToRoute('app_site', ['contain' => $contain]);
         }
+
         $contain = $request->query->get('contain');
+
         return $this->render('site/index.html.twig', [
             'form' => $form,
             'formVille' => $formVille,

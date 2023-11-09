@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use phpDocumentor\Reflection\Type;
+
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {
@@ -43,6 +45,13 @@ class Event
 
     #[ORM\Column(type: "string", enumType: State::class)]
     private State $state;
+
+    #[ORM\Column]
+    private ?int $nb_inscription_max = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $eventLocation = null;
 
     public function __construct()
     {
@@ -174,9 +183,9 @@ class Event
         return $this->state;
     }
 
-    public function getStateStr(): string
+    public function getStateDescription(): string
     {
-        return match ($this->state) {
+        return match ($this->state->value) {
             "OPEN" => "Ouvert",
             "CREATED" => "En création",
             "CLOSED" => "Fermé",
@@ -187,7 +196,12 @@ class Event
         };
     }
 
-    public function getIsInscrit(User $currentUser): bool
+    public function getIsTooLateToSubscribe(): bool
+    {
+        return $this->limitDateInscription < new \DateTime('now');
+    }
+
+    public function getIsSub(User $currentUser): bool
     {
         return $this->users->exists(function($key, $user) use($currentUser){
            return ($user->getId() == $currentUser->getId());
@@ -206,5 +220,34 @@ class Event
     {
         $this->state = $state;
         return $this;
+    }
+
+    public function getNbInscriptionMax(): ?int
+    {
+        return $this->nb_inscription_max;
+    }
+
+    public function setNbInscriptionMax(int $nb_inscription_max): static
+    {
+        $this->nb_inscription_max = $nb_inscription_max;
+
+        return $this;
+    }
+
+    public function getEventLocation(): ?location
+    {
+        return $this->eventLocation;
+    }
+
+    public function setEventLocation(?location $eventLocation): static
+    {
+        $this->eventLocation = $eventLocation;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }
