@@ -50,7 +50,7 @@ class Event
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Location $locationId = null;
+    private ?Location $eventLocation = null;
 
     public function __construct()
     {
@@ -233,14 +233,14 @@ class Event
         return $this;
     }
 
-    public function getLocationId(): ?Location
+    public function getEventLocation(): ?location
     {
-        return $this->locationId;
+        return $this->eventLocation;
     }
 
-    public function setLocationId(?Location $locationId): static
+    public function setEventLocation(?location $eventLocation): static
     {
-        $this->locationId = $locationId;
+        $this->eventLocation = $eventLocation;
 
         return $this;
     }
