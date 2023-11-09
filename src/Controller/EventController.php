@@ -24,24 +24,6 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/creer', name: 'app_event_new')]
-    public function create(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository): Response
-    {
-//        $event = new Event();
-//        $form = $this->createForm(EventType::class, $event);
-//        $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $city = $form->getData();
-//            $entityManager->persist($city);
-//            $entityManager->flush();
-//            return $this->redirectToRoute('app_event');
-//        }
-//        return $this->render('event/new.html.twig', [
-//            'form' => $form,
-//        ]);
-        return $this->redirectToRoute('app_event');
-    }
-
     #[Route('/sortie/details/{id}', name: 'app_event_details')]
     public function details(EventRepository $eventRepository, int $id): Response
     {
