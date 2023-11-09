@@ -1,0 +1,18 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Profil de {{ app.user.username }}{% endblock %}
+
+{% block body %}
+
+    {{ parent() }}
+
+        <h1>Modifier le profil</h1>
+
+    <div class="container-fluid w-25 mt-2">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
