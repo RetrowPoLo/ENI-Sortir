@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('./build/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-node_modules_bootstrap_dist_cs-f20b8b.css') }}">
@@ -17,6 +17,10 @@
         {% endblock %}
     </head>
     <body>
+        {% include('components/_navbar.html.twig') %}
+
         {% block body %}{% endblock %}
+
+        {% include('components/_footer.html.twig') %}
     </body>
 </html>

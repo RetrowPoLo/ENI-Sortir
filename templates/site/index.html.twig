@@ -3,8 +3,6 @@
 {% block title %}Gérer les sites{% endblock %}
 
 {% block body %}
-    {% include('components/_navbar.html.twig') %}
-
     <div class="container mt-5">
         <div class="text-center">
             <h2>Gérer les sites</h2>
@@ -38,9 +36,8 @@
                         <tr>
                             <td>{{ ville.name }}</td>
                             <td>
-                                <a href="">modifier</a>
-                                -
-                                <a href="{{ path('app_site_delete', {'id': ville.id}) }}">supprimer</a>
+                                <a class="btn btn-success me-2" href="">Modifier</a>
+                                <a class="btn btn-danger" href="{{ path('app_site_delete', {'id': ville.id}) }}">Supprimer</a>
                             </td>
                         </tr>
                     {% endif %}

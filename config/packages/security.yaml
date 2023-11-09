@@ -43,7 +43,6 @@ security:
         - { path: ^/profile, roles: ROLE_USER }
         - { path: /connexion, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/villes, roles: ROLE_ADMIN }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
