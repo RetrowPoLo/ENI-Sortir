@@ -174,6 +174,30 @@ class Event
         return $this->state;
     }
 
+    public function getStateStr(): string
+    {
+        return match ($this->state) {
+            "OPEN" => "Ouvert",
+            "CREATED" => "En création",
+            "CLOSED" => "Fermé",
+            "IN_PROGRESS" => "En cours",
+            "PASSED" => "Passé",
+            "CANCELLED" => "Annulé",
+            default => "type non reconnu",
+        };
+    }
+
+    public function getIsInscrit(User $currentUser): bool
+    {
+        return $this->users->exists(function($key, $user) use($currentUser){
+           return ($user->getId() == $currentUser->getId());
+        });
+    }
+
+    public function getNbInscrit(): int{
+        return strlen($this->users);
+    }
+
     /**
      * @param State $state
      * @return Event
