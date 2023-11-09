@@ -18,21 +18,14 @@
                 {% endif %}
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item dropdown">
-                            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Administration
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_register' ? 'aria-current="page"' : '' }} href="{{ path('app_register') }}"> Inscrire un utilisateur </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item {{ app.request.attributes.get('_route') == 'app_site' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_site' ? 'aria-current="page"' : '' }} href="{{ path('app_site') }}"> Sites </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item {{ app.request.attributes.get('_route') == 'app_city' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_city' ? 'aria-current="page"' : '' }} href="{{ path('app_city') }}"> Villes </a>
-                                </li>
-                            </ul>
+                        <li>
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_register' ? 'aria-current="page"' : '' }} href="{{ path('app_register') }}"> Inscrire un utilisateur </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_site' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_site' ? 'aria-current="page"' : '' }} href="{{ path('app_site') }}"> Sites </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_city' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_city' ? 'aria-current="page"' : '' }} href="{{ path('app_city') }}"> Villes </a>
                         </li>
                     {% endif %}
                     <li class="nav-item mx-3">
