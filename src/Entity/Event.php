@@ -48,6 +48,10 @@ class Event
     #[ORM\Column]
     private ?int $nb_inscription_max = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $locationId = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -225,6 +229,18 @@ class Event
     public function setNbInscriptionMax(int $nb_inscription_max): static
     {
         $this->nb_inscription_max = $nb_inscription_max;
+
+        return $this;
+    }
+
+    public function getLocationId(): ?Location
+    {
+        return $this->locationId;
+    }
+
+    public function setLocationId(?Location $locationId): static
+    {
+        $this->locationId = $locationId;
 
         return $this;
     }
