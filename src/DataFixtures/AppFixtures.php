@@ -3,8 +3,10 @@
 namespace App\DataFixtures;
 
 use App\Entity\City;
+use App\Entity\Event;
 use App\Entity\Location;
 use App\Entity\LocationSite;
+use App\Entity\State;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -18,6 +20,24 @@ class AppFixtures extends Fixture
 
 	public function load(ObjectManager $manager): void
     {
+		// Create a basic user
+		$basicUser = new User();
+		$basicUser->setEmail('user@user.com');
+		$basicUser->setUsername('basic user');
+		$basicUser->setFirstName('John');
+		$basicUser->setName('Doe');
+		$basicUser->setPhone('0123456789');
+		$basicUser->setIsActive(true);
+		$basicUser->setRoles(['ROLE_USER']);
+		$basicUserPassword = $this->passwordHasher->hashPassword(
+			$basicUser,
+			'12345'
+		);
+		$basicUser->setPassword($basicUserPassword);
+
+		// Persist that admin user to the database
+		$manager->persist($basicUser);
+
 		// Create an admin user
 		$adminUser = new User();
 		$adminUser->setEmail('admin@admin.com');
@@ -116,6 +136,82 @@ class AppFixtures extends Fixture
 
 		// Persist that location to the database
 		$manager->persist($location3);
+
+		// ====== Create 5 events ======
+		// Create an event named "Match de foot"
+		$event1 = new Event();
+		$event1->setName('Match de foot');
+		$event1->setStartDateTime(new \DateTime('2021-10-10 10:00:00'));
+		$event1->setLimitDateInscription(new \DateTime('2021-10-09 10:00:00'));
+		$event1->setEventInfo('Match de foot entre amis');
+		$event1->setDuration(new \DateTime('2021-10-10 02:00:00'));
+		$event1->setLocationSiteEvent($locationSite1);
+		$event1->setUser($basicUser);
+		$event1->addUser($adminUser);
+		$event1->setState(State::Open);
+
+		// Persist that event to the database
+		$manager->persist($event1);
+
+		// Create an event named "Marche à la mairie"
+		$event2 = new Event();
+		$event2->setName('Marche à la mairie');
+		$event2->setStartDateTime(new \DateTime('2021-10-10 10:00:00'));
+		$event2->setLimitDateInscription(new \DateTime('2021-10-09 10:00:00'));
+		$event2->setEventInfo('Marche à la mairie entre amis');
+		$event2->setDuration(new \DateTime('2021-10-10 02:00:00'));
+		$event2->setLocationSiteEvent($locationSite2);
+		$event2->setUser($adminUser);
+		$event2->addUser($basicUser);
+		$event2->setState(State::Created);
+
+		// Persist that event to the database
+		$manager->persist($event2);
+
+		// Create an event named "Apéro à la plage"
+		$event3 = new Event();
+		$event3->setName('Apéro à la plage');
+		$event3->setStartDateTime(new \DateTime('2021-10-10 10:00:00'));
+		$event3->setLimitDateInscription(new \DateTime('2021-10-09 10:00:00'));
+		$event3->setEventInfo('Apéro à la plage entre amis');
+		$event3->setDuration(new \DateTime('2021-10-10 02:00:00'));
+		$event3->setLocationSiteEvent($locationSite3);
+		$event3->setUser($basicUser);
+		$event3->addUser($adminUser);
+		$event3->setState(State::Closed);
+
+		// Persist that event to the database
+		$manager->persist($event3);
+
+		// Create an event named "Randonnée en forêt" (archived)
+		$event4 = new Event();
+		$event4->setName('Randonnée en forêt');
+		$event4->setStartDateTime(new \DateTime('2021-10-10 10:00:00'));
+		$event4->setLimitDateInscription(new \DateTime('2021-10-09 10:00:00'));
+		$event4->setEventInfo('Randonnée en forêt entre amis');
+		$event4->setDuration(new \DateTime('2021-10-10 02:00:00'));
+		$event4->setLocationSiteEvent($locationSite3);
+		$event4->setUser($basicUser);
+		$event4->addUser($adminUser);
+		$event4->setState(State::Closed);
+
+		// Persist that event to the database
+		$manager->persist($event4);
+
+		// Create an event named "Soirée jeux de société" (in progress)
+		$event5 = new Event();
+		$event5->setName('Soirée jeux de société');
+		$event5->setStartDateTime(new \DateTime('2021-10-10 10:00:00'));
+		$event5->setLimitDateInscription(new \DateTime('2021-10-09 10:00:00'));
+		$event5->setEventInfo('Soirée jeux de société entre amis');
+		$event5->setDuration(new \DateTime('2021-10-10 02:00:00'));
+		$event5->setLocationSiteEvent($locationSite3);
+		$event5->setUser($basicUser);
+		$event5->addUser($adminUser);
+		$event5->setState(State::InProgress);
+
+		// Persist that event to the database
+		$manager->persist($event5);
 
         $manager->flush();
     }
