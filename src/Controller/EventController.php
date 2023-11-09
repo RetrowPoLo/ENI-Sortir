@@ -27,41 +27,45 @@ class EventController extends AbstractController
     #[Route('/sortie/creer', name: 'app_event_new')]
     public function create(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository): Response
     {
-        $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $city = $form->getData();
-            $entityManager->persist($city);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_event');
-        }
-        return $this->render('event/new.html.twig', [
-            'form' => $form,
-        ]);
+//        $event = new Event();
+//        $form = $this->createForm(EventType::class, $event);
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $city = $form->getData();
+//            $entityManager->persist($city);
+//            $entityManager->flush();
+//            return $this->redirectToRoute('app_event');
+//        }
+//        return $this->render('event/new.html.twig', [
+//            'form' => $form,
+//        ]);
+        return $this->redirectToRoute('app_event');
     }
 
     #[Route('/sortie/details/{id}', name: 'app_event_details')]
     public function details(EventRepository $eventRepository, int $id): Response
     {
-        return $this->redirectToRoute('app_event_new');
+        $event = $eventRepository->findOneBy(['id'=> $id]);
+        return $this->render('event/details.html.twig', [
+            'event' => $event,
+        ]);
     }
 
     #[Route('/sortie/edit/{id}', name: 'app_event_edit')]
     public function edit(EventRepository $eventRepository, int $id): Response
     {
-        return $this->redirectToRoute('app_event_new');
+        return $this->redirectToRoute('app_event');
     }
 
     #[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
     public function cancel(EventRepository $eventRepository, int $id): Response
     {
-        return $this->redirectToRoute('app_event_new');
+        return $this->redirectToRoute('app_event');
     }
     #[Route('/sortie/cancel/{id}', name: 'app_event_publish')]
     public function publish(EventRepository $eventRepository, int $id): Response
     {
-        return $this->redirectToRoute('app_event_new');
+        return $this->redirectToRoute('app_event');
     }
 
 }
