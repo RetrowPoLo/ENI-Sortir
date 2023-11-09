@@ -193,7 +193,7 @@ class Event
 
     public function getIsTooLateToSubscribe(): bool
     {
-        return $this->limitDateInscription > new \DateTime('now');
+        return $this->limitDateInscription < new \DateTime('now');
     }
 
     public function getIsSub(User $currentUser): bool

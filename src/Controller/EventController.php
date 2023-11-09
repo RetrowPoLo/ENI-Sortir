@@ -17,8 +17,8 @@ class EventController extends AbstractController
     public function index(EventRepository $eventRepository): Response
     {
         $events = $eventRepository->findAll();
-        var_dump($events[0]->getIsTooLateToSubscribe());
-        var_dump($events[1]->getIsTooLateToSubscribe());
+//        var_dump($events[0]->getIsTooLateToSubscribe());
+//        var_dump($events[1]->getIsTooLateToSubscribe());
         return $this->render('event/index.html.twig', [
             'events' => $events,
         ]);

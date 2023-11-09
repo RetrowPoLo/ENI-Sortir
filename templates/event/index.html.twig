@@ -87,7 +87,6 @@
                 <td>{{ event.getIsSub(app.user) ? 'X' : '' }}</td>
                 <td>{{ event.user.getFullName }}</td>
                 <td>
-                    {{ event.getIsTooLateToSubscribe() }}
                     {% if event.user == app.user and event.state.value == "CREATED" %}
                         <a href="{{ path('app_event_edit', {id:event.id}) }}">Modifier</a>
                         <a href="{{ path('app_event_publish',{id:event.id}) }}">Publier</a>
