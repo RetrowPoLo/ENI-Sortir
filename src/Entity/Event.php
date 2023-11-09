@@ -45,6 +45,9 @@ class Event
     #[ORM\Column(type: "string", enumType: State::class)]
     private State $state;
 
+    #[ORM\Column]
+    private ?int $nb_inscription_max = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -175,30 +178,6 @@ class Event
         return $this->state;
     }
 
-    public function getStateStr(): string
-    {
-        return match ($this->state) {
-            "OPEN" => "Ouvert",
-            "CREATED" => "En création",
-            "CLOSED" => "Fermé",
-            "IN_PROGRESS" => "En cours",
-            "PASSED" => "Passé",
-            "CANCELLED" => "Annulé",
-            default => "type non reconnu",
-        };
-    }
-
-    public function getIsInscrit(User $currentUser): bool
-    {
-        return $this->users->exists(function($key, $user) use($currentUser){
-           return ($user->getId() == $currentUser->getId());
-        });
-    }
-
-    public function getNbInscrit(): int{
-        return strlen($this->users);
-    }
-
     /**
      * @param State $state
      * @return Event
@@ -206,6 +185,18 @@ class Event
     public function setState(State $state): self
     {
         $this->state = $state;
+        return $this;
+    }
+
+    public function getNbInscriptionMax(): ?int
+    {
+        return $this->nb_inscription_max;
+    }
+
+    public function setNbInscriptionMax(int $nb_inscription_max): static
+    {
+        $this->nb_inscription_max = $nb_inscription_max;
+
         return $this;
     }
 
