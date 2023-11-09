@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Form\EventFilterType;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Repository\LocationSiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,12 +15,48 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EventController extends AbstractController
 {
-    #[Route('/sortie', name: 'app_event')]
-    public function index(EventRepository $eventRepository): Response
+	public function __construct(
+		private LocationSiteRepository $locationSiteRepository,
+		private EventRepository $eventRepository,
+	)
+	{
+	}
+
+	#[Route('/sortie', name: 'app_event')]
+    public function index(Request $request, EventRepository $eventRepository): Response
     {
-        $events = $eventRepository->findAll();
+		// Find all location sites
+		$locationSites = $this->locationSiteRepository->findAll();
+
+		// Find all events
+		$events = $this->eventRepository->findAll();
+
+		$formFilter = $this->createForm(EventFilterType::class);
+		$formFilter->handleRequest($request);
+
+		if ($formFilter->isSubmitted() && $formFilter->isValid()) {
+			$filteredResult = $this->eventRepository->findByFilters(
+				'',
+				$formFilter->get('name')->getData(),
+				null,
+				null,
+				false,
+				false,
+				false,
+				false
+			);
+
+			return $this->render('event/index.html.twig', [
+				'locationSites' => $locationSites,
+				'events' => $filteredResult,
+				'formFilter' => $formFilter->createView(),
+			]);
+		}
+
         return $this->render('event/index.html.twig', [
+			'locationSites' => $locationSites,
             'events' => $events,
+			'formFilter' => $formFilter->createView(),
         ]);
     }
 
