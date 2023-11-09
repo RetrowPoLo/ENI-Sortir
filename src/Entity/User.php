@@ -62,6 +62,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
     private Collection $organizer;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?LocationSite $sites_no_site = null;
+
     public function __construct()
     {
         $this->registred = new ArrayCollection();
@@ -90,12 +94,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->username;
 	}
 
-	public function setUsername(string $username): static
-	{
-		$this->username = $username;
 
-		return $this;
-	}
+	public function setUsername(string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
 
 	/**
 	 * A visual identifier that represents this user.
@@ -103,9 +107,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @see UserInterface
 	 */
 	public function getUserIdentifier(): string
-	{
-		return (string) $this->email;
-	}
+    {
+        return (string) $this->email;
+    }
 
     /**
      * @see UserInterface
@@ -256,4 +260,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->getFirstName()." ".substr($this->getName(), 0, 1).".";
     }
+
+    public function getSitesNoSite(): ?locationSite
+    {
+        return $this->sites_no_site;
+    }
+
+    public function setSitesNoSite(?locationSite $sites_no_site): static
+    {
+        $this->sites_no_site = $sites_no_site;
+
+        return $this;
+    }
+
 }
