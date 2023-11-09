@@ -94,12 +94,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->username;
 	}
 
-	public function setUsername(string $username): static
-	{
-		$this->username = $username;
 
-		return $this;
-	}
+	public function setUsername(string $username): static
+    {
+        $this->username = $username;
+        return $this;
+    }
 
 	/**
 	 * A visual identifier that represents this user.
@@ -107,9 +107,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @see UserInterface
 	 */
 	public function getUserIdentifier(): string
-	{
-		return (string) $this->email;
-	}
+    {
+        return (string) $this->email;
+    }
 
     /**
      * @see UserInterface

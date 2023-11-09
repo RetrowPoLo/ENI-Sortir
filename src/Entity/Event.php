@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use phpDocumentor\Reflection\Type;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -47,6 +48,10 @@ class Event
 
     #[ORM\Column]
     private ?int $nb_inscription_max = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $eventLocation = null;
 
     public function __construct()
     {
@@ -225,6 +230,18 @@ class Event
     public function setNbInscriptionMax(int $nb_inscription_max): static
     {
         $this->nb_inscription_max = $nb_inscription_max;
+
+        return $this;
+    }
+
+    public function getEventLocation(): ?location
+    {
+        return $this->eventLocation;
+    }
+
+    public function setEventLocation(?location $eventLocation): static
+    {
+        $this->eventLocation = $eventLocation;
 
         return $this;
     }
