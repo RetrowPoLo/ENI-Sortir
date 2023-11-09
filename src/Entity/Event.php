@@ -178,6 +178,35 @@ class Event
         return $this->state;
     }
 
+    public function getStateDescription(): string
+    {
+        return match ($this->state->value) {
+            "OPEN" => "Ouvert",
+            "CREATED" => "En création",
+            "CLOSED" => "Fermé",
+            "IN_PROGRESS" => "En cours",
+            "PASSED" => "Passé",
+            "CANCELLED" => "Annulé",
+            default => "type non reconnu",
+        };
+    }
+
+    public function getIsTooLateToSubscribe(): bool
+    {
+        return $this->limitDateInscription < new \DateTime('now');
+    }
+
+    public function getIsSub(User $currentUser): bool
+    {
+        return $this->users->exists(function($key, $user) use($currentUser){
+           return ($user->getId() == $currentUser->getId());
+        });
+    }
+
+    public function getNbInscrit(): int{
+        return strlen($this->users);
+    }
+
     /**
      * @param State $state
      * @return Event

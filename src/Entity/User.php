@@ -66,7 +66,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?LocationSite $sites_no_site = null;
 
-
     public function __construct()
     {
         $this->registred = new ArrayCollection();
