@@ -17,25 +17,35 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('username', TextType::class)
+            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('username', TextType::class,  ['label' => 'Pseudo'])
 //            ->add('roles')
             ->add('password',
                 RepeatedType::class, [
+                    'required' => false,
                     'type' => PasswordType::class,
                     'invalid_message' => 'Le mot de passe doit correspondre.',
                     'options' => ['attr' => ['class' => 'password-field']],
-                    'required' => true,
-                    'first_options'  => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Repeat Password'], ]
+                    'first_options'  => ['label' => 'Mot de passe',
+                        'required' => false,
+                        'attr' => array(
+                            'placeholder' => 'Laisser vide pour ne pas modifier le mot de passe'
+                        ),
+                        'empty_data' => 'noknok'],
+                    'second_options' => ['label' => 'Confirmer le mot de passe',
+                        'required' => false,
+                        'attr' => array(
+                            'placeholder' => 'Laisser vide pour ne pas modifier le mot de passe'
+                        ),
+                    'empty_data' => 'noknok',], ]
             )
 
-            ->add('name', TextType::class)
-            ->add('firstName', TextType::class)
-            ->add('phone', TelType::class)
+            ->add('name', TextType::class,  ['label' => 'Nom'])
+            ->add('firstName', TextType::class,  ['label' => 'Prénom'])
+            ->add('phone', TelType::class,  ['label' => 'Téléphone'])
 //            ->add('isActive')
 //            ->add('registred')
-            ->add('sites_no_site')
+            ->add('sites_no_site', null, ['label' => 'ville de rattachement'])
         ;
     }
 

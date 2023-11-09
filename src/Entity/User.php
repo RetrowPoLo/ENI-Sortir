@@ -255,19 +255,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function getSitesNoSite(): ?locationSite
-
-    {
-        return $this->sites_no_site;
-    }
-    public function setSitesNoSite(?locationSite $sites_no_site): static
-    {
-        $this->sites_no_site = $sites_no_site;
-        return $this;
-    }
 
     public function getFullName(): string
     {
         return $this->getFirstName()." ".substr($this->getName(), 0, 1).".";
     }
+
+    public function getSitesNoSite(): ?locationSite
+    {
+        return $this->sites_no_site;
+    }
+
+    public function setSitesNoSite(?locationSite $sites_no_site): static
+    {
+        $this->sites_no_site = $sites_no_site;
+
+        return $this;
+    }
+
 }

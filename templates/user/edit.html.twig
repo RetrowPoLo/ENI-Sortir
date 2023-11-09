@@ -1,11 +1,7 @@
-{% extends 'home/index.html.twig' %}
-
+{% extends 'base.html.twig' %}
 {% block title %}Edit User{% endblock %}
-
 {% block body %}
-    {{ parent() }}
-    <h1>Edit User</h1>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('user/_form.html.twig', {'button_label': 'Mettre a jour'}) }}
 
 {% endblock %}

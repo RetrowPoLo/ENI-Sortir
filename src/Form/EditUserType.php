@@ -28,38 +28,31 @@ class EditUserType extends AbstractType
     {
         $this->authChecker = $authChecker;
     }
-//    user@user.com
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $isadmin = $this->authChecker->isGranted('ROLE_ADMIN');
         $builder
-            ->add('email', EmailType::class)
-            ->add('username', TextType::class)
-//            ->add('roles')
+            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('username', TextType::class, ['label' => 'Pseudo'])
             ->add('password',
              RepeatedType::class, [
         'type' => PasswordType::class,
         'invalid_message' => 'Le mot de passe doit correspondre.',
         'options' => ['attr' => ['class' => 'password-field']],
         'required' => true,
-        'first_options'  => ['label' => 'Password'],
-        'second_options' => ['label' => 'Repeat Password'], ]
+        'first_options'  => ['label' => 'Mot de passe'],
+        'second_options' => ['label' => 'Confirmer le mot de passe'], ]
             )
 
             ->add('name', TextType::class, [
                 'disabled' => !$isadmin,
+                'label' => 'Nom'
             ])
-            ->add('firstName', TextType::class, [ 'disabled' => !$isadmin ])
-            ->add('phone', TelType::class)
-//            ->add('sites',  EntityType::class, [
-//////                'disabled' => true,
-//                'mapped' => false,
-//                'class' => LocationSite::class,
-//                'choice_label' => 'name',
-//////            ->add('isActive')
-//////            ->add('registred')
-//        ])
-           // ->add('submit', SubmitType::class, ['label' => 'OK'])
+            ->add('firstName', TextType::class, [ 'disabled' => !$isadmin,
+                'label' => 'Prénom'])
+            ->add('phone', TelType::class,  ['label' => 'Téléphone'])
+
         ;
     }
 
