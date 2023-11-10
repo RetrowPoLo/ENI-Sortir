@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,15 +23,21 @@ class CreateEventType extends AbstractType
             ->add('name', textType::class, ['label' => 'Nom de la sortie'])
             ->add('startDateTime',DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date et heure de la sortie',
+                'label' => 'Date de début de la sortie',
                 ])
+            ->add('endDateTime',DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Date de fin de la sortie',
+            ])
             ->add('limitDateInscription',DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date limite d\'inscription',
             ])
-            ->add('nbInscriptionMax',textType::class, ['label' => 'Nombre de place'])
-            ->add('duration',IntegerType ::class, ['label' => 'Durée'])
+            ->add('nbInscriptionMax',IntegerType::class, ['label' => 'Nombre de place', 'attr' => [
+                'min' => 1
+            ]])
             ->add('event_info',textareaType::class, ['label' => 'Description et infos'])
+            ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
         ;
     }
 
