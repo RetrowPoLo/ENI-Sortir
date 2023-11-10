@@ -2,18 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Event;
+use App\Form\EventCancellationType;
+use App\Form\EventFilterAdminType;
 use App\Form\EventFilterType;
-use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\LocationSiteRepository;
 use App\Entity\State;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function PHPUnit\Framework\throwException;
 
 class EventController extends AbstractController
 {
@@ -109,7 +110,11 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event');
     }
 
-    #[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws \Exception
+	 */
+	#[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
     public function cancel(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);
@@ -144,7 +149,11 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event');
     }
 
-    #[Route('/sortie/subscribe/{id}', name: 'app_event_subscribe')]
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws \Exception
+	 */
+	#[Route('/sortie/subscribe/{id}', name: 'app_event_subscribe')]
     public function subscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);
@@ -161,7 +170,11 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event');
     }
 
-    #[Route('/sortie/unsubscribe/{id}', name: 'app_event_unsubscribe')]
+	/**
+	 * @throws NonUniqueResultException
+	 * @throws \Exception
+	 */
+	#[Route('/sortie/unsubscribe/{id}', name: 'app_event_unsubscribe')]
     public function unsubscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);

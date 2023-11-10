@@ -28,6 +28,7 @@ class AppFixtures extends Fixture
 		$basicUser->setName('Doe');
 		$basicUser->setPhone('0123456789');
 		$basicUser->setIsActive(true);
+		$basicUser->setPicture('img/imageProfilDefaut.jpg');
 		$basicUser->setRoles(['ROLE_USER']);
 		$basicUserPassword = $this->passwordHasher->hashPassword(
 			$basicUser,
@@ -47,6 +48,7 @@ class AppFixtures extends Fixture
 		$adminUser->setPhone('0123456789');
 		$adminUser->setIsActive(true);
 		$adminUser->setRoles(['ROLE_ADMIN']);
+		$adminUser->setPicture('img/imageProfilDefaut.jpg');
 		$adminUserPassword = $this->passwordHasher->hashPassword(
 			$adminUser,
 			'12345'
@@ -144,7 +146,7 @@ class AppFixtures extends Fixture
 		$event1->setStartDateTime(new \DateTime('2023-12-10 10:00:00'));
 		$event1->setLimitDateInscription(new \DateTime('2023-11-25 10:00:00'));
 		$event1->setEventInfo('Match de foot entre amis');
-		$event1->setDuration(30);
+		$event1->setEndDateTime(new \DateTime('2023-11-12 12:00:00'));
 		$event1->setLocationSiteEvent($locationSite1);
 		$event1->setNbInscriptionMax(10);
 		$event1->setUser($basicUser);
@@ -161,7 +163,7 @@ class AppFixtures extends Fixture
 		$event2->setStartDateTime(new \DateTime('2023-11-25 10:00:00'));
 		$event2->setLimitDateInscription(new \DateTime('2023-11-15 10:00:00'));
 		$event2->setEventInfo('Marche à la mairie entre amis');
-		$event2->setDuration(60);
+		$event2->setEndDateTime(new \DateTime('2023-11-12 12:00:00'));
 		$event2->setLocationSiteEvent($locationSite2);
 		$event2->setUser($adminUser);
 		$event2->setNbInscriptionMax(15);
@@ -177,7 +179,7 @@ class AppFixtures extends Fixture
 		$event3->setStartDateTime(new \DateTime('2023-11-09 10:00:00'));
 		$event3->setLimitDateInscription(new \DateTime('2023-11-05 10:00:00'));
 		$event3->setEventInfo('Apéro à la plage entre amis');
-		$event3->setDuration(120);
+		$event3->setEndDateTime(new \DateTime('2023-11-12 12:00:00'));
 		$event3->setLocationSiteEvent($locationSite3);
 		$event3->setUser($basicUser);
 		$event3->addUser($adminUser);
@@ -194,7 +196,7 @@ class AppFixtures extends Fixture
 		$event4->setStartDateTime(new \DateTime('2023-12-01 10:00:00'));
 		$event4->setLimitDateInscription(new \DateTime('2023-10-15 10:00:00'));
 		$event4->setEventInfo('Randonnée en forêt entre amis');
-		$event4->setDuration(45);
+		$event4->setEndDateTime(new \DateTime('2023-11-12 12:00:00'));
 		$event4->setLocationSiteEvent($locationSite3);
 		$event4->setUser($basicUser);
 		$event4->addUser($adminUser);
@@ -211,7 +213,7 @@ class AppFixtures extends Fixture
 		$event5->setStartDateTime(new \DateTime('2023-11-15 10:00:00'));
 		$event5->setLimitDateInscription(new \DateTime('2023-11-10 10:00:00'));
 		$event5->setEventInfo('Soirée jeux de société entre amis');
-		$event5->setDuration(240);
+		$event5->setEndDateTime(new \DateTime('2023-12-12 12:00:00'));
 		$event5->setLocationSiteEvent($locationSite3);
 		$event5->setUser($basicUser);
 		$event5->addUser($adminUser);
@@ -228,7 +230,7 @@ class AppFixtures extends Fixture
 		$event6->setStartDateTime(new \DateTime('2023-11-12 10:00:00'));
 		$event6->setLimitDateInscription(new \DateTime('2023-11-11 10:00:00'));
 		$event6->setEventInfo('Cinéma entre amis');
-		$event6->setDuration(120);
+		$event6->setEndDateTime(new \DateTime('2023-11-12 12:00:00'));
 		$event6->setLocationSiteEvent($locationSite3);
 		$event6->setUser($basicUser);
 		$event6->setNbInscriptionMax(5);
@@ -244,7 +246,7 @@ class AppFixtures extends Fixture
 		$event7->setStartDateTime(new \DateTime('2023-11-12 10:00:00'));
 		$event7->setLimitDateInscription(new \DateTime('2023-11-11 10:00:00'));
 		$event7->setEventInfo('Restaurant entre amis');
-		$event7->setDuration(90);
+		$event7->setEndDateTime(new \DateTime('2023-11-12 12:00:00'));
 		$event7->setLocationSiteEvent($locationSite3);
 		$event7->setUser($basicUser);
 		$event7->setNbInscriptionMax(5);
