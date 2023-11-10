@@ -61,6 +61,9 @@
                 </label>
             </div>
         </div>
+        <div class="text-center">
+            <a class="btn-outline-primary btn" href="#">Ajouter une sortie</a>
+        </div>
     </div>
     <div class="mt-5">
         <table class="table ">
@@ -87,7 +90,7 @@
                 <td>
                     {% if event.getIsSub(app.user) == true %}
                         <div class="text-center">
-                            <img src="{{ asset('./build/images/inscrit.png') }}" alt="logo" width="20px" height="20px">
+                            <img src="{{ asset('./build/images/inscrit.png') }}" alt="est_inscrit" width="20px" height="20px">
                         </div>
                     {% endif %}
                 </td>
@@ -99,12 +102,12 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if (event.user == app.user and event.state.value == "CREATED") or (event.state.value == "CREATED" and is_granted('ROLE_ADMIN')) %}
+                    {% if (event.user == app.user or is_granted('ROLE_ADMIN')) and event.state.value == "CREATED" %}
                         <a class="btn btn-outline-primary" href="{{ path('app_event_edit', {id:event.id}) }}">Modifier</a>
                         <a class="btn btn-outline-warning" href="{{ path('app_event_publish',{id:event.id}) }}">Publier</a>
                     {% else %}
                         <a class="btn btn-outline-primary" href="{{ path('app_event_details', {id:event.id}) }}">Afficher</a>
-                        {% if (event.user == app.user and event.state.value == "OPEN") or (is_granted('ROLE_ADMIN') and event.state.value == "OPEN") %}
+                        {% if (event.user == app.user or is_granted('ROLE_ADMIN')) and event.state.value == "OPEN" %}
                             <a class="btn btn-outline-danger" href="{{ path('app_event_cancel', {id:event.id}) }}">Annuler</a>
                         {% elseif event.user != app.user and event.getIsSub(app.user) == 0 and event.getIsTooLateToSubscribe() == false and is_granted('ROLE_ADMIN') == false %}
                             <a class="btn btn-outline-warning" href="{{ path('app_event_subscribe', {id:event.id}) }}">S'inscrire</a>

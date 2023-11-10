@@ -21,28 +21,49 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-//    /**
-//     * @return Event[] Returns an array of Event objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Event[] Returns an array of Event objects
+     */
+    public function findAllNotArchived(): array
+    {
+        $oneMonthAgo = new \DateTime();
+        $oneMonthAgo->modify('-1 month');
 
-//    public function findOneBySomeField($value): ?Event
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->createQueryBuilder('e')
+            ->where('e.startDateTime > :oneMonthAgo')
+            ->setParameter('oneMonthAgo', $oneMonthAgo)
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findOneByIdNotArchived(int $id): ?Event
+    {
+        $oneMonthAgo = new \DateTime();
+        $oneMonthAgo->modify('-1 month');
+        return $this->createQueryBuilder('e')
+            ->where('(e.startDateTime > :oneMonthAgo) AND (e.id = :eventId)')
+            ->setParameter('oneMonthAgo', $oneMonthAgo)
+            ->setParameter('eventId', $id)
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findOneByIdArchived(int $id): Event
+    {
+        $oneMonthAgo = new \DateTime();
+        $oneMonthAgo->modify('-1 month');
+
+        return $this->createQueryBuilder('e')
+            ->where('(e.startDateTime <= :oneMonthAgo) AND (e.id = :eventId)')
+            ->setParameter('oneMonthAgo', $oneMonthAgo)
+            ->setParameter('eventId', $id)
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
