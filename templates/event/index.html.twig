@@ -5,95 +5,111 @@
 {% block body %}
     <div class="container mt-5">
         <h3>Filtrer les sorties</h3>
-        <div class="row">
-            <div class="col">
-                <div class="col-10">
-                    <div class="d-flex align-items-center text-nowrap">
-                        <h5>Site : </h5>
-                        <select class="form-select mx-4" aria-label="Select des sites">
-                            <option value="0" selected>Tous</option>
-                            {% for locationSite in locationSites %}
-                                    <option value="{{ locationSite.id }}">{{ locationSite.name }}</option>
-                            {% endfor %}
-                        </select>
+            {{ form(formFilter) }}
+
+{#
+            <div class="row">
+                {{ form_start(formFilter) }}
+                <div class="col">
+                    <div class="col-10">
+                        <div class="d-flex align-items-center text-nowrap">
+                            <h5>Site : </h5>
+                            {{ form_widget(formFilter.locationSiteEvent) }}
+                        </div>
+                    </div>
+                    <div class="col-10">
+                        <div class="my-3 d-flex align-items-center text-nowrap">
+                            {{ form_widget(formFilter.name) }}
+                        </div>
+                    </div>
+                    <div class="date-style">
+                        <label for="start_date">Entre </label>
+                        <input type="date" id="start_date" name="trip-start" value="" />
+                    </div>
+                    <div class="date-style">
+                        <label for="end_date">et </label>
+                        <input type="date" id="end_date" name="trip-start" value=""  />
+                    </div>
+
+                    {{ form_widget(formFilter.save) }}
+                </div>
+                <div class="col">
+                    <div class="form-check">
+                        {{ form_widget(formFilter.userIsOrganizer) }}
+                    </div>
+                    <div class="form-check">
+                        {{ form_widget(formFilter.userIsRegistered) }}
+                    </div>
+                    <div class="form-check">
+                        {{ form_widget(formFilter.userIsNotRegistered) }}
+                    </div>
+                    <div class="form-check">
+                        {{ form_widget(formFilter.stateIsPassed) }}
                     </div>
                 </div>
-                <div class="col-10">
-                    <div class="my-3 d-flex align-items-center text-nowrap">
-                        <h5>Le nom de la sortie contient : </h5>
-                        <input type="text" class="form-control mx-4" placeholder="Cinéma">
-                    </div>
-                </div>
-                <div class="date-style">
-                    <label for="start_date">Entre </label>
-                    <input type="date" id="start_date" name="trip-start" value="" />
-                </div>
-                <div class="date-style">
-                    <label for="end_date">et </label>
-                    <input type="date" id="end_date" name="trip-start" value=""  />
-                </div>
-
-                <button class="col-3 btn btn-primary" type="submit" >Recherche</button>
-            </div>
-            <div class="col">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="chkOrg">
-                    <label class="form-check-label" for="chkOrg">
-                        Sorties dont je suis l'organisateur/trice
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="chkInscrit">
-                    <label class="form-check-label" for="chkInscrit">
-                        Sorties auxquelles je suis inscrit/e
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="chkPasInscrit">
-                    <label class="form-check-label" for="chkPasInscrit">
-                        Sorties auxquelles je ne suis pas inscrit/e
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="chkPassed">
-                    <label class="form-check-label" for="chkPassed">
-                        Sorties passées
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        {{ form(formFilter) }}
-
-        <div class="mt-5">
-            <table class="table ">
-                <thead>
-                <tr>
-                    <th scope="col">Nom de la sortie</th>
-                    <th scope="col">Date de la sortie</th>
-                    <th scope="col">Clotûre</th>
-                    <th scope="col">inscrits/places</th>
-                    <th scope="col">Etat</th>
-                    <th scope="col">Inscrit</th>
-                    <th scope="col">Organisateur</th>
-                    <th scope="col">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for event in events %}
-                <tr>
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.startDateTime|date("d/m/Y") }}</td>
-                    <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
-                    <td></td>
-                    <td>{{ event.getStateStr() }}</td>
-                    <td>{{ event.getIsInscrit(app.user) ? 'X' : '' }}</td>
-                    <td>{{ event.user.getFullName }}</td>
-                    <td>test</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ form_end(formFilter) }}
+        <div class="text-center">
+            <a class="btn-outline-primary btn" href="#">Ajouter une sortie</a>
         </div>
     </div>
+#}
+
+    <div class="mt-5">
+        <table class="table ">
+            <thead>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clotûre</th>
+                <th scope="col">inscrits/places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.name }}</td>
+                <td>{{ event.startDateTime|date("d/m/Y") }}</td>
+                <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
+                <td>{{ event.users|length }}/{{ event.getNbInscriptionMax }}</td>
+                <td>{{ event.getStateDescription() }}</td>
+                <td>
+                    {% if event.getIsSub(app.user) == true %}
+                        <div class="text-center">
+                            <img src="{{ asset('./build/images/inscrit.png') }}" alt="est_inscrit" width="20px" height="20px">
+                        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if event.getIsSub(app.user) == true %}
+                        <a href="{{ app.request.getBaseURL() }}/profile/{{ event.user.id }}">{{ event.user.getFullName }}</a>
+                    {% else %}
+                        <label>{{ event.user.getFullName }}</label>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if (event.user == app.user or is_granted('ROLE_ADMIN')) and event.state.value == "CREATED" %}
+                        <a class="btn btn-outline-primary" href="{{ path('app_event_edit', {id:event.id}) }}">Modifier</a>
+                        <a class="btn btn-outline-warning" href="{{ path('app_event_publish',{id:event.id}) }}">Publier</a>
+                    {% else %}
+                        <a class="btn btn-outline-primary" href="{{ path('app_event_details', {id:event.id}) }}">Afficher</a>
+                        {% if (event.user == app.user or is_granted('ROLE_ADMIN')) and event.state.value == "OPEN" %}
+                            <a class="btn btn-outline-danger" href="{{ path('app_event_cancel', {id:event.id}) }}">Annuler</a>
+                        {% elseif event.user != app.user and event.getIsSub(app.user) == 0 and event.getIsTooLateToSubscribe() == false and is_granted('ROLE_ADMIN') == false %}
+                            <a class="btn btn-outline-warning" href="{{ path('app_event_subscribe', {id:event.id}) }}">S'inscrire</a>
+                        {% elseif event.user != app.user and event.getIsSub(app.user) == 1 and event.getIsTooLateToSubscribe() == false and is_granted('ROLE_ADMIN') == false%}
+                            <a class="btn btn-outline-warning" href="{{ path('app_event_unsubscribe', {id:event.id}) }}">Se désister</a>
+                        {% endif %}
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

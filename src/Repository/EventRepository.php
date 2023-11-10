@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\State;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,11 +24,67 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
+    /**
+     * @return Event[] Returns an array of Event objects
+     */
+    public function findAllNotArchived(): array
+    {
+        $oneMonthAgo = new \DateTime();
+        $oneMonthAgo->modify('-1 month');
+
+        return $this->createQueryBuilder('e')
+            ->where('e.startDateTime > :oneMonthAgo')
+            ->setParameter('oneMonthAgo', $oneMonthAgo)
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 	/**
-	 * @param string $locationSite - The location site
-	 * @param string $name - The name of the event contains this string
-	 * @param \DateTime $startDateTime - The start date time
-	 * @param \DateTime $endDateTime - The end date time
+	 * @param int $id
+	 * @return Event|null
+	 * @throws NonUniqueResultException
+	 */
+	public function findOneByIdNotArchived(int $id): ?Event
+	{
+		$oneMonthAgo = new \DateTime();
+		$oneMonthAgo->modify('-1 month');
+		return $this->createQueryBuilder('e')
+			->where('(e.startDateTime > :oneMonthAgo) AND (e.id = :eventId)')
+			->setParameter('oneMonthAgo', $oneMonthAgo)
+			->setParameter('eventId', $id)
+			->orderBy('e.id', 'ASC')
+			->getQuery()
+			->getOneOrNullResult()
+			;
+	}
+
+	/**
+	 * @param int $id
+	 * @return Event
+	 */
+	public function findOneByIdArchived(int $id): Event
+	{
+		$oneMonthAgo = new \DateTime();
+		$oneMonthAgo->modify('-1 month');
+
+		return $this->createQueryBuilder('e')
+			->where('(e.startDateTime <= :oneMonthAgo) AND (e.id = :eventId)')
+			->setParameter('oneMonthAgo', $oneMonthAgo)
+			->setParameter('eventId', $id)
+			->orderBy('e.id', 'ASC')
+			->getQuery()
+			->getResult()
+			;
+	}
+
+	/**
+	 * @param int $locationSite - The location site
+	 * @param string|null $name - The name of the event contains this string
+	 * @param \DateTimeInterface|null $startDateTime - The start date time
+	 * @param \DateTimeInterface|null $endDateTime - The end date time
+	 * @param User $user - The user
 	 * @param bool $userIsOrganizer - The user is organizer
 	 * @param bool $userIsRegistered - The user is registered to the event
 	 * @param bool $userIsNotRegistered - The user is not registered to the event
@@ -33,10 +92,11 @@ class EventRepository extends ServiceEntityRepository
 	 * @return Event[] - Returns an array of Event objects filtered by parameters
 	 */
 	public function findByFilters(
-		string $locationSite,
+		int $locationSite,
 		?string $name,
-		?\DateTime $startDateTime,
-		?\DateTime $endDateTime,
+		?\DateTimeInterface $startDateTime,
+		?\DateTimeInterface $endDateTime,
+		User $user,
 		bool $userIsOrganizer,
 		bool $userIsRegistered,
 		bool $userIsNotRegistered,
@@ -44,7 +104,7 @@ class EventRepository extends ServiceEntityRepository
 	): array
 	{
 		// Check if the location site is set
-		if ($locationSite !== 'Tous') {
+		if ($locationSite !== 0) {
 			// If the location site is set, add it to the query
 			$query = $this->createQueryBuilder('e')
 				->andWhere('e.locationSiteEvent = :locationSite')
@@ -55,7 +115,7 @@ class EventRepository extends ServiceEntityRepository
 		}
 
 		// Check if the name is set
-		if ($name !== '') {
+		if ($name !== null) {
 			// If the name is set, add it to the query
 			$query = $query
 				->andWhere('e.name LIKE :name')
@@ -78,12 +138,12 @@ class EventRepository extends ServiceEntityRepository
 				->setParameter('endDateTime', $endDateTime);
 		}
 
-		// Check if the user is organizer
+		// Check if the user is the organizer of the event
 		if ($userIsOrganizer) {
-			// If the user is organizer, add it to the query
+			// If the user is the organizer of the event, add it to the query
 			$query = $query
 				->andWhere('e.user = :user')
-				->setParameter('user', $this->getUser());
+				->setParameter('user', $user);
 		}
 
 		// Check if the user is registered to the event
@@ -91,7 +151,7 @@ class EventRepository extends ServiceEntityRepository
 			// If the user is registered to the event, add it to the query
 			$query = $query
 				->andWhere(':user MEMBER OF e.users')
-				->setParameter('user', $this->getUser());
+				->setParameter('user', $user);
 		}
 
 		// Check if the user is not registered to the event
@@ -99,7 +159,7 @@ class EventRepository extends ServiceEntityRepository
 			// If the user is not registered to the event, add it to the query
 			$query = $query
 				->andWhere(':user NOT MEMBER OF e.users')
-				->setParameter('user', $this->getUser());
+				->setParameter('user', $user);
 		}
 
 		// Check if the state is passed
@@ -117,28 +177,70 @@ class EventRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
-//    /**
-//     * @return Event[] Returns an array of Event objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+	/**
+	 * @param int $locationSite - The location site
+	 * @param string|null $name - The name of the event contains this string
+	 * @param \DateTimeInterface|null $startDateTime - The start date time
+	 * @param \DateTimeInterface|null $endDateTime - The end date time
+	 * @param State|null $state - The state of the event
+	 * @return Event[] - Returns an array of Event objects filtered by parameters
+	 */
+	public function findByAdminFilters(
+		int $locationSite,
+		?string $name,
+		?\DateTimeInterface $startDateTime,
+		?\DateTimeInterface $endDateTime,
+		?State $state
+	): array
+	{
+		// Check if the location site is set
+		if ($locationSite !== 0) {
+			// If the location site is set, add it to the query
+			$query = $this->createQueryBuilder('e')
+				->andWhere('e.locationSiteEvent = :locationSite')
+				->setParameter('locationSite', $locationSite);
+		} else {
+			// If the location site is not set, do not add it to the query
+			$query = $this->createQueryBuilder('e');
+		}
 
-//    public function findOneBySomeField($value): ?Event
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+		// Check if the name is set
+		if ($name !== null) {
+			// If the name is set, add it to the query
+			$query = $query
+				->andWhere('e.name LIKE :name')
+				->setParameter('name', '%' . $name . '%');
+		}
+
+		// Check if the start date time is set
+		if ($startDateTime !== null) {
+			// If the start date time is set, add it to the query
+			$query = $query
+				->andWhere('e.startDateTime >= :startDateTime')
+				->setParameter('startDateTime', $startDateTime);
+
+		}
+
+		// Check if the end date time is set
+		if ($endDateTime !== null) {
+			// If the end date time is set, add it to the query
+			$query = $query
+				->andWhere('e.startDateTime <= :endDateTime')
+				->setParameter('endDateTime', $endDateTime);
+		}
+
+		// Check if the state is set
+		if ($state !== null) {
+			// If the state is set, add it to the query
+			$query = $query
+				->andWhere('e.state = :state')
+				->setParameter('state', $state);
+		}
+
+		// Return the query
+		return $query
+			->orderBy('e.startDateTime', 'ASC')
+			->getQuery()
+			->getResult();
+	}
 }
