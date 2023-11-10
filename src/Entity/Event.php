@@ -126,16 +126,14 @@ class Event
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?string
     {
-        return $this->duration;
-    }
+        $interval = $this->getStartDateTime()->diff($this->getEndDateTime());
 
-    public function setDuration(int $duration): static
-    {
-        $this->duration = $duration;
+        $hours = $interval->h + ($interval->days * 24);
+        $minutes = $interval->i;
 
-        return $this;
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 
     public function getLocationSiteEvent(): ?LocationSite
