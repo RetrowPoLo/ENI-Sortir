@@ -21,7 +21,7 @@ class CitySearchType extends AbstractType
 			->add('save', SubmitType::class, [
 				'label' => 'Rechercher',
 				'attr' => [
-					'class' => 'btn btn-primary px-3 mb-3'
+					'class' => 'btn btn-outline-primary px-3 mb-3'
 				]
 			])
         ;

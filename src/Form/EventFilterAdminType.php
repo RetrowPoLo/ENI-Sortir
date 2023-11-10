@@ -62,6 +62,9 @@ class EventFilterAdminType extends AbstractType
 			])
 			->add('save', SubmitType::class, [
 				'label' => 'Recherche',
+				'attr' => [
+					'class' => 'btn btn-outline-primary',
+				],
 			])
         ;
     }

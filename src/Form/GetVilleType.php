@@ -20,7 +20,7 @@ class GetVilleType extends AbstractType
             ->add('save', SubmitType::class, [
 				'label' => 'Ajouter',
 				'attr' => [
-					'class' => 'btn btn-primary'
+					'class' => 'btn btn-outline-primary'
 				],
 			])
         ;
