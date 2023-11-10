@@ -34,7 +34,7 @@ class EditUserType extends AbstractType
         $isadmin = $this->authChecker->isGranted('ROLE_ADMIN');
         $builder
             ->add('email', EmailType::class, ['label' => 'Email'])
-            ->add('username', TextType::class, ['label' => 'Pseudo'])
+            ->add('username', TextType::class, ['label' => 'Pseudo',])
             ->add('password',
              RepeatedType::class, [
         'type' => PasswordType::class,

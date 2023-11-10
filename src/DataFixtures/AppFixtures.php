@@ -146,6 +146,7 @@ class AppFixtures extends Fixture
 		$event1->setEventInfo('Match de foot entre amis');
 		$event1->setDuration(new \DateTime('2021-10-10 02:00:00'));
 		$event1->setLocationSiteEvent($locationSite1);
+		$event1->setNbInscriptionMax(10);
 		$event1->setUser($basicUser);
 		$event1->addUser($adminUser);
 		$event1->setState(State::Open);
@@ -162,7 +163,7 @@ class AppFixtures extends Fixture
 		$event2->setDuration(new \DateTime('2021-10-10 02:00:00'));
 		$event2->setLocationSiteEvent($locationSite2);
 		$event2->setUser($adminUser);
-		$event2->addUser($basicUser);
+		$event2->setNbInscriptionMax(15);
 		$event2->setState(State::Created);
 
 		// Persist that event to the database
@@ -178,6 +179,7 @@ class AppFixtures extends Fixture
 		$event3->setLocationSiteEvent($locationSite3);
 		$event3->setUser($basicUser);
 		$event3->addUser($adminUser);
+		$event3->setNbInscriptionMax(8);
 		$event3->setState(State::Closed);
 
 		// Persist that event to the database
@@ -193,6 +195,7 @@ class AppFixtures extends Fixture
 		$event4->setLocationSiteEvent($locationSite3);
 		$event4->setUser($basicUser);
 		$event4->addUser($adminUser);
+		$event4->setNbInscriptionMax(2);
 		$event4->setState(State::Closed);
 
 		// Persist that event to the database
@@ -208,6 +211,7 @@ class AppFixtures extends Fixture
 		$event5->setLocationSiteEvent($locationSite3);
 		$event5->setUser($basicUser);
 		$event5->addUser($adminUser);
+		$event5->setNbInscriptionMax(30);
 		$event5->setState(State::InProgress);
 
 		// Persist that event to the database
