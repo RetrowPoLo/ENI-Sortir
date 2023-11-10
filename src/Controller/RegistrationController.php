@@ -29,13 +29,21 @@ class RegistrationController extends AbstractController
 			$user = $form->getData();
 			$user->setRoles(['ROLE_USER']);
 
+            $pseudo = $this->genererChaineAleatoire();
+            $user->setUsername($pseudo);
+
+            $password = 'Pa$$w0rd';
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $user->getPassword()
+                    $password
                 )
             );
+
+            $picture = 'img/imageProfilDefaut.jpg';
+            $user->setPicture($picture);
 
 			// Persist the user to the database
             $entityManager->persist($user);
@@ -48,5 +56,17 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    function genererChaineAleatoire($longueur = 10)
+    {
+        $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $longueurMax = strlen($caracteres);
+        $chaineAleatoire = '';
+        for ($i = 0; $i < $longueur; $i++)
+        {
+            $chaineAleatoire .= $caracteres[rand(0, $longueurMax - 1)];
+        }
+        return $chaineAleatoire;
     }
 }
