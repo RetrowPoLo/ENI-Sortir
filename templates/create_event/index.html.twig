@@ -44,11 +44,17 @@
             <div class="col-md-6">
                 {{ form_row(formCreateEvent.name) }}
                 {{ form_row(formCreateEvent.startDateTime) }}
-                {% if errorTime is not same as "" %}
-                    {{ errorTime }}
+                {% if errorStartTime is not same as "" %}
+                    {{ errorStartTime }}
                 {% endif %}
                 {{ form_row(formCreateEvent.endDateTime) }}
+                {% if errorEndTime is not same as "" %}
+                    {{ errorEndTime }}
+                {% endif %}
                 {{ form_row(formCreateEvent.limitDateInscription) }}
+                {% if errorLimitTime is not same as "" %}
+                    {{ errorLimitTime }}
+                {% endif %}
                 {{ form_row(formCreateEvent.nbInscriptionMax) }}
                 {{ form_row(formCreateEvent.event_info) }}
             </div>
@@ -71,6 +77,7 @@
         {{ form_row(formCreateEventLocation._token) }}
         {{ form_row(formCreateEventCity._token) }}
         {{ form_row(formCreateEvent.save) }}
+        {{ form_row(formCreateEvent.publish) }}
         <a href="{{ path('app_home') }}"> Annuler </a>
     </div>
     {{ form_end(formCreateEventLocation) }}
