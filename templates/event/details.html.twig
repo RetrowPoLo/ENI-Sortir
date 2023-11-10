@@ -6,10 +6,13 @@
 
 <div class="container mt-5">
     <div class="text-center">
-        <h2>Créer une sortie</h2>
+        <h2>Afficher une sortie</h2>
     </div>
+    {% if event.state.value == "CANCELED" %}
+        <h4 class="text-danger">Cette sortie a été annulé</h4>
+    {% endif %}
     <div class="row mt-5">
-        <div class="col-8">
+        <div class="col-9">
             <div class="row">
                 <div class="col">
                     <div class="row mb-3">
@@ -23,6 +26,11 @@
                             <label class="col-form-label">{{ event.startDateTime|date("d/m/Y") }}</label>
                         </div>
 
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Date et heure de la sortie: </label>
+                        <div class="col-sm-6">
+                            <label class="col-form-label">{{ event.endDateTime|date("d/m/Y") }}</label>
+                        </div>
+
                         <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Date limite d'inscription: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.limitDateInscription|date("d/m/Y") }}</label>
@@ -30,18 +38,18 @@
 
                         <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Nombre de places: </label>
                         <div class="col-sm-6">
-                            <label class="col-form-label">{{ event.users|length }}</label>
+                            <label class="col-form-label">{{ event.getNbInscriptionMax }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Durée: </label>
+                        <label for="descriptionEvent" class="col-sm-6 col-form-label text-primary">Description et infos: </label>
                         <div class="col-sm-6">
-                            <label class="col-form-label">{{ event.duration|date("H:i") }}</label>
+                            <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.eventInfo }}</textarea>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="row mb-3">
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Ville organisatrice: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Ville: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.eventLocation.city.name }}</label>
                         </div>
@@ -73,10 +81,12 @@
                     </div>
                 </div>
             </div>
-            <label for="descriptionEvent" class="col-sm-6 col-form-label text-primary">Description et infos: </label>
+            {% if event.cancellationReason != null and event.state.value == "CANCELED" %}
+            <label for="descriptionEvent" class="col-sm-6 col-form-label text-primary">Motif d'annulation: </label>
             <div class="col-sm-6">
-                <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.eventInfo }}</textarea>
+                <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.cancellationReason }}</textarea>
             </div>
+            {% endif %}
         </div>
         <div class="col">
             <table class="table ">
@@ -89,7 +99,11 @@
                 <tbody>
                 {% for user in event.users %}
                     <tr>
-                        <td>{{ user.username }}</td>
+                        {% if is_granted('ROLE_ADMIN') or event.user == app.user %}
+                            <td><a href="{{ app.request.getBaseURL() }}/profile/{{ event.user.id }}">{{ user.username }}</a></td>
+                        {% else %}
+                            <td>{{ user.username }}</td>
+                        {% endif %}
                         <td>{{ user.getFullName }}</td>
                     </tr>
                 {% endfor %}

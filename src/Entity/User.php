@@ -29,10 +29,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
 	#[ORM\Column(length: 180, unique: true)]
-	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
-	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
-	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
-	private ?string $username = null;
+//         	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
+//         	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
+//         	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
+         	private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -41,7 +41,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      */
     #[ORM\Column]
-	#[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères !')]
+    #[Assert\AtLeastOneOf([
+        new Assert\Regex('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&^_-]{12,}$/',
+            message: 'Le mot de passe doit contenir, une majuscule, une minuscule, un chiffre et un caractère spécial à l\'exception de / et - !'),
+    ])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -65,6 +68,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
     private ?LocationSite $sites_no_site = null;
+
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $picture = null;
 
     public function __construct()
     {
@@ -90,16 +96,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 	public function getUsername(): ?string
-	{
-		return $this->username;
-	}
+    {
+        return $this->username;
+    }
 
 
 	public function setUsername(string $username): static
-    {
-        $this->username = $username;
-        return $this;
-    }
+     {
+         $this->username = $username;
+         return $this;
+     }
 
 	/**
 	 * A visual identifier that represents this user.
@@ -107,9 +113,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @see UserInterface
 	 */
 	public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
+     {
+         return (string) $this->email;
+     }
 
     /**
      * @see UserInterface
@@ -262,6 +268,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getSitesNoSite(): ?locationSite
+
     {
         return $this->sites_no_site;
     }
@@ -269,6 +276,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSitesNoSite(?locationSite $sites_no_site): static
     {
         $this->sites_no_site = $sites_no_site;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
