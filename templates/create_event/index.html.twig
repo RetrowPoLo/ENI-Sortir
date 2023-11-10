@@ -37,4 +37,35 @@
         </div>
     </nav>
     <h1 class="text-center">Créer une sortie</h1>
+    {{ form_start(formCreateEvent) }}
+    {{ form_start(formCreateEventCity) }}
+    {{ form_start(formCreateEventLocation) }}
+        <div class="row container">
+            <div class="col-md-6">
+                {{ form_row(formCreateEvent.name) }}
+                {{ form_row(formCreateEvent.startDateTime) }}
+                {{ form_row(formCreateEvent.limitDateInscription) }}
+                {{ form_row(formCreateEvent.nbInscriptionMax) }}
+                {{ form_row(formCreateEvent.duration) }}
+                {{ form_row(formCreateEvent.event_info) }}
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="create_event_user_city" class="form-label required">Ville organisatrice</label>
+                    <input type="text" id="create_event_user_city" name="create_event_user[city]" value="{{ cityName }}" disabled class="form-control">
+                </div>
+                {{ form_row(formCreateEventCity.name) }}
+                {{ form_row(formCreateEventLocation.name) }}
+                {{ form_row(formCreateEventLocation.street) }}
+                {{ form_row(formCreateEventCity.zipcode) }}
+                {{ form_row(formCreateEventLocation.latitude) }}
+                {{ form_row(formCreateEventLocation.longitude) }}
+            </div>
+        </div>
+    {{ form_end(formCreateEvent) }}
+    {{ form_end(formCreateEventCity) }}
+    {{ form_end(formCreateEventLocation) }}
+
+
+
 {% endblock %}
