@@ -112,5 +112,8 @@
         </div>
     </div>
 </div>
-
+    {% block javascripts %}
+        {{ parent() }}
+        <script src="{{ asset('./build/leaflet-map.js') }}"></script>
+    {% endblock %}
 {% endblock %}
