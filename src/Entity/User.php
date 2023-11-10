@@ -32,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
          	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
          	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
          	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
-         	private ?string $username = null;
+         	private ?string $username = 'testPseudo';
 
     #[ORM\Column]
     private array $roles = [];
@@ -42,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
 	#[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères !')]
-    private ?string $password = null;
+    private ?string $password = 'Pa$$w0rd';
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -67,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?LocationSite $sites_no_site = null;
 
     #[ORM\Column(length: 255, nullable: false)]
-    private ?string $picture = '/img/imageProfilDefaut.jpg';
+    private ?string $picture = 'img/imageProfilDefaut.jpg';
 
     public function __construct()
     {
