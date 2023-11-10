@@ -38,6 +38,7 @@ class CreateEventType extends AbstractType
             ]])
             ->add('event_info',textareaType::class, ['label' => 'Description et infos'])
             ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
+            ->add('publish', SubmitType::class, ['label' => 'Publier'])
         ;
     }
 
