@@ -71,7 +71,8 @@
                 <thead>
                 <tr>
                     <th scope="col">Nom de la sortie</th>
-                    <th scope="col">Date de la sortie</th>
+                    <th scope="col">Date de début</th>
+                    <th scope="col">Date de fin</th>
                     <th scope="col">Clotûre</th>
                     <th scope="col">inscrits/places</th>
                     <th scope="col">Etat</th>
@@ -85,6 +86,7 @@
                     <tr>
                         <td>{{ event.name }}</td>
                         <td>{{ event.startDateTime|date("d/m/Y") }}</td>
+                        <td>{{ event.endDateTime|date("d/m/Y") }}</td>
                         <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
                         <td>{{ event.users|length }}/{{ event.getNbInscriptionMax }}</td>
                         <td>{{ event.getStateDescription() }}</td>
