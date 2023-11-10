@@ -38,8 +38,8 @@
                     <td>{{ city.name }}</td>
                     <td>{{ city.zipcode }}</td>
                     <td>
-                        <a class="btn btn-success me-2" href="{{ path('app_city_edit', {'id': city.id}) }}">Modifier</a>
-                        <a class="btn btn-danger" href="{{ path('app_city_delete', {'id': city.id}) }}">Supprimer</a>
+                        <a class="btn btn-outline-success me-2" href="{{ path('app_city_edit', {'id': city.id}) }}">Modifier</a>
+                        <a class="btn btn-outline-danger" href="{{ path('app_city_delete', {'id': city.id}) }}">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}
