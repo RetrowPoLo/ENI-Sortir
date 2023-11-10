@@ -3,80 +3,78 @@
 namespace App\Controller;
 
 use App\Entity\Event;
-use App\Entity\State;
-use App\Entity\User;
+use App\Form\EventFilterType;
+use App\Form\EventType;
 use App\Repository\EventRepository;
-use App\Repository\UserRepository;
+use App\Repository\LocationSiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EventController extends AbstractController
 {
-    #[Route('/sortie', name: 'app_event')]
-    public function index(EventRepository $eventRepository): Response
+	public function __construct(
+		private LocationSiteRepository $locationSiteRepository,
+		private EventRepository $eventRepository,
+	)
+	{
+	}
+
+	#[Route('/sortie', name: 'app_event')]
+    public function index(Request $request, EventRepository $eventRepository): Response
     {
-        $events = $eventRepository->findAll();
+		// Find all location sites
+		$locationSites = $this->locationSiteRepository->findAll();
+
+		// Find all events
+		$events = $this->eventRepository->findAll();
+
+		$formFilter = $this->createForm(EventFilterType::class);
+		$formFilter->handleRequest($request);
+
+		if ($formFilter->isSubmitted() && $formFilter->isValid()) {
+			$filteredResult = $this->eventRepository->findByFilters(
+				'',
+				$formFilter->get('name')->getData(),
+				null,
+				null,
+				false,
+				false,
+				false,
+				false
+			);
+
+			return $this->render('event/index.html.twig', [
+				'locationSites' => $locationSites,
+				'events' => $filteredResult,
+				'formFilter' => $formFilter->createView(),
+			]);
+		}
+
         return $this->render('event/index.html.twig', [
+			'locationSites' => $locationSites,
             'events' => $events,
+			'formFilter' => $formFilter->createView(),
         ]);
     }
 
-    #[Route('/sortie/details/{id}', name: 'app_event_details')]
-    public function details(EventRepository $eventRepository, int $id): Response
+    #[Route('/sortie/creer', name: 'app_event_new')]
+    public function create(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository): Response
     {
-        $event = $eventRepository->findOneBy(['id'=> $id]);
-        return $this->render('event/details.html.twig', [
-            'event' => $event,
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $city = $form->getData();
+            $entityManager->persist($city);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_event');
+        }
+        return $this->render('event/new.html.twig', [
+            'form' => $form,
         ]);
-    }
-
-    #[Route('/sortie/edit/{id}', name: 'app_event_edit')]
-    public function edit(EventRepository $eventRepository, int $id): Response
-    {
-        return $this->redirectToRoute('app_event');
-    }
-
-    #[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
-    public function cancel(EventRepository $eventRepository, int $id): Response
-    {
-        return $this->redirectToRoute('app_event');
-    }
-    #[Route('/sortie/publish/{id}', name: 'app_event_publish')]
-    public function publish(EventRepository $eventRepository, int $id): Response
-    {
-        return $this->redirectToRoute('app_event');
-    }
-
-    #[Route('/sortie/subscribe/{id}', name: 'app_event_subscribe')]
-    public function subscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
-    {
-        $event = $eventRepository->findOneBy(['id'=> $id]);
-        $user = $this->getUser();
-        $userToAdd = $userRepository->findOneBy(['email'=> $user->getUserIdentifier()]);
-        if($event->getState() == State::Open and !$event->getIsTooLateToSubscribe()){
-            $event->addUser($userToAdd);
-            $entityManager->refresh($event);
-            $entityManager->flush();
-        }
-        return $this->redirectToRoute('app_event');
-    }
-
-    #[Route('/sortie/unsubscribe/{id}', name: 'app_event_unsubscribe')]
-    public function unsubscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
-    {
-        $event = $eventRepository->findOneBy(['id'=> $id]);
-        $user = $this->getUser();
-        $userToRemove = $userRepository->findOneBy(['email'=> $user->getUserIdentifier()]);
-        if($event->getState() == State::Open and !$event->getIsTooLateToSubscribe()){
-            $event->removeUser($userToRemove);
-            $entityManager->refresh($event);
-            $entityManager->flush();
-        }
-        return $this->redirectToRoute('app_event');
     }
 
 }
