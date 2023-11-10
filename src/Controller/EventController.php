@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Event;
 use App\Entity\State;
+use App\Form\EventCancellationType;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function PHPUnit\Framework\throwException;
@@ -42,14 +43,31 @@ class EventController extends AbstractController
     }
 
     #[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
-    public function cancel(EventRepository $eventRepository, int $id): Response
+    public function cancel(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
         }
+        if($event->getStartDateTime() < new \DateTime()){
+            throw new \Exception("impossible d'annuler une sortie qui a débuté");
+        }
+        $form = $this->createForm(EventCancellationType::class, $event);
+        $form->handleRequest($request);
+
+        // If the form is submitted and valid
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Set the event's data
+            $event = $form->getData();
+
+            $event->setState(State::Canceled);
+            $entityManager->persist($event);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_event');
+        }
         return $this->render('event/cancel.html.twig', [
             'event' => $event,
+            'form' => $form
         ]);
     }
     #[Route('/sortie/publish/{id}', name: 'app_event_publish')]

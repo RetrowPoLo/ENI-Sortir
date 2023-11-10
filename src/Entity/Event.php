@@ -194,7 +194,7 @@ class Event
             "CLOSED" => "Fermé",
             "IN_PROGRESS" => "En cours",
             "PASSED" => "Passé",
-            "CANCELLED" => "Annulé",
+            "CANCELED" => "Annulé",
             default => "type non reconnu",
         };
     }
