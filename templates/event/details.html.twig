@@ -26,6 +26,11 @@
                             <label class="col-form-label">{{ event.startDateTime|date("d/m/Y") }}</label>
                         </div>
 
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Date et heure de la sortie: </label>
+                        <div class="col-sm-6">
+                            <label class="col-form-label">{{ event.endDateTime|date("d/m/Y") }}</label>
+                        </div>
+
                         <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Date limite d'inscription: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.limitDateInscription|date("d/m/Y") }}</label>
@@ -33,12 +38,7 @@
 
                         <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Nombre de places: </label>
                         <div class="col-sm-6">
-                            <label class="col-form-label">{{ event.users|length }}</label>
-                        </div>
-
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Durée: </label>
-                        <div class="col-sm-6">
-                            <label class="col-form-label">{{ event.getDuration }}</label>
+                            <label class="col-form-label">{{ event.getNbInscriptionMax }}</label>
                         </div>
 
                         <label for="descriptionEvent" class="col-sm-6 col-form-label text-primary">Description et infos: </label>
