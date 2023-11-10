@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 use phpDocumentor\Reflection\Type;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -30,8 +29,8 @@ class Event
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $eventInfo = null;
 
-    #[ORM\Column]
-    private ?int $duration = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $endDateTime = null;
 
     #[ORM\ManyToOne(inversedBy: 'locationSite')]
     #[ORM\JoinColumn(nullable: false)]
@@ -91,6 +90,18 @@ class Event
         return $this;
     }
 
+    public function getEndDateTime(): ?\DateTimeInterface
+    {
+        return $this->endDateTime;
+    }
+
+    public function setEndDateTime(\DateTimeInterface $endDateTime): static
+    {
+        $this->endDateTime = $endDateTime;
+
+        return $this;
+    }
+
     public function getLimitDateInscription(): ?\DateTimeInterface
     {
         return $this->limitDateInscription;
@@ -115,16 +126,14 @@ class Event
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?string
     {
-        return $this->duration;
-    }
+        $interval = $this->getStartDateTime()->diff($this->getEndDateTime());
 
-    public function setDuration(int $duration): static
-    {
-        $this->duration = $duration;
+        $hours = $interval->h + ($interval->days * 24);
+        $minutes = $interval->i;
 
-        return $this;
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 
     public function getLocationSiteEvent(): ?LocationSite

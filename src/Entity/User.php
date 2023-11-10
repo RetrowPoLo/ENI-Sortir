@@ -96,16 +96,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 	public function getUsername(): ?string
-         	{
-         		return $this->username;
-         	}
+    {
+        return $this->username;
+    }
 
 
 	public function setUsername(string $username): static
-             {
-                 $this->username = $username;
-                 return $this;
-             }
+     {
+         $this->username = $username;
+         return $this;
+     }
 
 	/**
 	 * A visual identifier that represents this user.
@@ -113,9 +113,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @see UserInterface
 	 */
 	public function getUserIdentifier(): string
-             {
-                 return (string) $this->email;
-             }
+     {
+         return (string) $this->email;
+     }
 
     /**
      * @see UserInterface
@@ -268,6 +268,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getSitesNoSite(): ?locationSite
+
     {
         return $this->sites_no_site;
     }
