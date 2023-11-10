@@ -4,16 +4,17 @@ namespace App\Form;
 
 use App\Entity\Event;
 use App\Entity\LocationSite;
+use App\Entity\State;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventFilterType extends AbstractType
+class EventFilterAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -25,7 +26,7 @@ class EventFilterType extends AbstractType
 				'label' => false,
 				'placeholder' => 'Sélectionner le site',
 			])
-            ->add('name', TextType::class, [
+			->add('name', TextType::class, [
 				'required' => false,
 				'label' => false,
 				'attr' => [
@@ -44,24 +45,19 @@ class EventFilterType extends AbstractType
 				'mapped' => false,
 				'widget' => 'single_text',
 			])
-			->add('userIsOrganizer', CheckboxType::class, [
+			->add('state', EnumType::class, [
+				'class' => State::class,
 				'required' => false,
-				'label' => 'Sorties dont je suis l\'organisateur/trice',
-				'mapped' => false,
-			])
-			->add('userIsRegistered', CheckboxType::class, [
-				'required' => false,
-				'label' => 'Sorties auxquelles je suis inscrit/e',
-				'mapped' => false,
-			])
-			->add('userIsNotRegistered', CheckboxType::class, [
-				'required' => false,
-				'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
-				'mapped' => false
-			])
-			->add('stateIsPassed', CheckboxType::class, [
-				'required' => false,
-				'label' => 'Sorties passées',
+				'label' => false,
+				'choice_label' => fn ($choice) => match ($choice) {
+					State::Created => 'En création',
+					State::Open => 'Ouvert',
+					State::Closed  => 'Clôturé',
+					State::InProgress  => 'En cours',
+					State::Passed  => 'Terminé',
+					State::Canceled  => 'Annulé',
+				},
+				'placeholder' => 'Sélectionner l\'état',
 				'mapped' => false,
 			])
 			->add('save', SubmitType::class, [

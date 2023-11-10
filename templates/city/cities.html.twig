@@ -23,7 +23,6 @@
             {{ form_end(formSearch) }}
         </div>
 
-        {{ form_start(form) }}
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -44,12 +43,13 @@
                 </tr>
             {% endfor %}
                 <tr>
-                    <td>{{ form_widget(form.name) }}</td>
-                    <td>{{ form_widget(form.zipcode) }}</td>
-                    <td>{{ form_widget(form.save) }}</td>
+                    {{ form_start(form) }}
+                        <td>{{ form_widget(form.name) }}</td>
+                        <td>{{ form_widget(form.zipcode) }}</td>
+                        <td>{{ form_widget(form.save) }}</td>
+                    {{ form_end(form) }}
                 </tr>
             </tbody>
         </table>
-        {{ form_end(form) }}
     </div>
 {% endblock %}
