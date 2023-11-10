@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\State;
 use App\Entity\User;
 use App\Repository\EventRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -51,13 +52,28 @@ class EventController extends AbstractController
     }
 
     #[Route('/sortie/subscribe/{id}', name: 'app_event_subscribe')]
-    public function subscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, int $id, User $user): Response
+    public function subscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
     {
         $event = $eventRepository->findOneBy(['id'=> $id]);
-        var_dump($event->getUsers()[0]->getId());
+        $user = $this->getUser();
+        $userToAdd = $userRepository->findOneBy(['email'=> $user->getUserIdentifier()]);
         if($event->getState() == State::Open and !$event->getIsTooLateToSubscribe()){
-            $event->addUser($user);
-            $entityManager->persist($event);
+            $event->addUser($userToAdd);
+            $entityManager->refresh($event);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_event');
+    }
+
+    #[Route('/sortie/unsubscribe/{id}', name: 'app_event_unsubscribe')]
+    public function unsubscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
+    {
+        $event = $eventRepository->findOneBy(['id'=> $id]);
+        $user = $this->getUser();
+        $userToRemove = $userRepository->findOneBy(['email'=> $user->getUserIdentifier()]);
+        if($event->getState() == State::Open and !$event->getIsTooLateToSubscribe()){
+            $event->removeUser($userToRemove);
+            $entityManager->refresh($event);
             $entityManager->flush();
         }
         return $this->redirectToRoute('app_event');
