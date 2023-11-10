@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\LocationSiteType;
 
+#[Route('/admin', name: 'app_')]
 class SiteController extends AbstractController
 {
-    #[Route('/site', name: 'app_site')]
+    #[Route('/sites', name: 'site')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $ville = new LocationSite();
@@ -30,12 +31,16 @@ class SiteController extends AbstractController
             $ville->setName($formVille->get("name")->getData());
             $entityManager->persist($ville);
             $entityManager->flush();
+
+			// Redirect to the site page
             return $this->redirectToRoute('app_site');
         }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $contain = $form->get("name")->getData();
+
+			// Redirect to the site page
             return $this->redirectToRoute('app_site', ['contain' => $contain]);
         }
 
@@ -48,11 +53,13 @@ class SiteController extends AbstractController
             'contain' => $contain,
         ]);
     }
-    #[Route('/site/delete/{id}', name: 'app_delete_site', requirements: ['id' => '\d+'])]
+    #[Route('/site/supprimer/{id}', name: 'site_delete', requirements: ['id' => '\d+'])]
     public function delete(EntityManagerInterface $entityManager, LocationSite $locationSite): Response
     {
+		// Delete the location site and redirect to the site page
         $entityManager->remove($locationSite);
         $entityManager->flush();
+
         return $this->redirectToRoute('app_site');
     }
 }

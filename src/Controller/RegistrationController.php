@@ -26,21 +26,24 @@ class RegistrationController extends AbstractController
 		// If the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
 			// Set the user's data
-			$user->setEmail($form->get('email')->getData());
-			$user->setName($form->get('name')->getData());
-			$user->setFirstName($form->get('firstName')->getData());
-			$user->setPhone($form->get('phone')->getData());
-			$user->setIsActive($form->get('isActive')->getData());
-			$user->setUsername($form->get('username')->getData());
+			$user = $form->getData();
 			$user->setRoles(['ROLE_USER']);
+
+            $pseudo = $this->genererChaineAleatoire();
+            $user->setUsername($pseudo);
+
+            $password = 'Pa$$w0rd';
 
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $password
                 )
             );
+
+            $picture = 'img/imageProfilDefaut.jpg';
+            $user->setPicture($picture);
 
 			// Persist the user to the database
             $entityManager->persist($user);
@@ -53,5 +56,17 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    function genererChaineAleatoire($longueur = 10)
+    {
+        $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $longueurMax = strlen($caracteres);
+        $chaineAleatoire = '';
+        for ($i = 0; $i < $longueur; $i++)
+        {
+            $chaineAleatoire .= $caracteres[rand(0, $longueurMax - 1)];
+        }
+        return $chaineAleatoire;
     }
 }

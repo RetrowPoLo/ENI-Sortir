@@ -3,43 +3,4 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top" data-bs-theme="dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ path('app_home') }}">ENI-Sortir</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-flex justify-content-end">
-                <ul class="navbar-nav">
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item mx-3">
-                            <a class="nav-link active" aria-current="page" href="{{ path('app_site') }}"> Sites </a>
-                        </li>
-                    {% endif %}
-                    <li class="nav-item mx-3">
-                        <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}"> Accueil </a>
-                    </li>
-                    {% if not app.user %}
-                        <li class="nav-item mx-3">
-                            <a class="nav-link" href="{{ path('app_login') }}"> Connexion </a>
-                        </li>
-                    {% endif %}
-                    {% if app.user %}
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <li class="nav-item mx-3">
-                                <a class="nav-link" href="{{ path('app_register') }}"> Inscrire un utilisateur </a>
-                            </li>
-                        {% endif %}
-                        <li class="nav-item mx-3">
-                            <a class="nav-link" href="{{ path('app_logout') }}"> Mon profil </a>
-                        </li>
-                        <li class="nav-item mx-3">
-                            <a class="nav-link" href="{{ path('app_logout') }}"> Déconnexion </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <a href="{{ path('app_create_event') }}">Créer une sortie</a>
 {% endblock %}

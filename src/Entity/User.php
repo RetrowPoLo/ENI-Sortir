@@ -23,16 +23,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotNull(message: 'Veuillez saisir une adresse email !')]
-    #[Assert\NotBlank(message: 'Veuillez saisir une adresse email !')]
-    #[Assert\Email(message: 'L\'adresse email suivante {{ value }} n\'est pas valide !')]
+	#[Assert\NotNull(message: 'Veuillez saisir une adresse email !')]
+	#[Assert\NotBlank(message: 'Veuillez saisir une adresse email !')]
+	#[Assert\Email(message: 'L\'adresse email suivante {{ value }} n\'est pas valide !')]
     private ?string $email = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+	#[ORM\Column(length: 180, unique: true)]
 //         	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
 //         	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
 //         	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
-    private ?string $username = null;
+         	private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -95,27 +95,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUsername(): ?string
+	public function getUsername(): ?string
     {
         return $this->username;
     }
 
 
-    public function setUsername(string $username): static
-    {
-        $this->username = $username;
-        return $this;
-    }
+	public function setUsername(string $username): static
+     {
+         $this->username = $username;
+         return $this;
+     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
+	/**
+	 * A visual identifier that represents this user.
+	 *
+	 * @see UserInterface
+	 */
+	public function getUserIdentifier(): string
+     {
+         return (string) $this->email;
+     }
 
     /**
      * @see UserInterface
@@ -268,6 +268,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getSitesNoSite(): ?locationSite
+
     {
         return $this->sites_no_site;
     }

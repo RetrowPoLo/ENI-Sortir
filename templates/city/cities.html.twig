@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer les villes{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="text-center">
+            <h2>Gérer les villes</h2>
+        </div>
+
+        <div class="mt-4">
+            <h4>Filtrer les villes</h4>
+
+            {{ form_start(formSearch) }}
+            <div class="row mb-3">
+                <div class="col-6">
+                    {{ form_row(formSearch.name) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(formSearch.save) }}
+                </div>
+            </div>
+            {{ form_end(formSearch) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Ville</th>
+                    <th>Code postal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for city in cities %}
+                <tr>
+                    <td>{{ city.name }}</td>
+                    <td>{{ city.zipcode }}</td>
+                    <td>
+                        <a class="btn btn-outline-success me-2" href="{{ path('app_city_edit', {'id': city.id}) }}">Modifier</a>
+                        <a class="btn btn-outline-danger" href="{{ path('app_city_delete', {'id': city.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    {{ form_start(form) }}
+                        <td>{{ form_widget(form.name) }}</td>
+                        <td>{{ form_widget(form.zipcode) }}</td>
+                        <td>{{ form_widget(form.save) }}</td>
+                    {{ form_end(form) }}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -7,8 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Type;
-
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -51,7 +49,6 @@ class Event
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-
     private ?Location $eventLocation = null;
 
     #[ORM\Column(length: 500, nullable: true)]
@@ -128,16 +125,14 @@ class Event
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?string
     {
-        return $this->duration;
-    }
+        $interval = $this->getStartDateTime()->diff($this->getEndDateTime());
 
-    public function setDuration(int $duration): static
-    {
-        $this->duration = $duration;
+        $hours = $interval->h + ($interval->days * 24);
+        $minutes = $interval->i;
 
-        return $this;
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 
     public function getLocationSiteEvent(): ?LocationSite
@@ -206,22 +201,26 @@ class Event
             "CREATED" => "En création",
             "CLOSED" => "Fermé",
             "IN_PROGRESS" => "En cours",
-            "PASSED" => "Passé",
+            "PASSED" => "Terminé",
             "CANCELED" => "Annulé",
             default => "type non reconnu",
         };
     }
+
     public function getIsTooLateToSubscribe(): bool
     {
         return $this->limitDateInscription < new \DateTime('now');
     }
+
     public function getIsSub(User $currentUser): bool
     {
         return $this->users->exists(function($key, $user) use($currentUser){
-            return ($user->getId() == $currentUser->getId());
+           return ($user->getId() == $currentUser->getId());
         });
     }
-    public function getNbInscrit(): int{
+
+    public function getNbInscrit(): int
+	{
         return strlen($this->users);
     }
 
@@ -265,13 +264,14 @@ class Event
     }
 
     public function getCancellationReason(): ?string
-
     {
         return $this->cancellationReason;
     }
+
     public function setCancellationReason(?string $cancellationReason): static
     {
         $this->cancellationReason = $cancellationReason;
+
         return $this;
     }
 }
