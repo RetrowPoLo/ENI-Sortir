@@ -8,30 +8,41 @@
     <div class="text-center">
         <h2>Annuler une sortie</h2>
     </div>
-    <div class="col-8 offset-2">
-        <label for="colFormLabel" class="col-sm-6 col-form-label ">Nom de la sortie: </label>
-        <div class="col-sm-6">
-            <label class="col-form-label">{{ event.name }}</label>
-        </div>
+    <div class="col-8 offset-2 mt-5">
+        <div class="row">
+            <label for="colFormLabel" class="col-sm-6 col-form-label ">Nom de la sortie: </label>
+            <div class="col-sm-6">
+                <label class="col-form-label">{{ event.name }}</label>
+            </div>
 
-        <label for="colFormLabel" class="col-sm-6 col-form-label ">Date et heure de la sortie: </label>
-        <div class="col-sm-6">
-            <label class="col-form-label">{{ event.startDateTime|date("d/m/Y") }}</label>
-        </div>
+            <label for="colFormLabel" class="col-sm-6 col-form-label ">Date et heure de la sortie: </label>
+            <div class="col-sm-6">
+                <label class="col-form-label">{{ event.startDateTime|date("d/m/Y") }}</label>
+            </div>
 
-        <label for="colFormLabel" class="col-sm-6 col-form-label ">Ville organisatrice: </label>
-        <div class="col-sm-6">
-            <label class="col-form-label">{{ event.eventLocation.city.name }}</label>
-        </div>
+            <label for="colFormLabel" class="col-sm-6 col-form-label ">Ville organisatrice: </label>
+            <div class="col-sm-6">
+                <label class="col-form-label">{{ event.eventLocation.city.name }}</label>
+            </div>
 
-        <label for="colFormLabel" class="col-sm-6 col-form-label ">Lieu: </label>
-        <div class="col-sm-6">
-            <label class="col-form-label">{{ event.eventLocation.name }}</label>
-        </div>
+            <label for="colFormLabel" class="col-sm-6 col-form-label ">Lieu: </label>
+            <div class="col-sm-6">
+                <label class="col-form-label">{{ event.eventLocation.name }}</label>
+            </div>
 
-        <div class="form-group">
-            <label for="cancellationReason">Motif d'annulation:</label>
-            <textarea class="form-control" id="cancellationReason" rows="3"></textarea>
+            <div class="form-group mt-3">
+                <label for="cancellationReason">Motif d'annulation:</label>
+                <textarea class="form-control" id="cancellationReason" rows="3"></textarea>
+            </div>
+
+        </div>
+        <div class="mt-2">
+            <button class="btn btn-outline-primary">
+                Enregistrer
+            </button>
+            <button class="btn btn-outline-secondary">
+                Retour
+            </button>
         </div>
     </div>
 </div>

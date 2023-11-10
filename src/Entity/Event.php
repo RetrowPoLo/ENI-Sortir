@@ -53,6 +53,9 @@ class Event
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $eventLocation = null;
 
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $cancellationReason = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -249,5 +252,17 @@ class Event
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getCancellationReason(): ?string
+    {
+        return $this->cancellationReason;
+    }
+
+    public function setCancellationReason(?string $cancellationReason): static
+    {
+        $this->cancellationReason = $cancellationReason;
+
+        return $this;
     }
 }
