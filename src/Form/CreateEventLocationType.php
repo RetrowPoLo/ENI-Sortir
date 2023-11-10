@@ -21,9 +21,12 @@ class CreateEventLocationType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Lieu',
             ])
-            ->add('street',textType::class, ['label' => 'Rue'])
-            ->add('latitude',numberType::class, ['label' => 'Latitude'])
-            ->add('longitude',numberType::class, ['label' => 'longitude'])
+            ->add('street', TextType::class, [
+                'label' => 'Rue',
+                'mapped' => false,
+                'disabled' => true,
+                'required' => false,
+            ])
         ;
     }
 

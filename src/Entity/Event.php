@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Type;
 
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -29,8 +30,8 @@ class Event
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $eventInfo = null;
 
-    #[ORM\Column]
-    private ?int $duration = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $endDateTime = null;
 
     #[ORM\ManyToOne(inversedBy: 'locationSite')]
     #[ORM\JoinColumn(nullable: false)]
@@ -47,6 +48,14 @@ class Event
 
     #[ORM\Column]
     private ?int $nb_inscription_max = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+
+    private ?Location $eventLocation = null;
+
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $cancellationReason = null;
 
     public function __construct()
     {
@@ -79,6 +88,18 @@ class Event
     public function setStartDateTime(\DateTimeInterface $startDateTime): static
     {
         $this->startDateTime = $startDateTime;
+
+        return $this;
+    }
+
+    public function getEndDateTime(): ?\DateTimeInterface
+    {
+        return $this->endDateTime;
+    }
+
+    public function setEndDateTime(\DateTimeInterface $endDateTime): static
+    {
+        $this->endDateTime = $endDateTime;
 
         return $this;
     }
@@ -178,6 +199,32 @@ class Event
         return $this->state;
     }
 
+    public function getStateDescription(): string
+    {
+        return match ($this->state->value) {
+            "OPEN" => "Ouvert",
+            "CREATED" => "En création",
+            "CLOSED" => "Fermé",
+            "IN_PROGRESS" => "En cours",
+            "PASSED" => "Passé",
+            "CANCELED" => "Annulé",
+            default => "type non reconnu",
+        };
+    }
+    public function getIsTooLateToSubscribe(): bool
+    {
+        return $this->limitDateInscription < new \DateTime('now');
+    }
+    public function getIsSub(User $currentUser): bool
+    {
+        return $this->users->exists(function($key, $user) use($currentUser){
+            return ($user->getId() == $currentUser->getId());
+        });
+    }
+    public function getNbInscrit(): int{
+        return strlen($this->users);
+    }
+
     /**
      * @param State $state
      * @return Event
@@ -197,6 +244,34 @@ class Event
     {
         $this->nb_inscription_max = $nb_inscription_max;
 
+        return $this;
+    }
+
+    public function getEventLocation(): ?location
+    {
+        return $this->eventLocation;
+    }
+
+    public function setEventLocation(?location $eventLocation): static
+    {
+        $this->eventLocation = $eventLocation;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+    public function getCancellationReason(): ?string
+
+    {
+        return $this->cancellationReason;
+    }
+    public function setCancellationReason(?string $cancellationReason): static
+    {
+        $this->cancellationReason = $cancellationReason;
         return $this;
     }
 }
