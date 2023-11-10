@@ -28,6 +28,9 @@
                             <a class="nav-link {{ app.request.attributes.get('_route') == 'app_city' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_city' ? 'aria-current="page"' : '' }} href="{{ path('app_city') }}"> Villes </a>
                         </li>
                     {% endif %}
+{#                {% if app.user.ForceChange == 1 and app.request.uri !='/premiere_connexion' %}#}
+{#                    {{ app.exit(path('app_first_login')) }}#}
+{#                {% endif %}#}
                     <li class="nav-item mx-3">
                         <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile', {'id': app.user.id}) }}"> Mon profil </a>
                     </li>

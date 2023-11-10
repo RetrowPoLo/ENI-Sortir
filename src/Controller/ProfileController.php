@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EditUserType;
+use App\Form\FirstLoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,47 @@ class ProfileController extends AbstractController
         return $this->render('profile/profile.html.twig', [
             'user' => $user
         ]);
+    }
+
+    #[Route('/user/premiere_connexion', name: 'app_first_login', methods: ['GET', 'POST'])]
+    public function firstLog( Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $user = $this->getUser();
+        $initPseudo = $user->getUsername();
+
+            $form = $this->createForm(FirstLoginType::class, $user);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $userModif = $form->getData();
+
+                if($userModif->getPassword() != 'Pa$$w0rd' && $userModif->getUsername() != $initPseudo) {
+                    $hashedPassword = $passwordHasher->hashPassword(
+                        $userModif,
+                        $userModif->getPassword()
+                    );
+                    $user->setPassword($hashedPassword);
+                    $user->setUsername($userModif->getUsername());
+                    $user->setForceChange(0);
+
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Profil mis à jour avec succès.');
+                    return $this->redirectToRoute('app_home');
+                }else {
+                   echo '<div class="alert alert-danger">Votre mot de passe ou votre pseudo n\'a pas été modifié.</div>';
+
+                   // return $this->redirectToRoute('app_first_login');
+                }
+
+            }
+
+            return $this->render('profile/first_login.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user,
+//            'form' => $form,
+            ]);
     }
 
     #[Route('/editProfile/{userid}', name: 'app_profile_edit', methods: ['GET', 'POST'])]

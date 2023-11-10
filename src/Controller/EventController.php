@@ -8,6 +8,7 @@ use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function PHPUnit\Framework\throwException;
@@ -15,7 +16,7 @@ use function PHPUnit\Framework\throwException;
 class EventController extends AbstractController
 {
     #[Route('/sortie', name: 'app_event')]
-    public function index(EventRepository $eventRepository): Response
+    public function index(EventRepository $eventRepository, Request $request): Response
     {
         $events = $eventRepository->findAllNotArchived();
         return $this->render('event/index.html.twig', [
