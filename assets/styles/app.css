@@ -10,3 +10,28 @@ label.required:before {
     position: absolute;
     right: -10px;
 }
+#create_event {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#create_event .container {
+    justify-content: center;
+}
+#create_event .container .save-publish .mb-3{
+    width: auto;
+}
+#create_event .container .save-publish {
+    margin-top: 50px;
+}
+.mb-3 {
+    display: flex;
+    align-items: center;
+}
+.form-select, .form-control {
+    width: auto;
+}
+.mb-3 label{
+    margin-right: 20px;
+}

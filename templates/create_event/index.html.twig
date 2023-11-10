@@ -36,12 +36,12 @@
             </div>
         </div>
     </nav>
-    <h1 class="text-center">Créer une sortie</h1>
+    <h1 class="text-center pt-5">Créer une sortie</h1>
     {{ form_start(formCreateEvent, { attr: { id: 'create_event' } }) }}
     {{ form_start(formCreateEventCity) }}
     {{ form_start(formCreateEventLocation) }}
         <div class="row container">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 {{ form_row(formCreateEvent.name) }}
                 {{ form_row(formCreateEvent.startDateTime) }}
                 {% if errorStartTime is not same as "" %}
@@ -58,9 +58,9 @@
                 {{ form_row(formCreateEvent.nbInscriptionMax) }}
                 {{ form_row(formCreateEvent.event_info) }}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="mb-3">
-                    <label for="create_event_user_city" class="form-label">Ville organisatrice</label>
+                    <label for="create_event_user_city" class="form-label">Site</label>
                     <input type="text" id="create_event_user_city" name="create_event_user[city]" value="{{ cityName }}" disabled class="form-control">
                 </div>
                 {{ form_row(formCreateEventCity.name, { 'attr': {'class': 'city-select'} }) }}
@@ -70,16 +70,15 @@
                 {% endif %}
                 {{ form_row(formCreateEventLocation.street) }}
                 {{ form_row(formCreateEventCity.zipcode, { 'attr': {'class': 'zipcode-input'} }) }}
+                <div class="row save-publish d-flex">
+                    {{ form_row(formCreateEvent._token) }}
+                    {{ form_row(formCreateEventLocation._token) }}
+                    {{ form_row(formCreateEventCity._token) }}
+                    {{ form_row(formCreateEvent.save) }}
+                    {{ form_row(formCreateEvent.publish) }}
+                </div>
             </div>
         </div>
-    <div class="row d-flex">
-        {{ form_row(formCreateEvent._token) }}
-        {{ form_row(formCreateEventLocation._token) }}
-        {{ form_row(formCreateEventCity._token) }}
-        {{ form_row(formCreateEvent.save) }}
-        {{ form_row(formCreateEvent.publish) }}
-        <a href="{{ path('app_home') }}"> Annuler </a>
-    </div>
     {{ form_end(formCreateEventLocation) }}
     {{ form_end(formCreateEventCity) }}
     {{ form_end(formCreateEvent) }}
