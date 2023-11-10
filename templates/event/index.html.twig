@@ -110,7 +110,7 @@
                                 <a class="btn btn-outline-warning" href="{{ path('app_event_publish',{id:event.id}) }}">Publier</a>
                             {% else %}
                                 <a class="btn btn-outline-primary" href="{{ path('app_event_details', {id:event.id}) }}">Afficher</a>
-                                {% if (event.user == app.user or is_granted('ROLE_ADMIN')) and event.state.value == "OPEN" %}
+                                {% if event.user == app.user and event.state.value == "OPEN" %}
                                     <a class="btn btn-outline-danger" href="{{ path('app_event_cancel', {id:event.id}) }}">Annuler</a>
                                 {% elseif event.user != app.user and event.getIsSub(app.user) == 0 and event.getIsTooLateToSubscribe() == false and is_granted('ROLE_ADMIN') == false and event.state.value == "OPEN" %}
                                     <a class="btn btn-outline-warning" href="{{ path('app_event_subscribe', {id:event.id}) }}">S'inscrire</a>
