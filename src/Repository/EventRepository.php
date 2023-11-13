@@ -107,7 +107,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($locationSite !== 0) {
 			// If the location site is set, add it to the query
 			$query = $this->createQueryBuilder('e')
-				->andWhere('e.locationSiteEvent = :locationSite')
+				->orWhere('e.locationSiteEvent = :locationSite')
 				->setParameter('locationSite', $locationSite);
 		} else {
 			// If the location site is not set, do not add it to the query
@@ -118,7 +118,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($name !== null) {
 			// If the name is set, add it to the query
 			$query = $query
-				->andWhere('e.name LIKE :name')
+				->orWhere('e.name LIKE :name')
 				->setParameter('name', '%' . $name . '%');
 		}
 
@@ -126,7 +126,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($startDateTime !== null) {
 			// If the start date time is set, add it to the query
 			$query = $query
-				->andWhere('e.startDateTime >= :startDateTime')
+				->orWhere('e.startDateTime >= :startDateTime')
 				->setParameter('startDateTime', $startDateTime);
 		}
 
@@ -134,7 +134,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($endDateTime !== null) {
 			// If the end date time is set, add it to the query
 			$query = $query
-				->andWhere('e.startDateTime <= :endDateTime')
+				->orWhere('e.startDateTime <= :endDateTime')
 				->setParameter('endDateTime', $endDateTime);
 		}
 
@@ -142,7 +142,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($userIsOrganizer) {
 			// If the user is the organizer of the event, add it to the query
 			$query = $query
-				->andWhere('e.user = :user')
+				->orWhere('e.user = :user')
 				->setParameter('user', $user);
 		}
 
@@ -150,7 +150,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($userIsRegistered) {
 			// If the user is registered to the event, add it to the query
 			$query = $query
-				->andWhere(':user MEMBER OF e.users')
+				->orWhere(':user MEMBER OF e.users')
 				->setParameter('user', $user);
 		}
 
@@ -158,7 +158,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($userIsNotRegistered) {
 			// If the user is not registered to the event, add it to the query
 			$query = $query
-				->andWhere(':user NOT MEMBER OF e.users')
+				->orWhere(':user NOT MEMBER OF e.users')
 				->setParameter('user', $user);
 		}
 
@@ -166,7 +166,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($stateIsPassed) {
 			// If the state is passed, add it to the query
 			$query = $query
-				->andWhere('e.state = :state')
+				->orWhere('e.state = :state')
 				->setParameter('state', 'Passed');
 		}
 
@@ -197,7 +197,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($locationSite !== 0) {
 			// If the location site is set, add it to the query
 			$query = $this->createQueryBuilder('e')
-				->andWhere('e.locationSiteEvent = :locationSite')
+				->orWhere('e.locationSiteEvent = :locationSite')
 				->setParameter('locationSite', $locationSite);
 		} else {
 			// If the location site is not set, do not add it to the query
@@ -208,7 +208,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($name !== null) {
 			// If the name is set, add it to the query
 			$query = $query
-				->andWhere('e.name LIKE :name')
+				->orWhere('e.name LIKE :name')
 				->setParameter('name', '%' . $name . '%');
 		}
 
@@ -216,7 +216,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($startDateTime !== null) {
 			// If the start date time is set, add it to the query
 			$query = $query
-				->andWhere('e.startDateTime >= :startDateTime')
+				->orWhere('e.startDateTime >= :startDateTime')
 				->setParameter('startDateTime', $startDateTime);
 
 		}
@@ -225,7 +225,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($endDateTime !== null) {
 			// If the end date time is set, add it to the query
 			$query = $query
-				->andWhere('e.startDateTime <= :endDateTime')
+				->orWhere('e.startDateTime <= :endDateTime')
 				->setParameter('endDateTime', $endDateTime);
 		}
 
@@ -233,7 +233,7 @@ class EventRepository extends ServiceEntityRepository
 		if ($state !== null) {
 			// If the state is set, add it to the query
 			$query = $query
-				->andWhere('e.state = :state')
+				->orWhere('e.state = :state')
 				->setParameter('state', $state);
 		}
 
