@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\User;
 use App\Form\EditUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,10 @@ class ProfileController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
-
+        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+        $cityRepository = $entityManager->getRepository(City::class);
+        $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
+        $cityName = $city->getName();
         if ($user->getId() == $request->get('userid') || $this->isGranted('ROLE_ADMIN')) {
             $form = $this->createForm(EditUserType::class, $user);
             $form->handleRequest($request);
@@ -48,11 +52,12 @@ class ProfileController extends AbstractController
             return $this->render('profile/edit.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user,
-//            'form' => $form,
+                'cityName' => $cityName,
+//              'form' => $form,
             ]);
         } else {
-            $this->addFlash('error', 'Vous ne pouvez pas modifier le profil d\'un autre utilisateur.');
-            return $this->redirectToRoute('app_profile', ['id' => $user->getId()]);
+
+            return $this;
         }
 
     }

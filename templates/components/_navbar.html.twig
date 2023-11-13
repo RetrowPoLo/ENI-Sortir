@@ -1,12 +1,12 @@
 <nav class="navbar navbar-expand-lg bg-dark sticky-top" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ path('app_home') }}">
-            ENI-Sortir
+            <img src="{{ asset('./build/images/logo.jpg') }}" alt="logo" width="100px" height="90px">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse d-flex justify-content-end">
+        <div class="collapse navbar-collapse d-flex align-items-end flex-column">
             <ul class="navbar-nav">
                 <li class="nav-item mx-3">
                     <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? ' active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Accueil </a>
@@ -36,13 +36,17 @@
                         </div>
                     {% endif %}
                     <li class="nav-item mx-3">
-                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile', {'id': app.user.id}) }}"> Mon profil </a>
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile_edit', {'userid': app.user.id}) }}"> Mon profil </a>
                     </li>
                     <li class="nav-item mx-3">
                         <a class="nav-link" href="{{ path('app_logout') }}"> Déconnexion </a>
                     </li>
                 {% endif %}
             </ul>
+            <div class="info-nav d-flex flex-column pe-5">
+                <p class="text-white">Date du jour : {{ "now"|date("m/d/Y") }}</p>
+                <p class="text-white">Participant : {{ app.user.username }}</p>
+            </div>
         </div>
     </div>
 </nav>

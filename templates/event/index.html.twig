@@ -5,12 +5,58 @@
 {% block body %}
     <div class="container mt-5">
         <h3>Filtrer les sorties</h3>
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ form_start(formFilter) }}
+            <div class="filter-home border-black border-2 border d-flex row align-items-center p-3">
+                <div class="col-6">
+                    {{ form_row(formFilter.locationSiteEvent) }}
+                    {{ form_row(formFilter.name) }}
+                </div>
+                <div class="col-6">
+                    <div class="d-flex">
+                        {{ form_row(formFilter.startDateTime) }}
+                        {{ form_row(formFilter.endDateTime) }}
+                    </div>
+                    {{ form_row(formFilter.state) }}
+                </div>
+            </div>
+            <div class="d-flex justify-content-between pt-3">
+                {{ form_row(formFilter.save) }}
+                <h1>Liste des sorties</h1>
+                <div class="text-center">
+                    <a class="btn-outline-primary btn" href="{{ app.request.getBaseURL() }}/create/event">Ajouter une sortie</a>
+                </div>
+            </div>
 
-        {{ form(formFilter) }}
+            {{ form_end(formFilter) }}
+        {% else %}
+            {{ form_start(formFilter) }}
+            <div class="filter-home border-black border-2 border d-flex row align-items-center p-3">
+                <div class="col-5">
+                    {{ form_row(formFilter.locationSiteEvent) }}
+                    {{ form_row(formFilter.name) }}
+                </div>
+                <div class="col-3">
+                    {{ form_row(formFilter.startDateTime) }}
+                    {{ form_row(formFilter.endDateTime) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(formFilter.userIsOrganizer) }}
+                    {{ form_row(formFilter.userIsRegistered) }}
+                    {{ form_row(formFilter.userIsNotRegistered) }}
+                    {{ form_row(formFilter.stateIsPassed) }}
+                </div>
+            </div>
+            <div class="d-flex justify-content-between pt-3">
+                {{ form_row(formFilter.save) }}
+                <h1>Liste des sorties</h1>
+                <div class="text-center">
+                    <a class="btn-outline-primary btn" href="{{ app.request.getBaseURL() }}/create/event">Ajouter une sortie</a>
+                </div>
+            </div>
 
-        <div class="text-center">
-            <a class="btn-outline-primary btn" href="{{ app.request.getBaseURL() }}/create/event">Ajouter une sortie</a>
-        </div>
+            {{ form_end(formFilter) }}
+        {% endif %}
         <div class="mt-5">
             {% if events|length > 0 %}
                 <table class="table table-striped">
