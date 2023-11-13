@@ -29,10 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
 	#[ORM\Column(length: 180, unique: true)]
-//         	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
-//         	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
-//         	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
-         	private ?string $username = null;
+	private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -91,7 +88,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -99,7 +95,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->username;
     }
-
 
 	public function setUsername(string $username): static
      {
@@ -132,7 +127,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -147,7 +141,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -168,7 +161,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -180,7 +172,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstName(string $firstName): static
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
@@ -192,7 +183,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
-
         return $this;
     }
 
@@ -204,7 +194,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
-
         return $this;
     }
 
@@ -228,7 +217,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeRegistred(Event $registred): static
     {
         $this->registred->removeElement($registred);
-
         return $this;
     }
 
@@ -268,7 +256,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getSitesNoSite(): ?locationSite
-
     {
         return $this->sites_no_site;
     }
@@ -276,7 +263,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSitesNoSite(?locationSite $sites_no_site): static
     {
         $this->sites_no_site = $sites_no_site;
-
         return $this;
     }
 
@@ -288,8 +274,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
-
         return $this;
     }
-
 }

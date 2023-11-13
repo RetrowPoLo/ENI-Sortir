@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     #[Route('/profile', name: 'app_user_index', methods: ['GET'])]
-    public function index2(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
@@ -46,7 +46,6 @@ class UserController extends AbstractController
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -64,20 +63,21 @@ class UserController extends AbstractController
             $userModif = $form->getData();
 
             if ($userModif->getPassword() != 'noknok') {
-            $hashedPassword = $passwordHasher->hashPassword(
-                $userModif,
-                $userModif->getPassword()
-            );
+				$hashedPassword = $passwordHasher->hashPassword(
+					$userModif,
+					$userModif->getPassword()
+				);
 
                 $user->setPassword($hashedPassword);
-
-            }else{
+            } else {
                 $user->setPassword($initPassword);
             }
 
             $entityManager->persist($user);
             $entityManager->flush();
+
             $this->addFlash('success', 'Profil mis à jour avec succès.');
+
             return $this->redirectToRoute('app_profile', ['id' => $request->get('id')]);
         }
 

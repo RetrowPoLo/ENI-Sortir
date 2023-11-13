@@ -2,8 +2,6 @@
 
 {% block title %}Liste des sorties{% endblock %}
 
-
-
 {% block body %}
     <div class="container mt-5">
         <h3>Filtrer les sorties</h3>
@@ -34,5 +32,5 @@
 
 {% block javascripts_end %}
     <script src="{{ asset('./build/js/events.js') }}"></script>
-    {#    {{ encore_entry_link_tags('app') }}#}
+    {{ encore_entry_script_tags('event') }}
 {% endblock %}

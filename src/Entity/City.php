@@ -42,7 +42,6 @@ class City
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -54,7 +53,6 @@ class City
     public function setZipcode(string $zipcode): static
     {
         $this->zipcode = $zipcode;
-
         return $this;
     }
 
