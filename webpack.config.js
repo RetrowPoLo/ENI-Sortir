@@ -19,11 +19,6 @@ Encore
         to: 'images/[path][name].[ext]',
     })
 
-    .copyFiles({
-        from: './assets/js',
-        to: 'js/[path][name].[ext]',
-    })
-
     /*
      * ENTRY CONFIG
      *
