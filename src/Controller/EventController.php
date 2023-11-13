@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -144,8 +145,15 @@ class EventController extends AbstractController
         ]);
     }
     #[Route('/sortie/publish/{id}', name: 'app_event_publish')]
-    public function publish(EventRepository $eventRepository, int $id): Response
+    public function publish(EventRepository $eventRepository, EntityManagerInterface $entityManager, int $id): Response
     {
+        $event = $eventRepository->findOneByIdNotArchived($id);
+        if($event == null){
+            throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
+        }
+        $event->setState(State::Open);
+        $entityManager->persist($event);
+        $entityManager->flush();
         return $this->redirectToRoute('app_event');
     }
 
