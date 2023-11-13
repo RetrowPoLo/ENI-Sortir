@@ -35,7 +35,8 @@ class ProfileController extends AbstractController
 
                 $userModif = $form->getData();
 
-                if($userModif->getPassword() != 'Pa$$w0rd' && $userModif->getUsername() != $initPseudo) {
+                if ($initPseudo !== $userModif->getUsername()) {
+
                     $hashedPassword = $passwordHasher->hashPassword(
                         $userModif,
                         $userModif->getPassword()
@@ -48,10 +49,8 @@ class ProfileController extends AbstractController
                     $entityManager->flush();
                     $this->addFlash('success', 'Profil mis à jour avec succès.');
                     return $this->redirectToRoute('app_home');
-                }else {
-                   echo '<div class="alert alert-danger">Votre mot de passe ou votre pseudo n\'a pas été modifié.</div>';
-
-                   // return $this->redirectToRoute('app_first_login');
+                } else {
+                    echo '<div class="alert alert-danger">votre pseudo n\'a pas été modifié.</div>';
                 }
 
             }
@@ -67,6 +66,7 @@ class ProfileController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
+
 
         if ($user->getId() == $request->get('userid') || $this->isGranted('ROLE_ADMIN')) {
             $form = $this->createForm(EditUserType::class, $user);

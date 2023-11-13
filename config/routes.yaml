@@ -3,7 +3,7 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-
-app_profile_edit:
-    path: /editProfile
-    controller: App\Controller\ProfileController::edit
+#
+#app_profile_edit:
+#    path: /editProfile
+#    controller: App\Controller\ProfileController::edit

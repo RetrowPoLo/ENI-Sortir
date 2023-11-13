@@ -12,7 +12,9 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(Request $request): Response
     {
+
         $user = $this->getUser();
+
         if($user->getForceChange()===0){
         return $this->redirectToRoute('app_event');
         }
