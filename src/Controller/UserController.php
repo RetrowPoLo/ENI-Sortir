@@ -63,12 +63,12 @@ class UserController extends AbstractController
             $entityManager->flush();
             $userModif = $form->getData();
 
-            if ($userModif->getPassword() != 'noknok') {
+            if ($userModif->getPassword() != '=5p!7WC5K6Iio') {
             $hashedPassword = $passwordHasher->hashPassword(
                 $userModif,
                 $userModif->getPassword()
             );
-
+               // $2y$13$032AxR1yZ78Lc0nzXYBjSOzGxVwCLn7A1w08UiKhEj2yNADmU8xNe
                 $user->setPassword($hashedPassword);
 
             }else{

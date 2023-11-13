@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/connexion', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
