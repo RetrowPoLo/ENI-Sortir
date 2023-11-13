@@ -12,14 +12,14 @@
             <h4>Filtrer les sites</h4>
 
             {{ form_start(form) }}
-            <div class="row mb-3">
-                <div class="col-6">
-                    {{ form_row(form.name) }}
+                <div class="row mb-3">
+                    <div class="col-6">
+                        {{ form_row(form.name) }}
+                    </div>
+                    <div class="col-4">
+                        {{ form_row(form.save) }}
+                    </div>
                 </div>
-                <div class="col-4">
-                    {{ form_row(form.save) }}
-                </div>
-            </div>
             {{ form_end(form) }}
         </div>
 
@@ -36,8 +36,8 @@
                         <tr>
                             <td>{{ ville.name }}</td>
                             <td>
-                                <a class="btn btn-success me-2" href="">Modifier</a>
-                                <a class="btn btn-danger" href="{{ path('app_site_delete', {'id': ville.id}) }}">Supprimer</a>
+                                <a class="btn btn-outline-success me-2" href="">Modifier</a>
+                                <a class="btn btn-outline-danger" href="{{ path('app_site_delete', {'id': ville.id}) }}">Supprimer</a>
                             </td>
                         </tr>
                     {% endif %}

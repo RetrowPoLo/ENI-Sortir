@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-use phpDocumentor\Reflection\Type;
-
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {
@@ -30,8 +28,8 @@ class Event
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $eventInfo = null;
 
-    #[ORM\Column]
-    private ?int $duration = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $endDateTime = null;
 
     #[ORM\ManyToOne(inversedBy: 'locationSite')]
     #[ORM\JoinColumn(nullable: false)]
@@ -52,6 +50,9 @@ class Event
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $eventLocation = null;
+
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $cancellationReason = null;
 
     public function __construct()
     {
@@ -88,6 +89,18 @@ class Event
         return $this;
     }
 
+    public function getEndDateTime(): ?\DateTimeInterface
+    {
+        return $this->endDateTime;
+    }
+
+    public function setEndDateTime(\DateTimeInterface $endDateTime): static
+    {
+        $this->endDateTime = $endDateTime;
+
+        return $this;
+    }
+
     public function getLimitDateInscription(): ?\DateTimeInterface
     {
         return $this->limitDateInscription;
@@ -112,16 +125,14 @@ class Event
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): ?string
     {
-        return $this->duration;
-    }
+        $interval = $this->getStartDateTime()->diff($this->getEndDateTime());
 
-    public function setDuration(int $duration): static
-    {
-        $this->duration = $duration;
+        $hours = $interval->h + ($interval->days * 24);
+        $minutes = $interval->i;
 
-        return $this;
+        return sprintf('%02d:%02d', $hours, $minutes);
     }
 
     public function getLocationSiteEvent(): ?LocationSite
@@ -190,8 +201,8 @@ class Event
             "CREATED" => "En création",
             "CLOSED" => "Fermé",
             "IN_PROGRESS" => "En cours",
-            "PASSED" => "Passé",
-            "CANCELLED" => "Annulé",
+            "PASSED" => "Terminé",
+            "CANCELED" => "Annulé",
             default => "type non reconnu",
         };
     }
@@ -208,7 +219,8 @@ class Event
         });
     }
 
-    public function getNbInscrit(): int{
+    public function getNbInscrit(): int
+	{
         return strlen($this->users);
     }
 
@@ -249,5 +261,17 @@ class Event
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getCancellationReason(): ?string
+    {
+        return $this->cancellationReason;
+    }
+
+    public function setCancellationReason(?string $cancellationReason): static
+    {
+        $this->cancellationReason = $cancellationReason;
+
+        return $this;
     }
 }

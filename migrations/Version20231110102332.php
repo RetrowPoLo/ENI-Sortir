@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231108111937 extends AbstractMigration
+final class Version20231110102332 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20231108111937 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE event DROP nb_inscription_max');
+        $this->addSql('ALTER TABLE event ADD cancellation_reason VARCHAR(500) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE event ADD nb_inscription_max INT NOT NULL');
+        $this->addSql('ALTER TABLE event DROP cancellation_reason');
     }
 }
