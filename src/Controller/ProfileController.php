@@ -11,9 +11,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use function PHPUnit\Framework\throwException;
 
 class ProfileController extends AbstractController
 {
+    private $oldUsername;
+
+    public function __construct()
+    {
+        $this->oldUsername = null;
+    }
+
     #[Route('/profile/{id}', name: 'app_profile', methods: ['GET', 'POST'])]
     public function index(User $user): Response
     {
@@ -26,7 +34,10 @@ class ProfileController extends AbstractController
     public function firstLog( Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
-        $initPseudo = $user->getUsername();
+
+        if ($this->oldUsername == null) {
+            $this->oldUsername = $user->getUsername();
+        }
 
             $form = $this->createForm(FirstLoginType::class, $user);
             $form->handleRequest($request);
@@ -35,7 +46,9 @@ class ProfileController extends AbstractController
 
                 $userModif = $form->getData();
 
-                if ($initPseudo !== $userModif->getUsername()) {
+
+                if ($this->oldUsername != $userModif->getUsername()) {
+
 
                     $hashedPassword = $passwordHasher->hashPassword(
                         $userModif,
@@ -51,8 +64,11 @@ class ProfileController extends AbstractController
                     return $this->redirectToRoute('app_home');
                 } else {
                     echo '<div class="alert alert-danger">votre pseudo n\'a pas été modifié.</div>';
+                    $entityManager->refresh($user);
                 }
 
+            } else {
+                $entityManager->refresh($user);
             }
 
             return $this->render('profile/first_login.html.twig', [
@@ -66,11 +82,10 @@ class ProfileController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
-
-
         if ($user->getId() == $request->get('userid') || $this->isGranted('ROLE_ADMIN')) {
             $form = $this->createForm(EditUserType::class, $user);
             $form->handleRequest($request);
+
 
             if ($form->isSubmitted() && $form->isValid()) {
 
@@ -85,6 +100,8 @@ class ProfileController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('success', 'Profil mis à jour avec succès.');
                 return $this->redirectToRoute('app_profile', ['id' => $request->get('userid')]);
+            } else {
+                $entityManager->refresh($user);
             }
 
             return $this->render('profile/edit.html.twig', [

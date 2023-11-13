@@ -68,7 +68,6 @@ class UserController extends AbstractController
                 $userModif,
                 $userModif->getPassword()
             );
-               // $2y$13$032AxR1yZ78Lc0nzXYBjSOzGxVwCLn7A1w08UiKhEj2yNADmU8xNe
                 $user->setPassword($hashedPassword);
 
             }else{
@@ -79,6 +78,8 @@ class UserController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Profil mis à jour avec succès.');
             return $this->redirectToRoute('app_profile', ['id' => $request->get('id')]);
+        } else {
+                $entityManager->refresh($user);
         }
 
         return $this->render('user/edit.html.twig', [

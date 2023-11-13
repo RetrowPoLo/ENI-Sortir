@@ -42,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\Regex(
-        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!=%*?&])[A-Za-z\d@$!=%*?&^]+$/',
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$##é"èçà°¨£¤ùµ§?^_+!=%*?&~`:;<>|{}[]().,:;])[A-Za-z\d@$##é"èçà°¨£¤ùµ§?^_+!=%*?&~`:;<>|{}[]().,:;]+$/',
         message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
 
     private ?string $password = null;
