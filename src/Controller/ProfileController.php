@@ -18,14 +18,26 @@ class ProfileController extends AbstractController
     #[Route('/profile/{id}', name: 'app_profile', methods: ['GET', 'POST'])]
     public function index(User $user): Response
     {
+        $CurrentUser = $this->getUser();
         return $this->render('profile/profile.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
+        ]);
+    }
+    #[Route('/participant/{id}', name: 'app_profile_showparticipant', methods: ['GET', 'POST'])]
+    public function showParticipant(User $user): Response
+    {
+        $CurrentUser = $this->getUser();
+        return $this->render('profile/participant.html.twig', [
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
     #[Route('/user/premiere_connexion', name: 'app_first_login', methods: ['GET', 'POST'])]
     public function firstLog( Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $CurrentUser = $this->getUser();
         $user = $this->getUser();
         $initPseudo = $user->getUsername();
 
@@ -59,6 +71,7 @@ class ProfileController extends AbstractController
             return $this->render('profile/first_login.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user,
+                'currentUserId' => $CurrentUser,
 //            'form' => $form,
             ]);
     }
@@ -67,14 +80,18 @@ class ProfileController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
+        $userIdFromUrl = $request->get('userid');
+        $userToModify = $entityManager->getRepository(User::class)->findBy(
+            ['id' => $userIdFromUrl],
+        );
         $CurrentUser = $this->getUser();
         $userLocationSiteId = $this->getUser()->getSitesNoSite();
         $cityRepository = $entityManager->getRepository(City::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
         $cityName = $city->getName();
 
-        if ($user->getId() == $request->get('userid') || $this->isGranted('ROLE_ADMIN')) {
-            $form = $this->createForm(EditUserType::class, $user);
+        if ($userToModify[0]->getId() == $request->get('userid') || $this->isGranted('ROLE_ADMIN')) {
+            $form = $this->createForm(EditUserType::class, $userToModify[0]);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -85,8 +102,8 @@ class ProfileController extends AbstractController
                     $userModif,
                     $userModif->getPassword()
                 );
-                $user->setPassword($hashedPassword);
-                $entityManager->persist($user);
+                $userToModify[0]->setPassword($hashedPassword);
+                $entityManager->persist($userToModify[0]);
                 $entityManager->flush();
                 $this->addFlash('success', 'Profil mis à jour avec succès.');
                 return $this->redirectToRoute('app_profile', ['id' => $request->get('userid')]);

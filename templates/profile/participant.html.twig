@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil de {{ user.username }}{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
+    <div class="container"  style="max-width: 25%;">
+        <h1 class="fst-italic text-primary">Profil de {{ user.username }}</h1>
+        <div id="profile_pic" style="left: 15%;position: absolute;">
+            <img src="{{ asset(user.picture) }}" alt="{{ user.firstname }} {{ user.name }}">
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="list-unstyled">
+                    <li><strong>Pseudo :</strong> {{ user.username }}</li>
+                    <li><strong>Nom :</strong> {{ user.name }}</li>
+                    <li><strong>Prénom :</strong> {{ user.firstName }}</li>
+                    <li><strong>Email :</strong> {{ user.email }}</li>
+                    <li><strong>Téléphone :</strong> {{ user.phone }}</li>
+                    <li><strong>Ville de rattachement :</strong> {{ user.SitesNoSite }}</li>
+                </ul>
+            </div>
+        </div>
+        {% if app.user and is_granted('ROLE_ADMIN')%}
+            <a href="{{ path('app_profile_edit', {'userid': user.id}) }}" class="btn btn-primary">Modifier</a>
+        {% endif %}
+        <a href="javascript:history.back()" class="btn btn-outline-darklight">Retour</a>
+    </div>
+
+{% endblock %}

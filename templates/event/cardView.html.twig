@@ -1,4 +1,4 @@
-<div class="row ">
+    <div class="row ">
     {% for event in events %}
     <div class="col-md-6">
         <div class="card mt-4">
@@ -15,11 +15,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col">
-                        {% if event.getIsSub(app.user) == true %}
-                            <a href="{{ app.request.getBaseURL() }}/profile/{{ event.user.id }}">{{ event.user.getFullName }}</a>
-                        {% else %}
-                            <label>{{ event.user.getFullName }}</label>
-                        {% endif %}
+                        <a href="{{ app.request.getBaseURL() }}/participant/{{ event.user.id }}">{{ event.user.getFullName }}</a>
                     </div>
                     <div class="col">
                         <div class="float-right">
