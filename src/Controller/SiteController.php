@@ -17,6 +17,7 @@ class SiteController extends AbstractController
     #[Route('/sites', name: 'site')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $ville = new LocationSite();
         $site = new LocationSite();
 
@@ -51,6 +52,7 @@ class SiteController extends AbstractController
             'formVille' => $formVille,
             'villes' => $AllVille,
             'contain' => $contain,
+            'user' => $user,
         ]);
     }
     #[Route('/site/supprimer/{id}', name: 'site_delete', requirements: ['id' => '\d+'])]

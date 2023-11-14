@@ -18,6 +18,7 @@ class CityController extends AbstractController
     #[Route('/villes', name: 'city')]
     public function index(CityRepository $cityRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
 		// Create a new city
         $city = new City();
 
@@ -57,13 +58,15 @@ class CityController extends AbstractController
         return $this->render('city/cities.html.twig', [
             'cities' => $cities,
             'form' => $form,
-            'formSearch' => $formSearch
+            'formSearch' => $formSearch,
+            'user' => $user
         ]);
     }
 
     #[Route('/villes/modifier/{id}', name: 'city_edit', requirements: ['id' => '\d+'])]
     public function edit(CityRepository $cityRepository, Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
+        $user = $this->getUser();
         $city = $cityRepository->find($id);
         $form = $this->createForm(CityType::class, $city);
         $form->handleRequest($request);
@@ -76,6 +79,7 @@ class CityController extends AbstractController
         return $this->render('city/edit.html.twig', [
             'city' => $city,
             'form' => $form,
+            'user' => $user,
         ]);
     }
 
