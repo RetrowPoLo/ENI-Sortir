@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\User;
 use App\Form\EditUserType;
 use App\Form\FirstLoginType;
@@ -11,17 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use function PHPUnit\Framework\throwException;
 
 class ProfileController extends AbstractController
 {
-    private $oldUsername;
-
-    public function __construct()
-    {
-        $this->oldUsername = null;
-    }
-
     #[Route('/profile/{id}', name: 'app_profile', methods: ['GET', 'POST'])]
     public function index(User $user): Response
     {
@@ -34,10 +27,7 @@ class ProfileController extends AbstractController
     public function firstLog( Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
-
-        if ($this->oldUsername == null) {
-            $this->oldUsername = $user->getUsername();
-        }
+        $initPseudo = $user->getUsername();
 
             $form = $this->createForm(FirstLoginType::class, $user);
             $form->handleRequest($request);
@@ -46,9 +36,7 @@ class ProfileController extends AbstractController
 
                 $userModif = $form->getData();
 
-
-                if ($this->oldUsername != $userModif->getUsername()) {
-
+                if ($initPseudo !== $userModif->getUsername()) {
 
                     $hashedPassword = $passwordHasher->hashPassword(
                         $userModif,
@@ -82,6 +70,12 @@ class ProfileController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
+        $CurrentUser = $this->getUser();
+        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+        $cityRepository = $entityManager->getRepository(City::class);
+        $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
+        $cityName = $city->getName();
+
         if ($user->getId() == $request->get('userid') || $this->isGranted('ROLE_ADMIN')) {
             $form = $this->createForm(EditUserType::class, $user);
             $form->handleRequest($request);
@@ -107,7 +101,9 @@ class ProfileController extends AbstractController
             return $this->render('profile/edit.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user,
-//            'form' => $form,
+                'currentUserId' => $CurrentUser,
+                'cityName' => $cityName,
+//              'form' => $form,
             ]);
         } else {
             $this->addFlash('error', 'Vous ne pouvez pas modifier le profil d\'un autre utilisateur.');

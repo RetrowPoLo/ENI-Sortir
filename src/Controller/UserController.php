@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -18,8 +19,11 @@ class UserController extends AbstractController
     #[Route('/profile', name: 'app_user_index', methods: ['GET'])]
     public function index2(UserRepository $userRepository): Response
     {
+        $CurrentUser = $this->getUser();
+
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -27,6 +31,8 @@ class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $CurrentUser = $this->getUser();
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -40,21 +46,30 @@ class UserController extends AbstractController
         return $this->render('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
+            'currentUserId' => $CurrentUser
         ]);
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
+        $CurrentUser = $this->getUser();
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
+        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+        $cityRepository = $entityManager->getRepository(City::class);
+        $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
+        $cityName = $city->getName();
         $initPassword = $user->getPassword();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -64,10 +79,12 @@ class UserController extends AbstractController
             $userModif = $form->getData();
 
             if ($userModif->getPassword() != '=5p!7WC5K6Iio') {
-            $hashedPassword = $passwordHasher->hashPassword(
-                $userModif,
-                $userModif->getPassword()
-            );
+				$hashedPassword = $passwordHasher->hashPassword(
+					$userModif,
+					$userModif->getPassword()
+				);
+
+               // $2y$13$032AxR1yZ78Lc0nzXYBjSOzGxVwCLn7A1w08UiKhEj2yNADmU8xNe
                 $user->setPassword($hashedPassword);
 
             }else{
@@ -76,15 +93,21 @@ class UserController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+
             $this->addFlash('success', 'Profil mis à jour avec succès.');
-            return $this->redirectToRoute('app_profile', ['id' => $request->get('id')]);
-        } else {
-                $entityManager->refresh($user);
+
+			return $this->redirectToRoute('app_profile', [
+                'id' => $request->get('id'),
+                'cityName' => $cityName,
+                'currentUserId' => $CurrentUser,
+            ]);
         }
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,
+            'currentUserId' => $CurrentUser,
             'form' => $form,
+            'cityName' => $cityName,
         ]);
     }
 

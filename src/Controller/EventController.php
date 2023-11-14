@@ -38,6 +38,8 @@ class EventController extends AbstractController
 	#[Route('/sortie', name: 'app_event')]
     public function index(Request $request): Response
 	{
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
 		// Find all events
 		$events = $this->eventRepository->findAllNotArchived();
 
@@ -90,12 +92,16 @@ class EventController extends AbstractController
 			return $this->render('event/index.html.twig', [
 				'events' => $filteredResult,
 				'formFilter' => $formFilter->createView(),
+                'user' => $user,
+                'currentUserId' => $CurrentUser,
 			]);
 		}
 
         return $this->render('event/index.html.twig', [
             'events' => $events,
 			'formFilter' => $formFilter->createView(),
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -105,12 +111,16 @@ class EventController extends AbstractController
 	#[Route('/sortie/details/{id}', name: 'app_event_details')]
     public function details(EventRepository $eventRepository, int $id): Response
     {
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
         }
         return $this->render('event/details.html.twig', [
             'event' => $event,
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -153,6 +163,8 @@ class EventController extends AbstractController
 	#[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
     public function cancel(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository, int $id): Response
     {
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
@@ -176,7 +188,9 @@ class EventController extends AbstractController
 
         return $this->render('event/cancel.html.twig', [
             'event' => $event,
-            'form' => $form
+            'form' => $form,
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
     #[Route('/sortie/publish/{id}', name: 'app_event_publish')]

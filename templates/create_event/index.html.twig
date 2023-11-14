@@ -3,7 +3,7 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <h1 class="text-center pt-5">Créer une sortie</h1>
+    <h1 class="text-center fst-italic text-primary pt-5">Créer une sortie</h1>
     {{ form_start(formCreateEvent, { attr: { id: 'create_event' } }) }}
     {{ form_start(formCreateEventCity) }}
     {{ form_start(formCreateEventLocation) }}
@@ -28,21 +28,21 @@
             <div class="col-md-5">
                 <div class="mb-3">
                     <label for="create_event_user_city" class="form-label">Site</label>
-                    <input type="text" id="create_event_user_city" name="create_event_user[city]" value="{{ cityName }}" disabled class="form-control">
+                    <input type="text" id="create_event_user_city" name="create_event_user[city]" value="{{ cityName }}" disabled class="border-0 disabled form-control">
                 </div>
                 {{ form_row(formCreateEventCity.name, { 'attr': {'class': 'city-select'} }) }}
                 {{ form_row(formCreateEventLocation.name)}}
                 {% if errorLocation is not same as "" %}
                     {{ errorLocation }}
                 {% endif %}
-                {{ form_row(formCreateEventLocation.street) }}
-                {{ form_row(formCreateEventCity.zipcode, { 'attr': {'class': 'zipcode-input'} }) }}
+                {{ form_row(formCreateEventLocation.street, { 'attr' : { 'class': 'border-0 disabled' } }) }}
+                {{ form_row(formCreateEventCity.zipcode, { 'attr': {'class': 'border-0 zipcode-input disabled'} }) }}
                 <div class="row save-publish d-flex">
                     {{ form_row(formCreateEvent._token) }}
                     {{ form_row(formCreateEventLocation._token) }}
                     {{ form_row(formCreateEventCity._token) }}
-                    {{ form_row(formCreateEvent.save) }}
-                    {{ form_row(formCreateEvent.publish) }}
+                    {{ form_row(formCreateEvent.save, { 'attr' : { 'class': 'btn-outline-main' } }) }}
+                    {{ form_row(formCreateEvent.publish, { 'attr' : { 'class': 'btn-outline-warning' } }) }}
                 </div>
             </div>
         </div>

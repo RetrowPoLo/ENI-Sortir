@@ -1,14 +1,12 @@
 <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <p class="col-md-4 mb-0 text-body-secondary">&copy; Sortir.com</p>
-
-        <a href="{{ path('app_home') }}" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <img src="{{ asset('./build/images/logo.jpg') }}" alt="logo" width="40px" height="40px">
-        </a>
-
-        <ul class="nav col-md-4 justify-content-end">
-            <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link px-2 text-body-secondary">RGPD</a></li>
-            <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link px-2 text-body-secondary">Accessibilité</a></li>
-        </ul>
+    <footer class="d-flex justify-content-center py-3 my-4 border-top">
+        <p>
+            Informations légales -
+            &copy; {{ "now"|date("Y")}} <strong>Sortir.com</strong> by <a href="https://www.eni-ecole.fr" rel="noopener noreferrer" target="_blank">ENI Ecole Informatique</a>
+            &nbsp;-&nbsp;<a href="https://www.app.asso.fr/centre-information/base-de-connaissances/code-logiciels/les-contrats/contrat-de-licence-dutilisation-logiciel-libre" rel="noopener noreferrer" target="_blank">Le code source est sous licence</a>
+            &nbsp;-&nbsp;<a href="https://www.economie.gouv.fr/apie/propriete-intellectuelle-publications/contenus-sous-licences-libres" rel="noopener noreferrer" target="_blank">Le contenu du site Web est sous licence</a>
+            &nbsp;-&nbsp;<a href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees" rel="noopener noreferrer" target="_blank">RGPD</a>
+            &nbsp;-&nbsp;<a href="https://www.numerique.gouv.fr/publications/rgaa-accessibilite/obligations/" rel="noopener noreferrer" target="_blank">Accessibilité</a>
+        </p>
     </footer>
 </div>

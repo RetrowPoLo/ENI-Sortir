@@ -1,5 +1,54 @@
-body {
-    background-color: lightgray;
+.btn-dark-light {
+    --bs-btn-color: #000;
+    --bs-btn-bg: #d3d4d5;
+    --bs-btn-border-color: #f8f9fa;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #d3d4d5;
+    --bs-btn-hover-border-color: #c6c7c8;
+    --bs-btn-focus-shadow-rgb: 211,212,213;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #c6c7c8;
+    --bs-btn-active-border-color: #babbbc;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: #f8f9fa;
+    --bs-btn-disabled-border-color: #f8f9fa;
+}
+:root {
+    --main-color: #1e90ff;
+}
+.text-base-blue {
+    color: var(--main-color) !important;
+}
+.btn-outline-main {
+    border: 1px var(--main-color) solid;
+    color: var(--main-color);
+}
+.btn-outline-main:hover, .btn-outline-main:focus {
+    background-color: var(--main-color);
+    color: white;
+}
+.btn-outline-darklight {
+    border: 1px gray solid;
+    color: gray;
+}
+.btn-outline-darklight:hover, .btn-outline-darklight:focus {
+    background-color: gray;
+    color: white;
+}
+h1,h3 {
+    text-shadow: 3px 1px 10px rgba(0, 0, 0, 0.5);
+    font-family: auto;
+}
+.form-center .mb-3 {
+    display: inline-block;
+}
+.navbar-brand img {
+    margin-top: -5px;
+}
+.disabled {
+    border: none;
+    background-color: transparent !important;
 }
 label.required {
     position: relative;
@@ -25,13 +74,10 @@ label.required:before {
 #create_event .container .save-publish {
     margin-top: 50px;
 }
-.mb-3 {
-    display: flex;
-    align-items: center;
-}
 .form-select, .form-control {
     width: auto;
 }
+
 .mb-3 label{
     margin-right: 20px;
 }

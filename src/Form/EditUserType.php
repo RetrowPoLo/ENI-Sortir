@@ -68,8 +68,6 @@ class EditUserType extends AbstractType
             ->add('firstName', TextType::class, [ 'disabled' => !$isadmin,
                 'label' => 'Prénom'])
             ->add('phone', TelType::class,  ['label' => 'Téléphone'])
-            ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
-
         ;
     }
 
