@@ -27,6 +27,7 @@ class CreateEventController extends AbstractController
         /** @var User $user */
         $userLocationSiteId = $this->getUser()->getSitesNoSite();
         $userId = $this->getUser();
+        $user = $this->getUser();
 
         $cityRepository = $entityManager->getRepository(City::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
@@ -36,6 +37,7 @@ class CreateEventController extends AbstractController
         $event = new Event();
         $eventCity = new City();
         $eventUser = new User();
+
         $eventLocation = new Location();
 
         $formCreateEvent = $this->createForm(CreateEventType::class, $event);
@@ -74,6 +76,7 @@ class CreateEventController extends AbstractController
                     'errorEndTime' => '',
                     'errorLimitTime' => '',
                     'errorLocation' => '',
+                    'user'  => $user,
                 ]);
             } elseif ($endDateTime < $startDateTime) {
                     $error = "La date de fin de la sortie doit être supérieur a La date de début de la sortie";
@@ -87,6 +90,7 @@ class CreateEventController extends AbstractController
                         'errorEndTime' => $error,
                         'errorLimitTime' => '',
                         'errorLocation' => '',
+                        'user'  => $user,
                     ]);
             } elseif ($limitDateInscription < $time || $limitDateInscription > $startDateTime) {
                     $error = "La date de fin d'inscription doit être inférieur à La date de début de la sortie et/ou être supérieur à la date du jour";
@@ -100,6 +104,7 @@ class CreateEventController extends AbstractController
                         'errorEndTime' => '',
                         'errorLimitTime' => $error,
                         'errorLocation' => '',
+                        'user'  => $user,
                     ]);
             } elseif ($locationName === null) {
             $error = "Le lieu ne peux pas être vide";
@@ -113,6 +118,7 @@ class CreateEventController extends AbstractController
                 'errorEndTime' => '',
                 'errorLimitTime' => '',
                 'errorLocation' => $error,
+                'user'  => $user,
             ]);
         }
             else {
@@ -131,6 +137,7 @@ class CreateEventController extends AbstractController
             'errorEndTime' => $error,
             'errorLimitTime' => $error,
             'errorLocation' => $error,
+            'user'  => $user,
         ]);
     }
 
