@@ -23,32 +23,35 @@ class EventFilterAdminType extends AbstractType
 				'class' => LocationSite::class,
 				'choice_label' => 'name',
 				'required' => false,
-				'label' => false,
+				'label' => 'Sélectionner le site : ',
 				'placeholder' => 'Sélectionner le site',
 			])
 			->add('name', TextType::class, [
 				'required' => false,
-				'label' => false,
+				'label' => 'Rechercher une sortie par mot-clé : ',
 				'attr' => [
 					'placeholder' => 'Rechercher une sortie par mot-clé',
 				],
 			])
 			->add('startDateTime', DateType::class, [
 				'required' => false,
-				'label' => 'Entre',
+				'label' => 'Entre : ',
 				'mapped' => false,
 				'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'me-3',
+                ],
 			])
 			->add('endDateTime', DateType::class, [
 				'required' => false,
-				'label' => 'et',
+				'label' => 'et : ',
 				'mapped' => false,
 				'widget' => 'single_text',
 			])
 			->add('state', EnumType::class, [
 				'class' => State::class,
 				'required' => false,
-				'label' => false,
+				'label' => 'Etat de la sortie : ',
 				'choice_label' => fn ($choice) => match ($choice) {
 					State::Created => 'En création',
 					State::Open => 'Ouvert',

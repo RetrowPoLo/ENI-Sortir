@@ -29,6 +29,7 @@ class EventController extends AbstractController
 	#[Route('/sortie', name: 'app_event')]
     public function index(Request $request): Response
 	{
+        $user = $this->getUser();
 		// Find all events
 		$events = $this->eventRepository->findAllNotArchived();
 
@@ -81,12 +82,14 @@ class EventController extends AbstractController
 			return $this->render('event/index.html.twig', [
 				'events' => $filteredResult,
 				'formFilter' => $formFilter->createView(),
+                'user' => $user,
 			]);
 		}
 
         return $this->render('event/index.html.twig', [
             'events' => $events,
 			'formFilter' => $formFilter->createView(),
+            'user' => $user,
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -55,6 +56,11 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $user = $this->getUser();
+        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+        $cityRepository = $entityManager->getRepository(City::class);
+        $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
+        $cityName = $city->getName();
         $initPassword = $user->getPassword();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -63,12 +69,12 @@ class UserController extends AbstractController
             $entityManager->flush();
             $userModif = $form->getData();
 
-            if ($userModif->getPassword() != 'noknok') {
+            if ($userModif->getPassword() != '=5p!7WC5K6Iio') {
             $hashedPassword = $passwordHasher->hashPassword(
                 $userModif,
                 $userModif->getPassword()
             );
-
+               // $2y$13$032AxR1yZ78Lc0nzXYBjSOzGxVwCLn7A1w08UiKhEj2yNADmU8xNe
                 $user->setPassword($hashedPassword);
 
             }else{
@@ -78,12 +84,16 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'Profil mis à jour avec succès.');
-            return $this->redirectToRoute('app_profile', ['id' => $request->get('id')]);
+            return $this->redirectToRoute('app_profile', [
+                'id' => $request->get('id'),
+                'cityName' => $cityName,
+            ]);
         }
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
+            'cityName' => $cityName,
         ]);
     }
 

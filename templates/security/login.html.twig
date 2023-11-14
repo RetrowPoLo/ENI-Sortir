@@ -17,33 +17,36 @@
         {% endblock %}
     </head>
     <body>
-        <div class="container-fluid w-25 mt-5 pt-5">
+        <div class="container-fluid w-75 mt-5 pt-5">
             <div class="d-flex align-items-center py-4">
                 <main class="form-signin w-100 m-auto">
-                    <form method="post">
-                        {% if error %}
-                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %}
+                    <form method="post" class="d-flex justify-content-center">
+                        <div class="bg-light p-5">
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
 
-                        <h1 class="h3 mb-3 fw-normal">Connexion</h1>
+                            <h1 class="h3 fst-italic text-primary mb-3 justify-content-center fw-bold">Authentification</h1>
 
-                        <div class="form-floating mb-3">
-                            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" placeholder="name@example.com" required autofocus>
-                            <label for="username">Email, nom d'utilisateur</label>
+                            <div class="d-flex justify-content-between mb-3">
+                                <label for="username" class="required">Email, nom d'utilisateur</label>
+                                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" placeholder="name@example.com" required autofocus>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <label for="password" class="required">Mot de passe</label>
+                                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Mot de passe" required>
+                            </div>
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <div class="d-flex align-items-center justify-content-evenly">
+                                <button class="btn btn-outline-primary btn-main-color d-flex justify-content-center h-25 w-25 py-2" type="submit">Connexion</button>
+
+                                <div class="form-check text-start my-3">
+                                    <input class="form-check-input" type="checkbox" name="_remember_me" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">Se souvenir de moi</label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-floating">
-                            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Mot de passe" required>
-                            <label for="password">Mot de passe</label>
-                        </div>
-
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                        <div class="form-check text-start my-3">
-                            <input class="form-check-input" type="checkbox" name="_remember_me" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">Se souvenir de moi</label>
-                        </div>
-
-                        <button class="btn btn-primary w-100 py-2" type="submit">Connexion</button>
                     </form>
                 </main>
             </div>
