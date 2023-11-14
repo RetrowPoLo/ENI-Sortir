@@ -18,6 +18,7 @@ use App\Repository\EventRepository;
 use App\Repository\LocationSiteRepository;
 use App\Entity\State;
 use App\Repository\UserRepository;
+use App\Service\EventService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -115,35 +116,31 @@ class EventController extends AbstractController
     }
 
     #[Route('/sortie/edit/{id}', name: 'app_event_edit')]
-    public function edit(EventRepository $eventRepository, int $id): Response
+    public function edit( EntityManagerInterface $entityManager, Request $request, EventService $eventService, EventRepository $eventRepository, int $id): Response
     {
-        $error = "";
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
         }
+        $selectedCity = $event->getEventLocation()->getCity();
+        $selectedLocation = $event->getEventLocation();
+        $event->getEventLocation()->setCity(new City());
+        $event->setEventLocation(new Location);
 
-        $eventCity = $event->getEventLocation()->getCity();
-        $eventUser = $event->getUser();
-        $eventLocation = $event->getEventLocation();
-
-        $formCreateEvent = $this->createForm(CreateEventType::class, $event);
-        $formCreateEventLocation = $this->createForm(CreateEventLocationType::class, $eventLocation);
-        $formCreateEventCity = $this->createForm(CreateEventCityType::class, $eventCity);
-        $formCreateEventUser = $this->createForm(CreateEventUserType::class, $eventUser);
-
-        return $this->render('create_event/index.html.twig', [
-
-            'formCreateEvent' => $formCreateEvent,
-            'formCreateEventLocation' => $formCreateEventLocation,
-            'formCreateEventCity' => $formCreateEventCity,
-            'formCreateEventUser' => $formCreateEventUser,
-            'cityName' => $eventCity->getName(),
-            'errorStartTime' => $error,
-            'errorEndTime' => $error,
-            'errorLimitTime' => $error,
-            'errorLocation' => $error,
+        $formCreateEvent = $this->createForm(CreateEventType::class, $event, [
+            'selected_city' => $selectedCity,
+            'selected_location' => $selectedLocation,
         ]);
+
+        $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
+
+        $result['params']['title'] = 'Modifier une sortie';
+        if($result['view'] == 'event/index.html.twig'){
+            return $this->redirectToRoute(('app_event'));
+        }
+        else{
+            return $this->render($result['view'], $result['params']);
+        }
     }
 
 	/**

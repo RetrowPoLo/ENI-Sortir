@@ -11,7 +11,10 @@ use App\Form\CreateEventCityType;
 use App\Form\CreateEventLocationType;
 use App\Form\CreateEventType;
 use App\Form\CreateEventUserType;
+use App\Repository\EventRepository;
+use App\Service\EventService;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,116 +25,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateEventController extends AbstractController
 {
     #[Route('/create/event', name: 'app_create_event')]
-    public function index(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
+    public function index(Request $request, EntityManagerInterface $entityManager,
+            EventRepository $eventRepository, EventService $eventService): Response
     {
-        /** @var User $user */
-        $userLocationSiteId = $this->getUser()->getSitesNoSite();
-        $userId = $this->getUser();
-
-        $cityRepository = $entityManager->getRepository(City::class);
-        $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
-        $cityName = $city->getName();
-        $error = "";
-
         $event = new Event();
-        $eventCity = new City();
-        $eventUser = new User();
-        $eventLocation = new Location();
 
         $formCreateEvent = $this->createForm(CreateEventType::class, $event);
-        $formCreateEventLocation = $this->createForm(CreateEventLocationType::class, $eventLocation);
-        $formCreateEventCity = $this->createForm(CreateEventCityType::class, $eventCity);
-        $formCreateEventUser = $this->createForm(CreateEventUserType::class, $eventUser);
 
-        $formCreateEvent->handleRequest($request);
-        $formCreateEventLocation->handleRequest($request);
-        if ($formCreateEvent->isSubmitted() && $formCreateEvent->isValid()) {
-            $event->setLocationSiteEvent($userLocationSiteId);
-            $event->setUser($userId);
-            if ('publish' === $formCreateEvent->getClickedButton()->getName()) {
-                $event->setState(State::Open);
-            }
-            $event->setEventLocation($formCreateEventLocation->get("name")->getData());
-
-            // Obtenez la date actuelle au format UTC
-            $time = new \DateTime('now', new \DateTimeZone('UTC'));
-            $startDateTime = $formCreateEvent->get("startDateTime")->getData();
-
-            $endDateTime = $formCreateEvent->get("endDateTime")->getData();
-            $limitDateInscription = $formCreateEvent->get("limitDateInscription")->getData();
-            $locationName = $formCreateEventLocation->get("name")->getData();
-
-
-                if ($startDateTime < $time) {
-                $error = "La date de début de la sortie doit être supérieur a la date actuelle";
-                return $this->render('create_event/index.html.twig', [
-                    'formCreateEvent' => $formCreateEvent,
-                    'formCreateEventLocation' => $formCreateEventLocation,
-                    'formCreateEventCity' => $formCreateEventCity,
-                    'formCreateEventUser' => $formCreateEventUser,
-                    'cityName' => $cityName,
-                    'errorStartTime' => $error,
-                    'errorEndTime' => '',
-                    'errorLimitTime' => '',
-                    'errorLocation' => '',
-                ]);
-            } elseif ($endDateTime < $startDateTime) {
-                    $error = "La date de fin de la sortie doit être supérieur a La date de début de la sortie";
-                    return $this->render('create_event/index.html.twig', [
-                        'formCreateEvent' => $formCreateEvent,
-                        'formCreateEventLocation' => $formCreateEventLocation,
-                        'formCreateEventCity' => $formCreateEventCity,
-                        'formCreateEventUser' => $formCreateEventUser,
-                        'cityName' => $cityName,
-                        'errorStartTime' => '',
-                        'errorEndTime' => $error,
-                        'errorLimitTime' => '',
-                        'errorLocation' => '',
-                    ]);
-            } elseif ($limitDateInscription < $time || $limitDateInscription > $startDateTime) {
-                    $error = "La date de fin d'inscription doit être inférieur à La date de début de la sortie et/ou être supérieur à la date du jour";
-                    return $this->render('create_event/index.html.twig', [
-                        'formCreateEvent' => $formCreateEvent,
-                        'formCreateEventLocation' => $formCreateEventLocation,
-                        'formCreateEventCity' => $formCreateEventCity,
-                        'formCreateEventUser' => $formCreateEventUser,
-                        'cityName' => $cityName,
-                        'errorStartTime' => '',
-                        'errorEndTime' => '',
-                        'errorLimitTime' => $error,
-                        'errorLocation' => '',
-                    ]);
-            } elseif ($locationName === null) {
-            $error = "Le lieu ne peux pas être vide";
-            return $this->render('create_event/index.html.twig', [
-                'formCreateEvent' => $formCreateEvent,
-                'formCreateEventLocation' => $formCreateEventLocation,
-                'formCreateEventCity' => $formCreateEventCity,
-                'formCreateEventUser' => $formCreateEventUser,
-                'cityName' => $cityName,
-                'errorStartTime' => '',
-                'errorEndTime' => '',
-                'errorLimitTime' => '',
-                'errorLocation' => $error,
-            ]);
+        $result = $eventService->createEditEvent($entityManager, $request,
+            $event, $this->getUser(), $formCreateEvent);
+        $result['params']['title'] = 'Créer une sortie';
+        if($result['view'] == 'event/index.html.twig'){
+            return $this->redirectToRoute(('app_event'));
         }
-            else {
-                $entityManager->persist($event);
-                $entityManager->flush();
-            }
+        else{
+            return $this->render($result['view'], $result['params']);
         }
-
-        return $this->render('create_event/index.html.twig', [
-            'formCreateEvent' => $formCreateEvent,
-            'formCreateEventLocation' => $formCreateEventLocation,
-            'formCreateEventCity' => $formCreateEventCity,
-            'formCreateEventUser' => $formCreateEventUser,
-            'cityName' => $cityName,
-            'errorStartTime' => $error,
-            'errorEndTime' => $error,
-            'errorLimitTime' => $error,
-            'errorLocation' => $error,
-        ]);
     }
 
     #[Route('/get-zipcode/{city}-{location}', name: 'get_zipcode', methods: ['GET'])]

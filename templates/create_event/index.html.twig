@@ -3,79 +3,67 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <h1 class="text-center pt-5">Créer une sortie</h1>
-    {{ form_start(formCreateEvent, { attr: { id: 'create_event' } }) }}
-    {{ form_start(formCreateEventCity) }}
-    {{ form_start(formCreateEventLocation) }}
-        <div class="row container">
+    <h1 class="text-center pt-5">{{ title }}</h1>
+    <div class="container">
+    {{ form_start(formCreateEvent) }}
+        <div class="row">
             <div class="col-md-5">
                 {{ form_row(formCreateEvent.name) }}
                 {{ form_row(formCreateEvent.startDateTime) }}
-                {% if errorStartTime is not same as "" %}
-                    {{ errorStartTime }}
-                {% endif %}
                 {{ form_row(formCreateEvent.endDateTime) }}
-                {% if errorEndTime is not same as "" %}
-                    {{ errorEndTime }}
-                {% endif %}
                 {{ form_row(formCreateEvent.limitDateInscription) }}
-                {% if errorLimitTime is not same as "" %}
-                    {{ errorLimitTime }}
-                {% endif %}
                 {{ form_row(formCreateEvent.nbInscriptionMax) }}
                 {{ form_row(formCreateEvent.event_info) }}
             </div>
-            <div class="col-md-5">
-                <div class="mb-3">
-                    <label for="create_event_user_city" class="form-label">Site</label>
-                    <input type="text" id="create_event_user_city" name="create_event_user[city]" value="{{ cityName }}" disabled class="form-control">
-                </div>
-                {{ form_row(formCreateEventCity.name, { 'attr': {'class': 'city-select'} }) }}
-                {{ form_row(formCreateEventLocation.name)}}
-                {% if errorLocation is not same as "" %}
-                    {{ errorLocation }}
-                {% endif %}
-                {{ form_row(formCreateEventLocation.street) }}
-                {{ form_row(formCreateEventCity.zipcode, { 'attr': {'class': 'zipcode-input'} }) }}
-                <div class="row save-publish d-flex">
-                    {{ form_row(formCreateEvent._token) }}
-                    {{ form_row(formCreateEventLocation._token) }}
-                    {{ form_row(formCreateEventCity._token) }}
-                    {{ form_row(formCreateEvent.save) }}
-                    {{ form_row(formCreateEvent.publish) }}
-                </div>
+            <div class="col-md-5 offset-md-1">
+                {{ form_row(formCreateEvent.locationSiteEvent) }}
+                {{ form_row(formCreateEvent.eventLocation.city.name) }}
+                {{ form_row(formCreateEvent.eventLocation.name) }}
+                {{ form_row(formCreateEvent.eventLocation.street) }}
+                {{ form_row(formCreateEvent.eventLocation.city.zipcode) }}
+                {{ form_row(formCreateEvent.save) }}
+                {{ form_row(formCreateEvent.publish) }}
             </div>
         </div>
-    {{ form_end(formCreateEventLocation) }}
-    {{ form_end(formCreateEventCity) }}
     {{ form_end(formCreateEvent) }}
+    </div>
 
     <script>
-            // Get references to the select and input elements
-            const citySelect = document.getElementById('create_event_city_name');
-            const zipcodeInput = document.getElementById('create_event_city_zipcode');
-            const locationSelect = document.getElementById('create_event_location_name');
-            const streetInput = document.getElementById('create_event_location_street');
+        // Get references to the select and input elements
+        const citySelect = document.getElementById('create_event_eventLocation_city_name');
+        const zipcodeInput = document.getElementById('create_event_eventLocation_city_zipcode');
+        const locationSelect = document.getElementById('create_event_eventLocation_name');
+        const streetInput = document.getElementById('create_event_eventLocation_street');
 
-            // Function to update the ZIP code input field based on the selected city
-            function updateZipcodeAndStreet() {
+        const base_url = window.location.origin;
+        const pathArray = window.location.pathname.split( '/' );
+        let completeBaseUrl = base_url;
+        if(pathArray[1]!=='public'){
+            completeBaseUrl = completeBaseUrl+'/'+pathArray[1]+'/'+pathArray[2];
+        }
+        else{
+            completeBaseUrl = completeBaseUrl+'/'+pathArray[1];
+        }
+
+        // Function to update the ZIP code input field based on the selected city
+        function updateZipcodeAndStreet() {
             const selectedCity = citySelect.value;
             let selectedLocation = locationSelect.value;
             if (locationSelect.value === '') {
                 selectedLocation = null
             }
             // Make an AJAX request to fetch the ZIP code
-            fetch(`/public/get-zipcode/${selectedCity}-${selectedLocation}`)
-            .then(response => response.json())
-            .then(data => {
-            zipcodeInput.value = data.zipcode;
-            if (locationSelect.value === '') {
-                streetInput.value = ''
-            } else {
-                streetInput.value = data.street;
-            }
+            fetch(completeBaseUrl+`/get-zipcode/${selectedCity}-${selectedLocation}`)
+                .then(response => response.json())
+                .then(data => {
+                    zipcodeInput.value = data.zipcode;
+                    if (locationSelect.value === '') {
+                        streetInput.value = ''
+                    } else {
+                        streetInput.value = data.street;
+                    }
 
-        });
+                });
         }
 
         // Fonction pour mettre à jour le champ de sélection de l'emplacement en fonction de la ville sélectionnée
@@ -83,7 +71,7 @@
             const selectedCity = citySelect.value;
 
             // Make an AJAX request to fetch the locations based on the selected city
-            fetch(`/public/get-locations/${selectedCity}`)
+            fetch(completeBaseUrl+`/get-locations/${selectedCity}`)
                 .then(response => response.json())
                 .then(data => {
                     // Clear existing options

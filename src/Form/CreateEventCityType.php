@@ -3,38 +3,38 @@
 namespace App\Form;
 
 use App\Entity\City;
-use App\Repository\CityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateEventCityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $selectedCity = $options['selected_city'];
+
         $builder
-            ->add('name', entityType::class, [
+            ->add('name', EntityType::class, [
                 'class' => City::class,
                 'choice_label' => 'name',
                 'label' => 'Ville',
+                'data' => $selectedCity,
             ])
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal',
                 'mapped' => false,
                 'disabled' => true,
                 'required' => false,
+                'data' => $selectedCity ? $selectedCity->getZipcode() : ""
             ]);
     }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => City::class,
+            'selected_city' => null,
         ]);
     }
 }
