@@ -115,7 +115,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/edit/{id}', name: 'app_event_edit')]
+    #[Route('/sortie/editer/{id}', name: 'app_event_edit')]
     public function edit(EventRepository $eventRepository, int $id): Response
     {
         return $this->redirectToRoute('app_event');
@@ -125,7 +125,7 @@ class EventController extends AbstractController
 	 * @throws NonUniqueResultException
 	 * @throws \Exception
 	 */
-	#[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
+	#[Route('/sortie/annuler/{id}', name: 'app_event_cancel')]
     public function cancel(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository, int $id): Response
     {
         $user = $this->getUser();
@@ -158,7 +158,7 @@ class EventController extends AbstractController
             'currentUserId' => $CurrentUser,
         ]);
     }
-    #[Route('/sortie/publish/{id}', name: 'app_event_publish')]
+    #[Route('/sortie/publier/{id}', name: 'app_event_publish')]
     public function publish(EventRepository $eventRepository, EntityManagerInterface $entityManager, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);
@@ -175,7 +175,7 @@ class EventController extends AbstractController
 	 * @throws NonUniqueResultException
 	 * @throws \Exception
 	 */
-	#[Route('/sortie/subscribe/{id}', name: 'app_event_subscribe')]
+	#[Route('/sortie/s\'inscrire/{id}', name: 'app_event_subscribe')]
     public function subscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);
@@ -196,7 +196,7 @@ class EventController extends AbstractController
 	 * @throws NonUniqueResultException
 	 * @throws \Exception
 	 */
-	#[Route('/sortie/unsubscribe/{id}', name: 'app_event_unsubscribe')]
+	#[Route('/sortie/se-désinscrire/{id}', name: 'app_event_unsubscribe')]
     public function unsubscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);

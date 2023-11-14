@@ -29,10 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
 	#[ORM\Column(length: 180, unique: true)]
-         //         	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
-         //         	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
-         //         	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
-                  	private ?string $username = null;
+	private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -102,7 +99,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->username;
     }
-
 
 	public function setUsername(string $username): static
      {
@@ -271,7 +267,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getSitesNoSite(): ?locationSite
-
     {
         return $this->sites_no_site;
     }
@@ -306,5 +301,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }
