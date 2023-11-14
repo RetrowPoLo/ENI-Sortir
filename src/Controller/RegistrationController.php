@@ -45,6 +45,8 @@ class RegistrationController extends AbstractController
             $picture = 'img/imageProfilDefaut.jpg';
             $user->setPicture($picture);
 
+            $user->setForceChange(1);
+
 			// Persist the user to the database
             $entityManager->persist($user);
             $entityManager->flush();

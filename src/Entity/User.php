@@ -38,10 +38,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      */
     #[ORM\Column]
-    #[Assert\AtLeastOneOf([
-        new Assert\Regex('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&^_-]{12,}$/',
-            message: 'Le mot de passe doit contenir, une majuscule, une minuscule, un chiffre et un caractère spécial à l\'exception de / et - !'),
-    ])]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!=%*?&])[A-Za-z\d@$!=%*?&^]+$/',
+        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
+
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -69,6 +69,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $picture = null;
 
+    #[ORM\Column]
+    private ?int $force_change = null;
+
     public function __construct()
     {
         $this->registred = new ArrayCollection();
@@ -88,6 +91,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -127,6 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
+
         return $this;
     }
 
@@ -141,6 +146,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -161,6 +167,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -172,6 +179,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstName(string $firstName): static
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -183,6 +191,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -194,6 +203,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
         return $this;
     }
 
@@ -217,6 +227,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeRegistred(Event $registred): static
     {
         $this->registred->removeElement($registred);
+
         return $this;
     }
 
@@ -263,6 +274,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSitesNoSite(?locationSite $sites_no_site): static
     {
         $this->sites_no_site = $sites_no_site;
+
         return $this;
     }
 
@@ -274,6 +286,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getForceChange(): ?int
+    {
+        return $this->force_change;
+    }
+
+    public function setForceChange(int $force_change): static
+    {
+        $this->force_change = $force_change;
+
         return $this;
     }
 }

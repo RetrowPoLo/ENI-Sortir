@@ -10,7 +10,7 @@
     {% endfor %}
 
     <div class="container"  style="max-width: 25%;">
-        <h1>Profil de {{ app.user.username }}</h1>
+        <h1 class="fst-italic text-primary">Profil de {{ app.user.username }}</h1>
         <div id="profile_pic" style="left: 15%;position: absolute;">
             <img src="{{ asset(user.picture) }}" alt="{{ user.firstname }} {{ user.name }}">
         </div>

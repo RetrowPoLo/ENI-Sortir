@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class UserType extends AbstractType
 {
@@ -27,17 +28,31 @@ class UserType extends AbstractType
                     'invalid_message' => 'Le mot de passe doit correspondre.',
                     'options' => ['attr' => ['class' => 'password-field']],
                     'first_options'  => ['label' => 'Mot de passe',
-                        'required' => false,
+                        'required' => true,
+                        'constraints' => [new length([
+                            'min' => 12,
+                            'minMessage' => 'Le mot de passe doit contenir au moins 12 caractères',
+                            // max length allowed by Symfony for security reasons
+                            'max' => 4096,
+                        ])],
                         'attr' => array(
                             'placeholder' => 'Laisser vide pour ne pas modifier le mot de passe'
                         ),
-                        'empty_data' => 'noknok'],
+                        'empty_data' => '=5p!7WC5K6Iio'],
                     'second_options' => ['label' => 'Confirmer le mot de passe',
                         'required' => false,
+                        'constraints' => [
+                            new length([
+                                'min' => 12,
+                                'minMessage' => 'Le mot de passe doit contenir au moins 12 caractères',
+                                // max length allowed by Symfony for security reasons
+                                'max' => 4096,
+                            ])],
                         'attr' => array(
                             'placeholder' => 'Laisser vide pour ne pas modifier le mot de passe'
                         ),
-                    'empty_data' => 'noknok',], ]
+                    'empty_data' => '=5p!7WC5K6Iio',],
+        ],
             )
 
             ->add('name', TextType::class,  ['label' => 'Nom'])
