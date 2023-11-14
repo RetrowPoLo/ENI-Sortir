@@ -15,7 +15,7 @@
     <tbody>
         {% for event in events %}
             <tr>
-                <td>{{ event.name }}</td>
+                <td class="text-base-blue">{{ event.name }}</td>
                 <td>{{ event.startDateTime|date("d/m/Y") }}</td>
                 <td>{{ event.endDateTime|date("d/m/Y") }}</td>
                 <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
@@ -28,7 +28,7 @@
                         </div>
                     {% endif %}
                 </td>
-                <td>
+                <td class="text-base-blue">
                     {% if event.getIsSub(app.user) == true %}
                         <a href="{{ app.request.getBaseURL() }}/profile/{{ event.user.id }}">{{ event.user.getFullName }}</a>
                     {% else %}
