@@ -30,7 +30,7 @@
         {% if app.user and is_granted('ROLE_ADMIN')%}
             <a href="{{ path('app_profile_edit', {'userid': user.id}) }}" class="btn btn-primary">Modifier</a>
         {% endif %}
-        <a href="{{ path('app_home') }}" class="btn btn-outline-darklight">Retour</a>
+        <a href="javascript:history.back()" class="btn btn-outline-darklight">Retour</a>
     </div>
 
 {% endblock %}
