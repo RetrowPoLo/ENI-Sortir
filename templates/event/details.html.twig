@@ -16,32 +16,32 @@
             <div class="row">
                 <div class="col">
                     <div class="row mb-3">
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Nom de la sortie: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Nom de la sortie: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.name }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Date et heure de la sortie: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Date et heure de la sortie: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.startDateTime|date("d/m/Y") }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Date et heure de la sortie: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Date et heure de la sortie: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.endDateTime|date("d/m/Y") }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Date limite d'inscription: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Date limite d'inscription: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.limitDateInscription|date("d/m/Y") }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Nombre de places: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Nombre de places: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.getNbInscriptionMax }}</label>
                         </div>
 
-                        <label for="descriptionEvent" class="col-sm-6 col-form-label text-primary">Description et infos: </label>
+                        <label for="descriptionEvent" class="col-sm-6 col-form-label text-base-blue">Description et infos: </label>
                         <div class="col-sm-6">
                             <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.eventInfo }}</textarea>
                         </div>
@@ -49,32 +49,32 @@
                 </div>
                 <div class="col">
                     <div class="row mb-3">
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Ville: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Ville: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.eventLocation.city.name }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Lieu: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Lieu: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.eventLocation.name }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">Rue: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Rue: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.eventLocation.street }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">code postal: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">code postal: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.eventLocation.city.zipcode }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">latitude: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">latitude: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.eventLocation.latitude }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-primary">longitude: </label>
+                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">longitude: </label>
                         <div class="col-sm-6">
                             <label class="col-form-label">{{ event.eventLocation.longitude }}</label>
                         </div>
@@ -82,7 +82,7 @@
                 </div>
             </div>
             {% if event.cancellationReason != null and event.state.value == "CANCELED" %}
-            <label for="descriptionEvent" class="col-sm-6 col-form-label text-primary">Motif d'annulation: </label>
+            <label for="descriptionEvent" class="col-sm-6 col-form-label text-base-blue">Motif d'annulation: </label>
             <div class="col-sm-6">
                 <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.cancellationReason }}</textarea>
             </div>
@@ -114,6 +114,5 @@
 </div>
     {% block javascripts %}
         {{ parent() }}
-        <script src="{{ asset('./build/leaflet-map.js') }}"></script>
     {% endblock %}
 {% endblock %}

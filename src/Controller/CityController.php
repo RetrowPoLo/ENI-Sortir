@@ -19,6 +19,7 @@ class CityController extends AbstractController
     public function index(CityRepository $cityRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        $CurrentUser = $this->getUser();
 		// Create a new city
         $city = new City();
 
@@ -59,7 +60,8 @@ class CityController extends AbstractController
             'cities' => $cities,
             'form' => $form,
             'formSearch' => $formSearch,
-            'user' => $user
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -67,6 +69,7 @@ class CityController extends AbstractController
     public function edit(CityRepository $cityRepository, Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $user = $this->getUser();
+        $CurrentUser = $this->getUser();
         $city = $cityRepository->find($id);
         $form = $this->createForm(CityType::class, $city);
         $form->handleRequest($request);
@@ -80,6 +83,7 @@ class CityController extends AbstractController
             'city' => $city,
             'form' => $form,
             'user' => $user,
+            'currentUserId' => $CurrentUser
         ]);
     }
 

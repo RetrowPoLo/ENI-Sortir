@@ -67,6 +67,7 @@ class ProfileController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
+        $CurrentUser = $this->getUser();
         $userLocationSiteId = $this->getUser()->getSitesNoSite();
         $cityRepository = $entityManager->getRepository(City::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
@@ -94,6 +95,7 @@ class ProfileController extends AbstractController
             return $this->render('profile/edit.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user,
+                'currentUserId' => $CurrentUser,
                 'cityName' => $cityName,
 //              'form' => $form,
             ]);

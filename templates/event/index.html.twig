@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="container mt-5">
-        <h3>Filtrer les sorties</h3>
+        <h3 class="fst-italic text-base-blue">Filtrer les sorties</h3>
         {% if is_granted('ROLE_ADMIN') %}
             {{ form_start(formFilter) }}
             <div class="filter-home d-flex row align-items-center p-3">
@@ -24,18 +24,9 @@
             </div>
             <div class="d-flex justify-content-between pt-3">
                 <div class="col-4">
-                    {{ form_row(formFilter.save) }}
-                </div>
-                <div class="col-4 d-flex justify-content-center">
-                    <h1 class="fst-italic text-primary">Liste des sorties</h1>
-                </div>
-                <div class="col-4">
-                    <div class="d-flex justify-content-end">
-                        <a class="btn-outline-primary btn" href="{{ app.request.getBaseURL() }}/create/event">Ajouter une sortie</a>
-                    </div>
+                    {{ form_row(formFilter.save, { 'attr': {'class': 'btn-outline-darklight'} }) }}
                 </div>
             </div>
-
             {{ form_end(formFilter) }}
         {% else %}
             {{ form_start(formFilter) }}
@@ -57,16 +48,13 @@
             </div>
             <div class="d-flex justify-content-between pt-3">
                 {{ form_row(formFilter.save) }}
-                <h1 class="fst-italic text-primary">Liste des sorties</h1>
-                <div class="text-center">
-                    <a class="btn-outline-primary btn" href="{{ app.request.getBaseURL() }}/create/event">Ajouter une sortie</a>
-                </div>
             </div>
             {{ form_end(formFilter) }}
         {% endif %}
-
-        <div class="text-center">
-            <button class="btn-outline-primary btn" id="changeDisplayType" >Changer type de vue</button>
+        <h1 class="fst-italic text-base-blue">Liste des sorties</h1>
+        <div class="d-flex justify-content-center">
+            <button class="btn-outline-success m-2 btn" id="changeDisplayType" >Changer type de vue</button>
+            <a class="btn-outline-success m-2 btn" href="{{ app.request.getBaseURL() }}/create/event">Ajouter une sortie</a>
         </div>
         <div class="mt-5">
             {% if events|length > 0 %}
