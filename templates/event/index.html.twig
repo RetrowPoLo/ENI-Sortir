@@ -3,6 +3,12 @@
 {% block title %}Liste des sorties{% endblock %}
 
 {% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="container mt-5">
         <h3 class="fst-italic text-base-blue">Filtrer les sorties</h3>
         {% if is_granted('ROLE_ADMIN') %}

@@ -66,7 +66,7 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $CurrentUser = $this->getUser();
-        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+        $userLocationSiteId = $this->getUser()->getCity();
         $cityRepository = $entityManager->getRepository(City::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
         $cityName = $city->getName();
@@ -78,18 +78,13 @@ class UserController extends AbstractController
             $entityManager->flush();
             $userModif = $form->getData();
 
-            if ($userModif->getPassword() != '=5p!7WC5K6Iio') {
 				$hashedPassword = $passwordHasher->hashPassword(
 					$userModif,
-					$userModif->getPassword()
-				);
+					$userModif->getPassword());
 
-               // $2y$13$032AxR1yZ78Lc0nzXYBjSOzGxVwCLn7A1w08UiKhEj2yNADmU8xNe
+
                 $user->setPassword($hashedPassword);
 
-            }else{
-                $user->setPassword($initPassword);
-            }
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -101,6 +96,8 @@ class UserController extends AbstractController
                 'cityName' => $cityName,
                 'currentUserId' => $CurrentUser,
             ]);
+        }else{
+            $user->setPassword($initPassword);
         }
 
         return $this->render('user/edit.html.twig', [

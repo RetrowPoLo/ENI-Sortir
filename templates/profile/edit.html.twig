@@ -21,13 +21,15 @@
                     <label for="edit_user_city" class="form-label">Site : </label>
                     <input type="text" id="edit_user_city" name="edit_user[city]" value="{{ cityName }}" disabled="disabled" class="disabled border-0 form-control">
                 </div>
-                {{ form_row(form.password) }}
+{#                {{ form_row(form.password) }}#}
             </div>
         </div>
         <div class="d-flex justify-content-end">
-            <button type="submit" class="btn m-2 btn-outline-main">Enregistrer</button>
-            <a class="btn m-2 btn-outline-darklight" href="#">Modifier le mot de passe</a>
+            {{ form_row(form.save) }}
+{#            <button type="submit" class="btn m-2 btn-outline-main">Enregistrer</button>#}
+            <a class="btn m-2 btn-outline-darklight" href="{{ path('edit_password', {'userid': currentUserId.id}) }}">Modifier le mot de passe</a>
         </div>
         {{ form_end(form) }}
     </div>
+
 {% endblock %}

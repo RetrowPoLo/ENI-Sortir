@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -24,7 +25,7 @@ class FirstLoginType extends AbstractType
     {
 
         $builder
-            ->add('username', TextType::class, ['mapped'=>false, 'label' => 'Pseudo',
+            ->add('username', TextType::class, ['mapped'=>true, 'label' => 'Pseudo',
                 'constraints' => [
                     new notBlank([
                         'message' => 'Veuillez saisir un pseudo',
@@ -50,20 +51,17 @@ class FirstLoginType extends AbstractType
                     'required' => true,
                     'first_options'  => ['label' => 'Mot de passe',
                         'constraints' => [
+                            new Regex([
+                                'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\/-])[^\/-]*$/',
+                                'message' => 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"'
+                            ]),
                             new length([
                                 'min' => 12,
                                 'minMessage' => 'Le mot de passe doit contenir au moins 12 caractères',
                                 // max length allowed by Symfony for security reasons
                                 'max' => 4096,
                             ])]],
-                    'second_options' => ['label' => 'Confirmer le mot de passe',
-                        'constraints' => [
-                            new length([
-                                'min' => 12,
-                                'minMessage' => 'Le mot de passe doit contenir au moins 12 caractères',
-                                // max length allowed by Symfony for security reasons
-                                'max' => 4096,
-                            ])]],
+                    'second_options' => ['label' => 'Confirmer le mot de passe',],
                    ]
             )
 
