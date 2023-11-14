@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Participants{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
@@ -29,7 +29,7 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.firstName }}</td>
-                    <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
+                    <td>{{ user.isActive ? '✔' : '✘' }}</td>
                     <td>
                         <a class="btn btn-outline-primary me-2" href="{{ path('app_user_show', {'id': user.id}) }}">Afficher</a>
                         <a class="btn btn-outline-success" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
