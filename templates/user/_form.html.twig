@@ -1,8 +1,24 @@
-<div class="container-fluid w-25 mt-2">
+<div class="container-fluid w-50 mt-2">
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-    <a href="{{ path('app_home') }}" class="btn btn-secondary">Retour</a>
+    <div class="d-flex">
+        <div class="col-6">
+            {{ form_row(form.username) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.phone) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.email) }}
+            <div class="mb-3">
+                <label for="edit_user_city" class="form-label">Site : </label>
+                <input type="text" id="edit_user_city" name="edit_user[city]" value="{{ cityName }}" disabled="disabled" class="disabled border-0 form-control">
+            </div>
+            {{ form_row(form.password) }}
+            {{ form_row(form.sites_no_site) }}
+        </div>
+    </div>
+    <button class="btn btn-outline-primary">{{ button_label|default('Save') }}</button>
+    <a href="{{ path('app_home') }}" class="btn btn-outline-warning">Retour</a>
 {{ form_end(form) }}
     </div>
 

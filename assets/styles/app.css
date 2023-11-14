@@ -14,11 +14,15 @@
     --bs-btn-disabled-bg: #f8f9fa;
     --bs-btn-disabled-border-color: #f8f9fa;
 }
+h1 {
+    text-shadow: 3px 1px 10px rgba(0, 0, 0, 0.5);
+    font-family: auto;
+}
+.form-center .mb-3 {
+    display: inline-block;
+}
 .navbar-brand img {
     margin-top: -5px;
-}
-input, select, textarea {
-    border: 2px black solid !important;
 }
 .disabled {
     border: none;
@@ -48,13 +52,10 @@ label.required:before {
 #create_event .container .save-publish {
     margin-top: 50px;
 }
-.mb-3 {
-    display: flex;
-    align-items: center;
-}
 .form-select, .form-control {
     width: auto;
 }
+
 .mb-3 label{
     margin-right: 20px;
 }
