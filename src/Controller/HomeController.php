@@ -13,15 +13,18 @@ class HomeController extends AbstractController
     public function index(Request $request): Response
     {
         $user = $this->getUser();
+        $CurrentUser = $this->getUser();
 
         if($user->getForceChange()===0){
         return $this->redirectToRoute('app_event', [
             'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
         }
         else {
         return $this->redirectToRoute('app_first_login', [
             'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
         }
 

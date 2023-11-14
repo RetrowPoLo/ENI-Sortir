@@ -14,7 +14,29 @@
     --bs-btn-disabled-bg: #f8f9fa;
     --bs-btn-disabled-border-color: #f8f9fa;
 }
-h1 {
+:root {
+    --main-color: #1e90ff;
+}
+.text-base-blue {
+    color: var(--main-color) !important;
+}
+.btn-outline-main {
+    border: 1px var(--main-color) solid;
+    color: var(--main-color);
+}
+.btn-outline-main:hover, .btn-outline-main:focus {
+    background-color: var(--main-color);
+    color: white;
+}
+.btn-outline-darklight {
+    border: 1px gray solid;
+    color: gray;
+}
+.btn-outline-darklight:hover, .btn-outline-darklight:focus {
+    background-color: gray;
+    color: white;
+}
+h1,h3 {
     text-shadow: 3px 1px 10px rgba(0, 0, 0, 0.5);
     font-family: auto;
 }

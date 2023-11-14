@@ -19,8 +19,10 @@ class UserController extends AbstractController
     #[Route('/profile', name: 'app_user_index', methods: ['GET'])]
     public function index2(UserRepository $userRepository): Response
     {
+        $CurrentUser = $this->getUser();
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -28,6 +30,8 @@ class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $CurrentUser = $this->getUser();
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -41,15 +45,17 @@ class UserController extends AbstractController
         return $this->render('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
+            'currentUserId' => $CurrentUser
         ]);
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
-
+        $CurrentUser = $this->getUser();
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -57,6 +63,7 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
+        $CurrentUser = $this->getUser();
         $userLocationSiteId = $this->getUser()->getSitesNoSite();
         $cityRepository = $entityManager->getRepository(City::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
@@ -87,11 +94,13 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_profile', [
                 'id' => $request->get('id'),
                 'cityName' => $cityName,
+                'currentUserId' => $CurrentUser,
             ]);
         }
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,
+            'currentUserId' => $CurrentUser,
             'form' => $form,
             'cityName' => $cityName,
         ]);
