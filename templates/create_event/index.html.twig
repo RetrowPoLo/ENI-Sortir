@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
     <h1 class="text-center pt-5">{{ title }}</h1>
@@ -18,7 +18,17 @@
             <div class="col-md-5 offset-md-1">
                 {{ form_row(formCreateEvent.locationSiteEvent) }}
                 {{ form_row(formCreateEvent.eventLocation.city.name) }}
-                {{ form_row(formCreateEvent.eventLocation.name) }}
+
+                {{ form_label(formCreateEvent.eventLocation.name) }}
+                {{ form_errors(formCreateEvent.eventLocation.name) }}
+                <div class="d-flex justify-content-center">
+                    <div class="input-group">
+                        {{ form_widget(formCreateEvent.eventLocation.name) }}
+                        <a class="btn btn-primary" href="{{ path('app_event_location_create') }}">
+                            <img alt="add_event_location" src="{{ asset('./build/images/add2.png') }}">
+                        </a>
+                    </div>
+                </div>
                 {{ form_row(formCreateEvent.eventLocation.street) }}
                 {{ form_row(formCreateEvent.eventLocation.city.zipcode) }}
                 {{ form_row(formCreateEvent.save) }}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Lieu{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1 class="text-center pt-5">Nouveau Lieu</h1>
+        {{ form_start(form) }}
+        {{ form(form) }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
