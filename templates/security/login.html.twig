@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Connexion</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link rel="icon" href="{{ asset('build/images/logo.jpg') }}">
+
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('./build/vendors-node_modules_bootstrap_dist_js_bootstrap_bundle_min_js-node_modules_bootstrap_dist_cs-f20b8b.css') }}">
             <link rel="stylesheet" href="{{ asset('./build/app.css') }}">
@@ -34,7 +35,22 @@
                             </div>
                             <div class="d-flex justify-content-between mb-3">
                                 <label for="password" class="required">Mot de passe</label>
-                                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" placeholder="Mot de passe" required>
+                                <input
+                                        type="password"
+                                        name="_password"
+                                        id="password"
+                                        class="form-control"
+                                        autocomplete="current-password"
+                                        placeholder="Mot de passe"
+                                        required
+                                        {{ stimulus_controller(
+                                            'symfony/ux-toggle-password/toggle-password', {
+                                                visibleLabel: 'Voir',
+                                                hiddenLabel: 'Cacher',
+                                                buttonClasses: ['toggle-password-button'],
+                                            })
+                                        }}
+                                >
                             </div>
 
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

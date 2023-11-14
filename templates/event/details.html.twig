@@ -3,14 +3,15 @@
 {% block title %}Sortie: {{ event.name }}{% endblock %}
 
 {% block body %}
-
 <div class="container mt-5">
     <div class="text-center">
         <h1 class="fst-italic text-base-blue">Afficher une sortie</h1>
     </div>
+
     {% if event.state.value == "CANCELED" %}
         <h4 class="text-danger">Cette sortie a été annulé</h4>
     {% endif %}
+
     <div class="row mt-5">
         <div class="col-12">
             <div class="row">
@@ -48,6 +49,7 @@
                     </div>
                 </div>
                 <div class="col-6">
+
                     <div class="row mb-3">
                         <div class="d-flex">
                             <label for="colFormLabel" class="col-form-label text-base-blue">Ville: </label>
@@ -71,11 +73,12 @@
                     </div>
                 </div>
             </div>
+
             {% if event.cancellationReason != null and event.state.value == "CANCELED" %}
-            <label for="descriptionEvent" class="col-sm-6 col-form-label text-base-blue">Motif d'annulation: </label>
-            <div class="col-sm-6">
-                <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.cancellationReason }}</textarea>
-            </div>
+                <label for="descriptionEvent" class="col-sm-6 col-form-label text-base-blue">Motif d'annulation: </label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.cancellationReason }}</textarea>
+                </div>
             {% endif %}
         </div>
         <div class="d-flex">
@@ -110,7 +113,4 @@
         </div>
     </div>
 </div>
-    {% block javascripts %}
-        {{ parent() }}
-    {% endblock %}
 {% endblock %}
