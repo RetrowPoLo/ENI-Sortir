@@ -3,28 +3,33 @@ namespace App\Service;
 use App\Entity\City;
 use App\Entity\Event;
 use App\Entity\Location;
+use App\Entity\LocationSite;
 use App\Entity\State;
 use App\Repository\CityRepository;
 use App\Repository\LocationRepository;
+use App\Repository\LocationSiteRepository;
 use function PHPUnit\Framework\equalTo;
 
 class EventService
 {
     private  $cityRepository = null;
     private  $locationRepository = null;
-    public function __construct(CityRepository $cityRepository, LocationRepository $locationRepository)
+    private $locationSiteRepos = null;
+    public function __construct(CityRepository $cityRepository, LocationRepository $locationRepository, LocationSiteRepository $locationSiteRepository)
     {
         $this->cityRepository = $cityRepository;
         $this->locationRepository = $locationRepository;
+        $this->locationSiteRepos = $locationSiteRepository;
     }
     public function createEditEvent($entityManager, $request, Event $event, $user, $formCreateEvent): array{
-        $userLocationSiteId = $user->getSitesNoSite();
+        //$userLocationSiteId = $user->getSitesNoSite();
         $error = "";
 
         $formCreateEvent->handleRequest($request);
 
         if ($formCreateEvent->isSubmitted() && $formCreateEvent->isValid()) {
-            $event->setLocationSiteEvent($userLocationSiteId);
+            $locationSite = $this->locationSiteRepos->find(['id'=> '1']);
+            $event->setLocationSiteEvent($locationSite);
             $event->setUser($user);
             if ('publish' === $formCreateEvent->getClickedButton()->getName()) {
                 $event->setState(State::Open);

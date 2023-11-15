@@ -20,6 +20,7 @@ use App\Repository\LocationSiteRepository;
 use App\Entity\State;
 use App\Repository\UserRepository;
 use App\Service\EventService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -128,7 +129,7 @@ class EventController extends AbstractController
     }
 
     #[Route('/sortie/modifier/{id}', name: 'app_event_edit')]
-    public function edit(EventRepository $eventRepository, Request $request, EventService $eventService, int $id): Response
+    public function edit(EntityManagerInterface $entityManager, EventRepository $eventRepository, Request $request, EventService $eventService, int $id): Response
     {
         $error = "";
         $event = $eventRepository->findOneByIdNotArchived($id);
@@ -140,10 +141,7 @@ class EventController extends AbstractController
         $event->getEventLocation()->setCity(new City());
         $event->setEventLocation(new Location);
 
-        $formCreateEvent = $this->createForm(CreateEventType::class, $event, [
-            'selected_city' => $selectedCity,
-            'selected_location' => $selectedLocation,
-        ]);
+        $formCreateEvent = $this->createForm(CreateEventType::class, $event);
 
         $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
 
