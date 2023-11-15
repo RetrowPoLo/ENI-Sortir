@@ -64,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
-    private ?City $sites_no_site = null;
+    private ?LocationSite $sites_no_site = null;
 
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $picture = null;
@@ -267,12 +267,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getFirstName()." ".substr($this->getName(), 0, 1).".";
     }
 
-    public function getSitesNoSite(): ?city
+    public function getSitesNoSite(): ?locationSite
     {
         return $this->sites_no_site;
     }
 
-    public function setSitesNoSite(?city $sites_no_site): static
+    public function setSitesNoSite(?locationSite $sites_no_site): static
     {
         $this->sites_no_site = $sites_no_site;
 
