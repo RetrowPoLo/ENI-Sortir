@@ -25,7 +25,7 @@ class RegistrationFormType extends AbstractType
 				'label' => 'Adresse email*',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir une adresse email !',
+                        'message' => 'Erreur de données',
                     ]),
                     new Length([
                         'min' => 10,
@@ -69,6 +69,9 @@ class RegistrationFormType extends AbstractType
 //                ],
 //				'label' => 'Mot de passe'
 //            ])
+                ->add('sites_no_site', null, [
+                    'label' => 'Site*'
+                ])
 			->add('isActive', CheckboxType::class, [
 				'required' => false,
 				'label' => 'Activer le compte ?',

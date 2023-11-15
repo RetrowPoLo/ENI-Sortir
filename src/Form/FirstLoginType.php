@@ -28,7 +28,7 @@ class FirstLoginType extends AbstractType
             ->add('username', TextType::class, ['mapped'=>true, 'label' => 'Pseudo',
                 'constraints' => [
                     new notBlank([
-                        'message' => 'Veuillez saisir un pseudo',
+                        'message' => 'Donnée non valide',
                     ]),
                 ],
         ])
@@ -37,10 +37,10 @@ class FirstLoginType extends AbstractType
                 'constraints' => [
                     new EqualTo([
                         'value' => 'Pa$$w0rd',
-                        'message' => 'L\'ancien mot de passe est incorrect',
+                        'message' => 'Donnée non valide',
                     ]),
                     new notBlank([
-                        'message' => 'Veuillez saisir l\'ancien mot de passe',
+                        'message' => 'Donnée non valide',
                     ]),
                 ],])
             ->add('password',

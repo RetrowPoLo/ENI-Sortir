@@ -67,8 +67,8 @@ class UserController extends AbstractController
     {
 //        $user = $this->getUser();
 
-        $CurrentUser = $this->getUser();
-//
+       $CurrentUser = $this->getUser();
+////
         $cityName = null;
         $userLocationSiteId = $this->getUser()->getSitesNoSite();
 
@@ -85,22 +85,12 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            $entityManager->flush();
-//            $userModif = $form->getData();
-//
-//				$hashedPassword = $passwordHasher->hashPassword(
-//					$userModif,
-//					$userModif->getPassword());
-//
-//                $user->setPassword($hashedPassword);
-
-
             $entityManager->persist($user);
             $entityManager->flush();
 
             $this->addFlash('success', 'Profil mis à jour avec succès.');
 
-			return $this->redirectToRoute('app_profile', [
+			return $this->redirectToRoute('app_home', [
                 'id' => $request->get('id'),
                 'cityName' => $cityName,
                 'currentUserId' => $CurrentUser,

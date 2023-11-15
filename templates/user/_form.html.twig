@@ -15,13 +15,13 @@
 {#                <input type="text" id="edit_user_city" name="edit_user[city]" value="{{ cityName }}" class="disabled border-0 form-control">#}
 {#            </div>#}
 {#            {{ form_row(form.password) }}#}
-            {{ form_row(form.SitesNoSite) }}
+            {{ form_row(form.sites_no_site) }}
         </div>
     </div>
     <button class="btn btn-outline-main">{{ button_label|default('Save') }}</button>
     <a href="{{ path('app_home') }}" class="btn btn-outline-darklight">Retour</a>
     {% if app.user.id == user.id %}
-        <a class="btn btn-outline-darklight" href="{{ path('edit_password', {'userid': app.user.id}) }}">Modifier le mot de passe</a>
+        <a class="btn btn-outline-darklight" href="{{ path('edit_password', {'userid': app.user.id}) }}" class="btn btn-secondary">Modifier le mot de passe</a>
     {% endif %}
     {{ form_end(form) }}
     </div>

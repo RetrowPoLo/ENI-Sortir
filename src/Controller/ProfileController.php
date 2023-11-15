@@ -95,7 +95,7 @@ class ProfileController extends AbstractController
                 $this->addFlash('success', 'Profil mis à jour avec succès.');
                 return $this->redirectToRoute('app_home');
             } else {
-                echo '<div class="alert alert-danger">votre pseudo n\'a pas été modifié.</div>';
+                echo '<div class="alert alert-danger">Donnée non valide</div>';
                 $entityManager->refresh($user);
             }
 
