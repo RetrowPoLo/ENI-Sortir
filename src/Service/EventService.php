@@ -37,10 +37,6 @@ class EventService
             $locationData = $this->locationRepository->find($locationId);
             $location = new Location();
             $location->setName($locationData->getName());
-            $city = new City();
-            $city->setName($locationData->getCity()->getName());
-            $city->setZipcode($locationData->getCity()->getZipcode());
-            $location->setCity($city);
             $event->setEventLocation($location);
 
             $time = new \DateTime('now', new \DateTimeZone('UTC'));
