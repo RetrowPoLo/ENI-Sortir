@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil de {{ app.user.username }}{% endblock %}
+{% block title %}Profil de {{ user.username }}{% endblock %}
 
 {% block body %}
     {% for message in app.flashes('success') %}
@@ -17,7 +17,7 @@
         </div>
         <div class="row">
             <div class="col-md-8">
-                <ul>
+                <ul class="list-unstyled">
                     <li><strong>Pseudo :</strong> {{ user.username }}</li>
                     <li><strong>Nom :</strong> {{ user.name }}</li>
                     <li><strong>Prénom :</strong> {{ user.firstName }}</li>
@@ -28,9 +28,7 @@
             </div>
         </div>
         {% if app.user and is_granted('ROLE_ADMIN')%}
-        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">Modifier</a>
-        {% elseif app.user == user %}
-        <a href="{{ path('app_profile_edit', {'userid': user.id}) }}" class="btn btn-primary">Modifier</a>
+            <a href="{{ path('app_profile_edit', {'userid': user.id}) }}" class="btn btn-primary">Modifier</a>
         {% endif %}
         <a href="javascript:history.back()" class="btn btn-outline-darklight">Retour</a>
     </div>

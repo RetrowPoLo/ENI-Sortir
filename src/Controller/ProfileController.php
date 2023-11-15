@@ -20,8 +20,19 @@ class ProfileController extends AbstractController
     #[Route('/profile/{id}', name: 'app_profile', methods: ['GET', 'POST'])]
     public function index(User $user): Response
     {
+        $CurrentUser = $this->getUser();
         return $this->render('profile/profile.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
+        ]);
+    }
+    #[Route('/participant/{id}', name: 'app_profile_showparticipant', methods: ['GET', 'POST'])]
+    public function showParticipant(User $user): Response
+    {
+        $CurrentUser = $this->getUser();
+        return $this->render('profile/participant.html.twig', [
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -69,6 +80,7 @@ class ProfileController extends AbstractController
     #[Route('/user/premiere_connexion', name: 'app_first_login', methods: ['GET', 'POST'])]
     public function firstLog(UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $CurrentUser = $this->getUser();
         $user = $this->getUser();
         $oldUsername  = $userRepository->findOneBySomeId($user->getUserIdentifier());
         $oldUsername = $oldUsername->getUsername();
@@ -102,10 +114,11 @@ class ProfileController extends AbstractController
         } else {
             $entityManager->refresh($user);
         }
-
-        return $this->render('profile/first_login.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
+        
+            return $this->render('profile/first_login.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user,
+                'currentUserId' => $CurrentUser,
 //            'form' => $form,
         ]);
     }

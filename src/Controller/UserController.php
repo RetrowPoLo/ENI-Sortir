@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/admin')]
+#[Route('/admin/participants')]
 class UserController extends AbstractController
 {
-    #[Route('/profile', name: 'app_user_index', methods: ['GET'])]
-    public function index2(UserRepository $userRepository): Response
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]
+    public function index(UserRepository $userRepository): Response
     {
         $CurrentUser = $this->getUser();
 
@@ -28,7 +28,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[Route('/nouvelle-inscription', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -51,7 +51,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[Route('/detail/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
         $CurrentUser = $this->getUser();
@@ -62,7 +62,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/editer-{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
 //        $user = $this->getUser();
@@ -96,9 +96,6 @@ class UserController extends AbstractController
                 'currentUserId' => $CurrentUser,
             ]);
         }
-//        else{
-//            $user->setPassword($initPassword);
-//        }
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,
@@ -108,7 +105,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[Route('/supprimer-{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {

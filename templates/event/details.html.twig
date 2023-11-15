@@ -6,7 +6,7 @@
 
 <div class="container mt-5">
     <div class="text-center">
-        <h2>Afficher une sortie</h2>
+        <h1 class="fst-italic text-base-blue">Afficher une sortie</h1>
     </div>
 
     {% if event.state.value == "CANCELED" %}
@@ -14,72 +14,62 @@
     {% endif %}
 
     <div class="row mt-5">
-        <div class="col-9">
+        <div class="col-12">
             <div class="row">
-                <div class="col">
+                <div class="col-6">
                     <div class="row mb-3">
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Nom de la sortie: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Nom de la sortie: </label>
                             <label class="col-form-label">{{ event.name }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Date et heure de la sortie: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Date et heure de la sortie: </label>
                             <label class="col-form-label">{{ event.startDateTime|date("d/m/Y") }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Date et heure de la sortie: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Date et heure de la sortie: </label>
                             <label class="col-form-label">{{ event.endDateTime|date("d/m/Y") }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Date limite d'inscription: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Date limite d'inscription: </label>
                             <label class="col-form-label">{{ event.limitDateInscription|date("d/m/Y") }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Nombre de places: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Nombre de places: </label>
                             <label class="col-form-label">{{ event.getNbInscriptionMax }}</label>
                         </div>
 
-                        <label for="descriptionEvent" class="col-sm-6 col-form-label text-base-blue">Description et infos: </label>
-                        <div class="col-sm-6">
-                            <textarea class="form-control" id="descriptionEvent" rows="4" disabled>{{ event.eventInfo }}</textarea>
+                        <div class="d-flex">
+                            <label for="descriptionEvent" class="col-form-label text-base-blue">Description et infos: </label>
+                            <label class="col-form-label">{{ event.eventInfo }}</label>
                         </div>
                     </div>
                 </div>
+                <div class="col-6">
 
-                <div class="col">
                     <div class="row mb-3">
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Ville: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Ville: </label>
                             <label class="col-form-label">{{ event.eventLocation.city.name }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Lieu: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Lieu: </label>
                             <label class="col-form-label">{{ event.eventLocation.name }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">Rue: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">Rue: </label>
                             <label class="col-form-label">{{ event.eventLocation.street }}</label>
                         </div>
 
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">code postal: </label>
-                        <div class="col-sm-6">
+                        <div class="d-flex">
+                            <label for="colFormLabel" class="col-form-label text-base-blue">code postal: </label>
                             <label class="col-form-label">{{ event.eventLocation.city.zipcode }}</label>
-                        </div>
-
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">latitude: </label>
-                        <div class="col-sm-6">
-                            <label class="col-form-label">{{ event.eventLocation.latitude }}</label>
-                        </div>
-
-                        <label for="colFormLabel" class="col-sm-6 col-form-label text-base-blue">longitude: </label>
-                        <div class="col-sm-6">
-                            <label class="col-form-label">{{ event.eventLocation.longitude }}</label>
                         </div>
                     </div>
                 </div>
@@ -92,30 +82,35 @@
                 </div>
             {% endif %}
         </div>
-
-        <div class="col">
-            <table class="table ">
-                <thead>
+        <div class="d-flex">
+            <div class="col-6">
+                <h3 class="fst-italic mt-3 text-base-blue">Liste des participants/es inscrits/es</h3>
+                <table class="table ">
+                    <thead>
                     <tr>
                         <th scope="col">Pseudo</th>
                         <th scope="col">Nom</th>
+                        <th scope="col">Prenom</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     {% for user in event.users %}
                         <tr>
                             {% if is_granted('ROLE_ADMIN') or event.user == app.user %}
-                                <td>
-                                    <a href="{{ app.request.getBaseURL() }}/profile/{{ event.user.id }}">{{ user.username }}</a>
-                                </td>
+                                <td><a href="{{ app.request.getBaseURL() }}/participant/{{ event.user.id }}">{{ user.username }}</a></td>
                             {% else %}
                                 <td>{{ user.username }}</td>
                             {% endif %}
-                            <td>{{ user.getFullName }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.firstname }}</td>
                         </tr>
                     {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex col-6 align-items-end justify-content-end">
+                <a href="javascript:history.go(-1)" style="max-height: 40px" class="btn btn-outline-darklight">Retour</a>
+            </div>
         </div>
     </div>
 </div>

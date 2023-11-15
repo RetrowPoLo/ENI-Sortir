@@ -13,32 +13,28 @@
         </tr>
     </thead>
     <tbody>
-        {% for event in events %}
-            <tr>
-                <td class="text-base-blue">{{ event.name }}</td>
-                <td>{{ event.startDateTime|date("d/m/Y") }}</td>
-                <td>{{ event.endDateTime|date("d/m/Y") }}</td>
-                <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
-                <td>{{ event.users|length }}/{{ event.getNbInscriptionMax }}</td>
-                <td>{{ event.getStateDescription() }}</td>
-                <td>
-                    {% if event.getIsSub(app.user) == true %}
-                        <div class="text-center">
-                            <img src="{{ asset('./build/images/inscrit.png') }}" alt="est_inscrit" width="20px" height="20px">
-                        </div>
-                    {% endif %}
-                </td>
-                <td class="text-base-blue">
-                    {% if event.getIsSub(app.user) == true %}
-                        <a href="{{ app.request.getBaseURL() }}/profile/{{ event.user.id }}">{{ event.user.getFullName }}</a>
-                    {% else %}
-                        <label>{{ event.user.getFullName }}</label>
-                    {% endif %}
-                </td>
-                <td>
-                    {% include '/event/eventActions.html.twig' with {'event': event} %}
-                </td>
-            </tr>
-        {% endfor %}
+    {% for event in events %}
+        <tr>
+            <td class="text-base-blue">{{ event.name }}</td>
+            <td>{{ event.startDateTime|date("d/m/Y") }}</td>
+            <td>{{ event.endDateTime|date("d/m/Y") }}</td>
+            <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
+            <td>{{ event.users|length }}/{{ event.getNbInscriptionMax }}</td>
+            <td>{{ event.getStateDescription() }}</td>
+            <td>
+                {% if event.getIsSub(app.user) == true %}
+                    <div class="text-center">
+                        <img src="{{ asset('./build/images/inscrit.png') }}" alt="est_inscrit" width="20px" height="20px">
+                    </div>
+                {% endif %}
+            </td>
+            <td class="text-base-blue">
+                <a href="{{ app.request.getBaseURL() }}/participant/{{ event.user.id }}">{{ event.user.getFullName }}</a>
+            </td>
+            <td>
+                {% include '/event/eventActions.html.twig' with {'event': event} %}
+            </td>
+        </tr>
+    {% endfor %}
     </tbody>
 </table>
