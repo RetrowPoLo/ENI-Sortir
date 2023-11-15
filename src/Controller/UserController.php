@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\User;
+use App\Form\RegistrationFormType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -104,8 +105,6 @@ class UserController extends AbstractController
                 'cityName' => $cityName,
                 'currentUserId' => $CurrentUser,
             ]);
-        }else{
-            $user->setPassword($initPassword);
         }
 //        else{
 //            $user->setPassword($initPassword);
