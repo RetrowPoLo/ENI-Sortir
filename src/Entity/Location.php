@@ -41,6 +41,7 @@ class Location
     public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -52,6 +53,7 @@ class Location
     public function setStreet(string $street): static
     {
         $this->street = $street;
+
         return $this;
     }
 
@@ -63,6 +65,7 @@ class Location
     public function setLatitude(float $latitude): static
     {
         $this->latitude = $latitude;
+
         return $this;
     }
 
@@ -74,6 +77,7 @@ class Location
     public function setLongitude(float $longitude): static
     {
         $this->longitude = $longitude;
+
         return $this;
     }
 
@@ -85,6 +89,7 @@ class Location
     public function setCity(?City $city): static
     {
         $this->city = $city;
+
         return $this;
     }
     public function __toString(): string

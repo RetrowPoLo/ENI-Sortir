@@ -2,9 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
+use App\Entity\Event;
+use App\Entity\Location;
+use App\Entity\User;
+use App\Form\CreateEventCityType;
+use App\Form\CreateEventLocationType;
+use App\Form\CreateEventType;
+use App\Form\CreateEventUserType;
 use App\Form\EventCancellationType;
 use App\Form\EventFilterAdminType;
 use App\Form\EventFilterType;
+use App\Repository\CityRepository;
 use App\Repository\EventRepository;
 use App\Repository\LocationSiteRepository;
 use App\Entity\State;
@@ -118,7 +127,33 @@ class EventController extends AbstractController
     #[Route('/sortie/editer/{id}', name: 'app_event_edit')]
     public function edit(EventRepository $eventRepository, int $id): Response
     {
-        return $this->redirectToRoute('app_event');
+        $error = "";
+        $event = $eventRepository->findOneByIdNotArchived($id);
+        if($event == null){
+            throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
+        }
+
+        $eventCity = $event->getEventLocation()->getCity();
+        $eventUser = $event->getUser();
+        $eventLocation = $event->getEventLocation();
+
+        $formCreateEvent = $this->createForm(CreateEventType::class, $event);
+        $formCreateEventLocation = $this->createForm(CreateEventLocationType::class, $eventLocation);
+        $formCreateEventCity = $this->createForm(CreateEventCityType::class, $eventCity);
+        $formCreateEventUser = $this->createForm(CreateEventUserType::class, $eventUser);
+
+        return $this->render('create_event/index.html.twig', [
+
+            'formCreateEvent' => $formCreateEvent,
+            'formCreateEventLocation' => $formCreateEventLocation,
+            'formCreateEventCity' => $formCreateEventCity,
+            'formCreateEventUser' => $formCreateEventUser,
+            'cityName' => $eventCity->getName(),
+            'errorStartTime' => $error,
+            'errorEndTime' => $error,
+            'errorLimitTime' => $error,
+            'errorLocation' => $error,
+        ]);
     }
 
 	/**

@@ -38,9 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      */
     #[ORM\Column]
-    #[Assert\Regex(
-        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!=%*?&])[A-Za-z\d@$!=%*?&^]+$/',
-        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
+//    #[Assert\Regex(
+//        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\/-])[^\/-]*$/',
+//        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
 
     private ?string $password = null;
 
@@ -64,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
-    private ?LocationSite $sites_no_site = null;
+    private ?City $sites_no_site = null;
 
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $picture = null;
@@ -99,6 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->username;
     }
+
 
 	public function setUsername(string $username): static
      {
@@ -266,12 +267,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getFirstName()." ".substr($this->getName(), 0, 1).".";
     }
 
-    public function getSitesNoSite(): ?locationSite
+    public function getSitesNoSite(): ?city
     {
         return $this->sites_no_site;
     }
 
-    public function setSitesNoSite(?locationSite $sites_no_site): static
+    public function setSitesNoSite(?city $sites_no_site): static
     {
         $this->sites_no_site = $sites_no_site;
 
@@ -301,4 +302,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }

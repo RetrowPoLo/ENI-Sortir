@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231107101621 extends AbstractMigration
+final class Version20231114154336 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,14 @@ final class Version20231107101621 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE event ADD state VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649DDF76323');
+        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649DDF76323 FOREIGN KEY (sites_no_site_id) REFERENCES city (id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE event DROP state');
+        $this->addSql('ALTER TABLE `user` DROP FOREIGN KEY FK_8D93D649DDF76323');
+        $this->addSql('ALTER TABLE `user` ADD CONSTRAINT FK_8D93D649DDF76323 FOREIGN KEY (sites_no_site_id) REFERENCES location_site (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
     }
 }

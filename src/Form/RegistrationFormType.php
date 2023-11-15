@@ -22,7 +22,18 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
 				'required' => true,
-				'label' => 'Adresse email*'
+				'label' => 'Adresse email*',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Erreur de données',
+                    ]),
+                    new Length([
+                        'min' => 10,
+                        'minMessage' => 'L\'adresse email doit contenir au moins {{ limit }} caractères !',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ],
 			])
 //			->add('username', TextType::class, [
 //				'required' => true,
@@ -37,6 +48,7 @@ class RegistrationFormType extends AbstractType
 			->add('phone', TelType::class, [
 				'required' => false,
 				'label' => 'Téléphone'
+
 			])
 //            ->add('plainPassword', PasswordType::class, [
 //				'required' => true,
@@ -57,6 +69,9 @@ class RegistrationFormType extends AbstractType
 //                ],
 //				'label' => 'Mot de passe'
 //            ])
+                ->add('sites_no_site', null, [
+                    'label' => 'Site*'
+                ])
 			->add('isActive', CheckboxType::class, [
 				'required' => false,
 				'label' => 'Activer le compte ?',

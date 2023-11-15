@@ -9,7 +9,7 @@
     </div>
 
     <div class="text-center my-4">
-        <a class="btn btn-outline-primary me-3" href="{{ path('app_user_new') }}">Inscrire</a>
+        <a class="btn btn-outline-primary me-3" href="{{ path('app_register') }}">Inscrire</a>
         <a class="btn btn-outline-success" href="#">Import fichier .csv</a>
     </div>
 
@@ -42,5 +42,7 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
+
+    <a href="{{ path('app_register') }}">Create new</a>
 {% endblock %}
+</div>

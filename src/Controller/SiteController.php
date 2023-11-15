@@ -26,6 +26,7 @@ class SiteController extends AbstractController
         $formVille = $this->createForm(GetVilleType::class, $ville);
         $form = $this->createForm(LocationSiteType::class, $site);
 
+
         $formVille->handleRequest($request);
         if ($formVille->isSubmitted() && $formVille->isValid()) {
             $ville->setName($formVille->get("name")->getData());

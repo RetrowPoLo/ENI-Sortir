@@ -21,13 +21,11 @@ class LocationSite
     #[ORM\OneToMany(mappedBy: 'locationSiteEvent', targetEntity: Event::class)]
     private Collection $locationSite;
 
-    #[ORM\OneToMany(mappedBy: 'locationSite', targetEntity: User::class)]
-    private $users;
+
 
     public function __construct()
     {
         $this->locationSite = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,6 +41,7 @@ class LocationSite
     public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -76,33 +75,6 @@ class LocationSite
         return $this;
     }
 
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setSitesNoSite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getSitesNoSite() === $this) {
-                $user->setSitesNoSite(null);
-            }
-        }
-
-        return $this;
-    }
     public function __toString()
     {
         return $this->name;

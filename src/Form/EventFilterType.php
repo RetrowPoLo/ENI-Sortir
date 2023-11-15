@@ -22,25 +22,25 @@ class EventFilterType extends AbstractType
 				'class' => LocationSite::class,
 				'choice_label' => 'name',
 				'required' => false,
+				'label' => false,
 				'placeholder' => 'Sélectionner le site',
-                'label' => 'Site : ',
 			])
             ->add('name', TextType::class, [
 				'required' => false,
+				'label' => false,
 				'attr' => [
 					'placeholder' => 'Rechercher une sortie par mot-clé',
 				],
-                'label' => 'Le nom de la sortie contient : ',
 			])
 			->add('startDateTime', DateType::class, [
 				'required' => false,
-				'label' => 'Entre : ',
+				'label' => 'Entre',
 				'mapped' => false,
 				'widget' => 'single_text',
 			])
 			->add('endDateTime', DateType::class, [
 				'required' => false,
-				'label' => 'et : ',
+				'label' => 'et',
 				'mapped' => false,
 				'widget' => 'single_text',
 			])

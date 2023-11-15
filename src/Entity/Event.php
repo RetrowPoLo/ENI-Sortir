@@ -73,6 +73,7 @@ class Event
     public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -84,6 +85,7 @@ class Event
     public function setStartDateTime(\DateTimeInterface $startDateTime): static
     {
         $this->startDateTime = $startDateTime;
+
         return $this;
     }
 
@@ -95,6 +97,7 @@ class Event
     public function setEndDateTime(\DateTimeInterface $endDateTime): static
     {
         $this->endDateTime = $endDateTime;
+
         return $this;
     }
 
@@ -106,6 +109,7 @@ class Event
     public function setLimitDateInscription(\DateTimeInterface $limitDateInscription): static
     {
         $this->limitDateInscription = $limitDateInscription;
+
         return $this;
     }
 
@@ -117,6 +121,7 @@ class Event
     public function setEventInfo(?string $eventInfo): static
     {
         $this->eventInfo = $eventInfo;
+
         return $this;
     }
 
@@ -138,6 +143,7 @@ class Event
     public function setLocationSiteEvent(?LocationSite $locationSiteEvent): static
     {
         $this->locationSiteEvent = $locationSiteEvent;
+
         return $this;
     }
 
@@ -176,6 +182,7 @@ class Event
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -235,6 +242,7 @@ class Event
     public function setNbInscriptionMax(int $nb_inscription_max): static
     {
         $this->nb_inscription_max = $nb_inscription_max;
+
         return $this;
     }
 
@@ -246,6 +254,7 @@ class Event
     public function setEventLocation(?location $eventLocation): static
     {
         $this->eventLocation = $eventLocation;
+
         return $this;
     }
 

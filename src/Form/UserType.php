@@ -20,47 +20,14 @@ class UserType extends AbstractType
         $builder
             ->add('email', EmailType::class, ['label' => 'Email'])
             ->add('username', TextType::class,  ['label' => 'Pseudo'])
-//            ->add('roles')
-            ->add('password',
-                RepeatedType::class, [
-                    'required' => false,
-                    'type' => PasswordType::class,
-                    'invalid_message' => 'Le mot de passe doit correspondre.',
-                    'options' => ['attr' => ['class' => 'password-field']],
-                    'first_options'  => ['label' => 'Mot de passe',
-                        'required' => true,
-                        'constraints' => [new length([
-                            'min' => 12,
-                            'minMessage' => 'Le mot de passe doit contenir au moins 12 caractères',
-                            // max length allowed by Symfony for security reasons
-                            'max' => 4096,
-                        ])],
-                        'attr' => array(
-                            'placeholder' => 'Laisser vide pour ne pas modifier le mot de passe'
-                        ),
-                        'empty_data' => '=5p!7WC5K6Iio'],
-                    'second_options' => ['label' => 'Confirmer le mot de passe',
-                        'required' => false,
-                        'constraints' => [
-                            new length([
-                                'min' => 12,
-                                'minMessage' => 'Le mot de passe doit contenir au moins 12 caractères',
-                                // max length allowed by Symfony for security reasons
-                                'max' => 4096,
-                            ])],
-                        'attr' => array(
-                            'placeholder' => 'Laisser vide pour ne pas modifier le mot de passe'
-                        ),
-                    'empty_data' => '=5p!7WC5K6Iio',],
-        ],
-            )
 
             ->add('name', TextType::class,  ['label' => 'Nom'])
             ->add('firstName', TextType::class,  ['label' => 'Prénom'])
-            ->add('phone', TelType::class,  ['label' => 'Téléphone'])
-//            ->add('isActive')
-//            ->add('registred')
-            ->add('sites_no_site', null, ['label' => 'ville de rattachement'])
+            ->add('phone', TelType::class,  ['required'=>false,
+                'label' => 'Téléphone'])
+
+            ->add('sites_no_site', null, ['label' => 'site de rattachement'])
+
         ;
     }
 

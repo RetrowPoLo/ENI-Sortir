@@ -225,9 +225,9 @@
             "ref": "05c45071c7ecacc1e48f94bc43c1f8d4405fb2b2"
         },
         "files": [
-            "assets/bootstrap.js",
-            "assets/controllers.json",
-            "assets/controllers/hello_controller.js"
+            "./assets/bootstrap.js",
+            "./assets/controllers.json",
+            "./assets/controllers/hello_controller.js"
         ]
     },
     "symfony/translation": {
@@ -255,9 +255,6 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
-    },
-    "symfony/ux-toggle-password": {
-        "version": "v2.13.0"
     },
     "symfony/validator": {
         "version": "6.3",

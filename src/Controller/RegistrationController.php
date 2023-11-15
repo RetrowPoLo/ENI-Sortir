@@ -62,13 +62,8 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-	/**
-	 * Generate a random string
-	 * @param $longueur - The length of the string
-	 * @return string
-	 */
-	function genererChaineAleatoire($longueur = 10): string
-	{
+    function genererChaineAleatoire($longueur = 10)
+    {
         $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $longueurMax = strlen($caracteres);
         $chaineAleatoire = '';
