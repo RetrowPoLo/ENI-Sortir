@@ -5,7 +5,11 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Event;
 use App\Entity\Location;
+use App\Entity\User;
+use App\Form\CreateEventCityType;
+use App\Form\CreateEventLocationType;
 use App\Form\CreateEventType;
+use App\Form\CreateEventUserType;
 use App\Form\EventCancellationType;
 use App\Form\EventFilterAdminType;
 use App\Form\EventFilterType;
@@ -20,6 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,6 +41,8 @@ class EventController extends AbstractController
 	#[Route('/sortie', name: 'app_event')]
     public function index(Request $request): Response
 	{
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
 		// Find all events
 		$events = $this->eventRepository->findAllNotArchived();
 
@@ -88,12 +95,16 @@ class EventController extends AbstractController
 			return $this->render('event/index.html.twig', [
 				'events' => $filteredResult,
 				'formFilter' => $formFilter->createView(),
+                'user' => $user,
+                'currentUserId' => $CurrentUser,
 			]);
 		}
 
         return $this->render('event/index.html.twig', [
             'events' => $events,
 			'formFilter' => $formFilter->createView(),
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
@@ -103,18 +114,23 @@ class EventController extends AbstractController
 	#[Route('/sortie/details/{id}', name: 'app_event_details')]
     public function details(EventRepository $eventRepository, int $id): Response
     {
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
         }
         return $this->render('event/details.html.twig', [
             'event' => $event,
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
     #[Route('/sortie/modifier/{id}', name: 'app_event_edit')]
-    public function edit( EntityManagerInterface $entityManager, Request $request, EventService $eventService, EventRepository $eventRepository, int $id): Response
+    public function edit(EventRepository $eventRepository, Request $request, EventService $eventService, int $id): Response
     {
+        $error = "";
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
@@ -144,9 +160,11 @@ class EventController extends AbstractController
 	 * @throws NonUniqueResultException
 	 * @throws \Exception
 	 */
-	#[Route('/sortie/cancel/{id}', name: 'app_event_cancel')]
+	#[Route('/sortie/annuler/{id}', name: 'app_event_cancel')]
     public function cancel(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository, int $id): Response
     {
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
@@ -170,10 +188,12 @@ class EventController extends AbstractController
 
         return $this->render('event/cancel.html.twig', [
             'event' => $event,
-            'form' => $form
+            'form' => $form,
+            'user' => $user,
+            'currentUserId' => $CurrentUser,
         ]);
     }
-    #[Route('/sortie/publish/{id}', name: 'app_event_publish')]
+    #[Route('/sortie/publier/{id}', name: 'app_event_publish')]
     public function publish(EventRepository $eventRepository, EntityManagerInterface $entityManager, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);
@@ -190,7 +210,7 @@ class EventController extends AbstractController
 	 * @throws NonUniqueResultException
 	 * @throws \Exception
 	 */
-	#[Route('/sortie/subscribe/{id}', name: 'app_event_subscribe')]
+	#[Route('/sortie/s\'inscrire/{id}', name: 'app_event_subscribe')]
     public function subscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);
@@ -211,7 +231,7 @@ class EventController extends AbstractController
 	 * @throws NonUniqueResultException
 	 * @throws \Exception
 	 */
-	#[Route('/sortie/unsubscribe/{id}', name: 'app_event_unsubscribe')]
+	#[Route('/sortie/se-désinscrire/{id}', name: 'app_event_unsubscribe')]
     public function unsubscribe(EntityManagerInterface $entityManager, EventRepository $eventRepository, UserRepository $userRepository, int $id): Response
     {
         $event = $eventRepository->findOneByIdNotArchived($id);

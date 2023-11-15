@@ -29,10 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
 	#[ORM\Column(length: 180, unique: true)]
-//         	#[Assert\NotNull(message: 'Veuillez saisir un nom d\'utilisateur !')]
-//         	#[Assert\NotBlank(message: 'Veuillez saisir un nom d\'utilisateur !')]
-//         	#[Assert\Length(min: 3, minMessage: 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères !')]
-         	private ?string $username = null;
+	private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -41,10 +38,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      */
     #[ORM\Column]
-    #[Assert\AtLeastOneOf([
-        new Assert\Regex('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&^_-]{12,}$/',
-            message: 'Le mot de passe doit contenir, une majuscule, une minuscule, un chiffre et un caractère spécial à l\'exception de / et - !'),
-    ])]
+//    #[Assert\Regex(
+//        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\/-])[^\/-]*$/',
+//        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
+
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -67,10 +64,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
-    private ?LocationSite $sites_no_site = null;
+    private ?City $sites_no_site = null;
 
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $picture = null;
+
+    #[ORM\Column]
+    private ?int $force_change = null;
 
     public function __construct()
     {
@@ -267,13 +267,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getFirstName()." ".substr($this->getName(), 0, 1).".";
     }
 
-    public function getSitesNoSite(): ?locationSite
-
+    public function getSitesNoSite(): ?city
     {
         return $this->sites_no_site;
     }
 
-    public function setSitesNoSite(?locationSite $sites_no_site): static
+    public function setSitesNoSite(?city $sites_no_site): static
     {
         $this->sites_no_site = $sites_no_site;
 
@@ -288,6 +287,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getForceChange(): ?int
+    {
+        return $this->force_change;
+    }
+
+    public function setForceChange(int $force_change): static
+    {
+        $this->force_change = $force_change;
 
         return $this;
     }

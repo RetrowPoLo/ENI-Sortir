@@ -12,13 +12,17 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class EditUserType extends AbstractType
 {
@@ -35,15 +39,6 @@ class EditUserType extends AbstractType
         $builder
             ->add('email', EmailType::class, ['label' => 'Email'])
             ->add('username', TextType::class, ['label' => 'Pseudo',])
-            ->add('password',
-             RepeatedType::class, [
-        'type' => PasswordType::class,
-        'invalid_message' => 'Le mot de passe doit correspondre.',
-        'options' => ['attr' => ['class' => 'password-field']],
-        'required' => true,
-        'first_options'  => ['label' => 'Mot de passe'],
-        'second_options' => ['label' => 'Confirmer le mot de passe'], ]
-            )
 
             ->add('name', TextType::class, [
                 'disabled' => !$isadmin,
@@ -51,7 +46,11 @@ class EditUserType extends AbstractType
             ])
             ->add('firstName', TextType::class, [ 'disabled' => !$isadmin,
                 'label' => 'Prénom'])
-            ->add('phone', TelType::class,  ['label' => 'Téléphone'])
+            ->add('phone', TelType::class,  [
+                'required'=>false,
+                'label' => 'Téléphone']
+                )
+            ->add('save', SubmitType::class, ['label' => 'Enregistrer',  'attr' => ['class' => 'btn m-2 btn-outline-main'],])
 
         ;
     }

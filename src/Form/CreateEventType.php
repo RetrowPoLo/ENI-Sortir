@@ -3,11 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Event;
-use App\Entity\LocationSite;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,9 +21,6 @@ class CreateEventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $selectedCity = $options['selected_city'];
-        $selectedLocation = $options['selected_location'];
-
         $builder
             ->add('name', textType::class, ['label' => 'Nom de la sortie'])
             ->add('startDateTime',DateType::class, [
@@ -40,22 +38,7 @@ class CreateEventType extends AbstractType
             ->add('nbInscriptionMax',IntegerType::class, ['label' => 'Nombre de place', 'attr' => [
                 'min' => 1
             ]])
-            ->add('event_info',textareaType::class,[
-                'label' => 'Description et infos',
-                'required' => false,
-            ])
-            ->add('locationSiteEvent', EntityType::class, [
-                'class' => LocationSite::class,
-                'choice_label' => 'name',
-                'label' => 'Site',
-                'required' => true,
-            ])
-            ->add('eventLocation', CreateEventLocationType::class, [
-                'label' => false,
-                'selected_city' => $selectedCity,
-                'selected_location' => $selectedLocation,
-            ])
-
+            ->add('event_info',textareaType::class, ['label' => 'Description et infos'])
             ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
             ->add('publish', SubmitType::class, ['label' => 'Publier'])
         ;
@@ -65,8 +48,6 @@ class CreateEventType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
-            'selected_city' => null,
-            'selected_location' => null,
         ]);
     }
 }

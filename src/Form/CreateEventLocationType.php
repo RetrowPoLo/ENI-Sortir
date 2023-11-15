@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\City;
 use App\Entity\Location;
+use App\Repository\CityRepository;
+use App\Repository\LocationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\LocationSite;
+use App\Form\EditSiteType;
 use App\Form\GetVilleType;
+use App\Repository\LocationSiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +19,7 @@ class SiteController extends AbstractController
     #[Route('/sites', name: 'site')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $CurrentUser = $this->getUser();
         $ville = new LocationSite();
         $site = new LocationSite();
 
@@ -51,8 +54,32 @@ class SiteController extends AbstractController
             'formVille' => $formVille,
             'villes' => $AllVille,
             'contain' => $contain,
+            'currentUserId' => $CurrentUser,
         ]);
     }
+
+    #[Route('/site/modifier/{id}', name: 'site_edit', requirements: ['id' => '\d+'])]
+    public function edit(LocationSiteRepository $siteRepository, Request $request, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $user = $this->getUser();
+        $CurrentUser = $this->getUser();
+        $site = $siteRepository->find($id);
+        $form = $this->createForm(EditSiteType::class, $site);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $siteEdited = $form->getData();
+            $entityManager->persist($siteEdited);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_site');
+        }
+        return $this->render('site/edit.html.twig', [
+            'city' => $site,
+            'form' => $form,
+            'user' => $user,
+            'currentUserId' => $CurrentUser
+        ]);
+    }
+
     #[Route('/site/supprimer/{id}', name: 'site_delete', requirements: ['id' => '\d+'])]
     public function delete(EntityManagerInterface $entityManager, LocationSite $locationSite): Response
     {

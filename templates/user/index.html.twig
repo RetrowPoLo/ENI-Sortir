@@ -1,49 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Participants{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>Liste des participants/es</h2>
+    </div>
 
-    <table class="table">
+    <div class="text-center my-4">
+        <a class="btn btn-outline-primary me-3" href="{{ path('app_register') }}">Inscrire</a>
+        <a class="btn btn-outline-success" href="#">Import fichier .csv</a>
+    </div>
+
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>Name</th>
-                <th>FirstName</th>
-                <th>Phone</th>
-                <th>IsActive</th>
-                <th>actions</th>
+                <th>Pseudo</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Actif</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.isActive ? '✔' : '✘' }}</td>
+                    <td>
+                        <a class="btn btn-outline-primary me-2" href="{{ path('app_user_show', {'id': user.id}) }}">Afficher</a>
+                        <a class="btn btn-outline-success" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">Aucun participant trouvé</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_user_new') }}">Create new</a>
+</div>
 {% endblock %}

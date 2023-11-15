@@ -1,21 +1,21 @@
 <table class="table table-striped">
     <thead>
-    <tr>
-        <th scope="col">Nom de la sortie</th>
-        <th scope="col">Date de début</th>
-        <th scope="col">Date de fin</th>
-        <th scope="col">Clotûre</th>
-        <th scope="col">inscrits/places</th>
-        <th scope="col">Etat</th>
-        <th scope="col">Inscrit</th>
-        <th scope="col">Organisateur</th>
-        <th scope="col">Actions</th>
-    </tr>
+        <tr>
+            <th scope="col">Nom de la sortie</th>
+            <th scope="col">Date de début</th>
+            <th scope="col">Date de fin</th>
+            <th scope="col">Clotûre</th>
+            <th scope="col">inscrits/places</th>
+            <th scope="col">Etat</th>
+            <th scope="col">Inscrit</th>
+            <th scope="col">Organisateur</th>
+            <th scope="col">Actions</th>
+        </tr>
     </thead>
     <tbody>
     {% for event in events %}
         <tr>
-            <td>{{ event.name }}</td>
+            <td class="text-base-blue">{{ event.name }}</td>
             <td>{{ event.startDateTime|date("d/m/Y") }}</td>
             <td>{{ event.endDateTime|date("d/m/Y") }}</td>
             <td>{{ event.limitDateInscription|date("d/m/Y") }}</td>
@@ -28,12 +28,8 @@
                     </div>
                 {% endif %}
             </td>
-            <td>
-                {% if event.getIsSub(app.user) == true %}
-                    <a href="{{ app.request.getBaseURL() }}/profile/{{ event.user.id }}">{{ event.user.getFullName }}</a>
-                {% else %}
-                    <label>{{ event.user.getFullName }}</label>
-                {% endif %}
+            <td class="text-base-blue">
+                <a href="{{ app.request.getBaseURL() }}/participant/{{ event.user.id }}">{{ event.user.getFullName }}</a>
             </td>
             <td>
                 {% include '/event/eventActions.html.twig' with {'event': event} %}

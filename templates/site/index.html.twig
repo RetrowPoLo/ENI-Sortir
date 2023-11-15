@@ -5,11 +5,11 @@
 {% block body %}
     <div class="container mt-5">
         <div class="text-center">
-            <h2>Gérer les sites</h2>
+            <h1 class="text-base-blue fst-italic">Gérer les sites</h1>
         </div>
 
         <div class="mt-4">
-            <h4>Filtrer les sites</h4>
+            <h3 class="text-base-blue fst-italic">Filtrer les sites</h3>
 
             {{ form_start(form) }}
                 <div class="row mb-3">
@@ -36,7 +36,7 @@
                         <tr>
                             <td>{{ ville.name }}</td>
                             <td>
-                                <a class="btn btn-outline-success me-2" href="">Modifier</a>
+                                <a class="btn btn-outline-success me-2" href="{{ path('app_site_edit', {'id': ville.id}) }}">Modifier</a>
                                 <a class="btn btn-outline-danger" href="{{ path('app_site_delete', {'id': ville.id}) }}">Supprimer</a>
                             </td>
                         </tr>

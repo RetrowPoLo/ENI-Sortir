@@ -18,6 +18,7 @@ class RegistrationController extends AbstractController
     {
   		// Create a new user
         $user = new User();
+        $CurrentUser = $this->getUser();
 
 		// Create the registration form
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -45,6 +46,8 @@ class RegistrationController extends AbstractController
             $picture = 'img/imageProfilDefaut.jpg';
             $user->setPicture($picture);
 
+            $user->setForceChange(1);
+
 			// Persist the user to the database
             $entityManager->persist($user);
             $entityManager->flush();
@@ -55,6 +58,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'currentUserId' => $CurrentUser,
         ]);
     }
 
