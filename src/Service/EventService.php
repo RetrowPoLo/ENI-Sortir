@@ -24,7 +24,6 @@ class EventService
         $formCreateEvent->handleRequest($request);
 
         if ($formCreateEvent->isSubmitted() && $formCreateEvent->isValid()) {
-            $eventData = $formCreateEvent->getData();
             $event->setLocationSiteEvent($userLocationSiteId);
             $event->setUser($user);
             if ('publish' === $formCreateEvent->getClickedButton()->getName()) {
@@ -33,11 +32,8 @@ class EventService
             $requestData =$request->request->all();
             $eventLocation = $requestData['create_event']['eventLocation'];
 
-            $locationId = $eventLocation['name'];
-            $locationData = $this->locationRepository->find($locationId);
-            $location = new Location();
-            $location->setName($locationData->getName());
-            $event->setEventLocation($location);
+            $locationData = $this->locationRepository->find($eventLocation['name']);
+            $event->setEventLocation($locationData);
 
             $time = new \DateTime('now', new \DateTimeZone('UTC'));
             $startDateTime = $formCreateEvent->get("startDateTime")->getData();
@@ -82,8 +78,7 @@ class EventService
                 ]];
             }
             else {
-                var_dump($eventData->getEventLocation());
-                $entityManager->persist($eventData);
+                $entityManager->persist($event);
                 $entityManager->flush();
                 return ['view' => "event/index.html.twig", 'params' => [
                     'events' => null
