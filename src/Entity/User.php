@@ -38,9 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      */
     #[ORM\Column]
-    #[Assert\Regex(
-        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\/-])[^\/-]*$/',
-        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
+//    #[Assert\Regex(
+//        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\/-])[^\/-]*$/',
+//        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
 
     private ?string $password = null;
 
@@ -267,12 +267,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getFirstName()." ".substr($this->getName(), 0, 1).".";
     }
 
-    public function getCity(): ?city
+    public function getSitesNoSite(): ?city
     {
         return $this->sites_no_site;
     }
 
-    public function setCity(?city $sites_no_site): static
+    public function setSitesNoSite(?city $sites_no_site): static
     {
         $this->sites_no_site = $sites_no_site;
 

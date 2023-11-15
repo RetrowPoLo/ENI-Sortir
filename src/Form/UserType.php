@@ -26,7 +26,8 @@ class UserType extends AbstractType
             ->add('phone', TelType::class,  ['required'=>false,
                 'label' => 'Téléphone'])
 
-            ->add('city', null, ['label' => 'site de rattachement'])
+            ->add('sites_no_site', null, ['label' => 'site de rattachement'])
+
         ;
     }
 

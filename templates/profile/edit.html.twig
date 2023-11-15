@@ -27,7 +27,7 @@
         <div class="d-flex justify-content-end">
             {{ form_row(form.save) }}
 {#            <button type="submit" class="btn m-2 btn-outline-main">Enregistrer</button>#}
-            <a class="btn m-2 btn-outline-darklight" href="{{ path('edit_password', {'userid': currentUserId.id}) }}">Modifier le mot de passe</a>
+            <a class="btn btn-outline-darklight" href="{{ path('edit_password', {'userid': currentUserId.id}) }}">Modifier le mot de passe</a>
         </div>
         {{ form_end(form) }}
     </div>

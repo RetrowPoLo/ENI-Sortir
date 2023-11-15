@@ -33,7 +33,7 @@ class UserController extends AbstractController
         $user = new User();
         $CurrentUser = $this->getUser();
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -43,9 +43,9 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('user/new.html.twig', [
+        return $this->render('registration/register.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'registrationForm' => $form,
             'currentUserId' => $CurrentUser
         ]);
     }
@@ -64,26 +64,34 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $user = $this->getUser();
+//        $user = $this->getUser();
+
         $CurrentUser = $this->getUser();
-        $userLocationSiteId = $this->getUser()->getCity();
+//
+        $cityName = null;
+        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+
         $cityRepository = $entityManager->getRepository(City::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
-        $cityName = $city->getName();
-        $initPassword = $user->getPassword();
+
+        if($city) {
+            $cityName = $city->getName();
+        }
+
+//        $initPassword = $user->getPassword();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            $userModif = $form->getData();
 
-				$hashedPassword = $passwordHasher->hashPassword(
-					$userModif,
-					$userModif->getPassword());
-
-
-                $user->setPassword($hashedPassword);
+//            $entityManager->flush();
+//            $userModif = $form->getData();
+//
+//				$hashedPassword = $passwordHasher->hashPassword(
+//					$userModif,
+//					$userModif->getPassword());
+//
+//                $user->setPassword($hashedPassword);
 
 
             $entityManager->persist($user);
@@ -99,6 +107,9 @@ class UserController extends AbstractController
         }else{
             $user->setPassword($initPassword);
         }
+//        else{
+//            $user->setPassword($initPassword);
+//        }
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,

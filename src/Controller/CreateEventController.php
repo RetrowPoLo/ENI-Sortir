@@ -25,13 +25,17 @@ class CreateEventController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
     {
         /** @var User $user */
+        $cityName = null;
         $userLocationSiteId = $this->getUser()->getSitesNoSite();
         $userId = $this->getUser();
         $CurrentUser = $this->getUser();
 
         $cityRepository = $entityManager->getRepository(City::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
-        $cityName = $city->getName();
+        if($city){
+            $cityName = $city->getName();
+        }
+
         $error = "";
 
         $event = new Event();

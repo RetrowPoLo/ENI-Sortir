@@ -102,7 +102,7 @@ class City
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->setCity($this);
+            $user->setSitesNoSite($this);
         }
 
         return $this;
@@ -113,8 +113,8 @@ class City
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
-            if ($user->getCity() === $this) {
-                $user->setCity(null);
+            if ($user->getSitesNoSite() === $this) {
+                $user->setSitesNoSite(null);
             }
         }
 
