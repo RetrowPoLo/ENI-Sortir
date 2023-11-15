@@ -36,7 +36,7 @@
                         <tr>
                             <td>{{ ville.name }}</td>
                             <td>
-                                <a class="btn btn-outline-success me-2" href="">Modifier</a>
+                                <a class="btn btn-outline-success me-2" href="{{ path('app_site_edit', {'id': ville.id}) }}">Modifier</a>
                                 <a class="btn btn-outline-danger" href="{{ path('app_site_delete', {'id': ville.id}) }}">Supprimer</a>
                             </td>
                         </tr>
