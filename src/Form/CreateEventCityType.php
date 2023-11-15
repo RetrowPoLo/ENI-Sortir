@@ -13,6 +13,7 @@ class CreateEventCityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $selectedCity = $options['selected_city'];
 
         $builder
             ->add('name', EntityType::class, [
