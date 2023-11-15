@@ -97,7 +97,7 @@
                     {% for user in event.users %}
                         <tr>
                             {% if is_granted('ROLE_ADMIN') or event.user == app.user %}
-                                <td><a href="{{ app.request.getBaseURL() }}/participant/{{ event.user.id }}">{{ user.username }}</a></td>
+                                <td><a href="{{ app.request.getBaseURL() }}/participant/{{ user.id }}">{{ user.username }}</a></td>
                             {% else %}
                                 <td>{{ user.username }}</td>
                             {% endif %}

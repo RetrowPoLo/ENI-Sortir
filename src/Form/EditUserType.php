@@ -22,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
 class EditUserType extends AbstractType
@@ -50,6 +51,16 @@ class EditUserType extends AbstractType
                 'required'=>false,
                 'label' => 'Téléphone']
                 )
+            ->add('plainPassword', PasswordType::class, [
+                'required' => true,
+                'label' => 'Mot de passe',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez mettre votre mot de passe pour valider',
+                    ]),
+                ],
+            ])
             ->add('save', SubmitType::class, ['label' => 'Enregistrer',  'attr' => ['class' => 'btn m-2 btn-outline-main'],])
 
         ;
