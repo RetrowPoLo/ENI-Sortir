@@ -1,10 +1,22 @@
 <?php
 namespace App\Service;
+use App\Entity\City;
 use App\Entity\Event;
+use App\Entity\Location;
 use App\Entity\State;
+use App\Repository\CityRepository;
+use App\Repository\LocationRepository;
+use function PHPUnit\Framework\equalTo;
 
 class EventService
 {
+    private  $cityRepository = null;
+    private  $locationRepository = null;
+    public function __construct(CityRepository $cityRepository, LocationRepository $locationRepository)
+    {
+        $this->cityRepository = $cityRepository;
+        $this->locationRepository = $locationRepository;
+    }
     public function createEditEvent($entityManager, $request, Event $event, $user, $formCreateEvent): array{
         $userLocationSiteId = $user->getSitesNoSite();
         $error = "";
@@ -12,11 +24,24 @@ class EventService
         $formCreateEvent->handleRequest($request);
 
         if ($formCreateEvent->isSubmitted() && $formCreateEvent->isValid()) {
+            $eventData = $formCreateEvent->getData();
             $event->setLocationSiteEvent($userLocationSiteId);
             $event->setUser($user);
             if ('publish' === $formCreateEvent->getClickedButton()->getName()) {
                 $event->setState(State::Open);
             }
+            $requestData =$request->request->all();
+            $eventLocation = $requestData['create_event']['eventLocation'];
+
+            $locationId = $eventLocation['name'];
+            $locationData = $this->locationRepository->find($locationId);
+            $location = new Location();
+            $location->setName($locationData->getName());
+            $city = new City();
+            $city->setName($locationData->getCity()->getName());
+            $city->setZipcode($locationData->getCity()->getZipcode());
+            $location->setCity($city);
+            $event->setEventLocation($location);
 
             $time = new \DateTime('now', new \DateTimeZone('UTC'));
             $startDateTime = $formCreateEvent->get("startDateTime")->getData();
@@ -61,7 +86,8 @@ class EventService
                 ]];
             }
             else {
-                $entityManager->persist($event);
+                var_dump($eventData->getEventLocation());
+                $entityManager->persist($eventData);
                 $entityManager->flush();
                 return ['view' => "event/index.html.twig", 'params' => [
                     'events' => null

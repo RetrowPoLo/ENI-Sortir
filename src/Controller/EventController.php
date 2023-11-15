@@ -5,11 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Event;
 use App\Entity\Location;
-use App\Entity\User;
-use App\Form\CreateEventCityType;
-use App\Form\CreateEventLocationType;
 use App\Form\CreateEventType;
-use App\Form\CreateEventUserType;
 use App\Form\EventCancellationType;
 use App\Form\EventFilterAdminType;
 use App\Form\EventFilterType;
@@ -23,7 +19,6 @@ use App\Service\EventService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -238,11 +233,8 @@ class EventController extends AbstractController
                           EventRepository $eventRepository, EventService $eventService): Response
     {
         $event = new Event();
-
         $formCreateEvent = $this->createForm(CreateEventType::class, $event);
-
-        $result = $eventService->createEditEvent($entityManager, $request,
-            $event, $this->getUser(), $formCreateEvent);
+        $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
         $result['params']['title'] = 'Créer une sortie';
         if($result['view'] == 'event/index.html.twig'){
             return $this->redirectToRoute(('app_event'));

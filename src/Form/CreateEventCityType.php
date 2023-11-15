@@ -13,21 +13,18 @@ class CreateEventCityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $selectedCity = $options['selected_city'];
 
         $builder
             ->add('name', EntityType::class, [
                 'class' => City::class,
                 'choice_label' => 'name',
                 'label' => 'Ville',
-                'data' => $selectedCity,
             ])
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal',
                 'mapped' => false,
                 'disabled' => true,
                 'required' => false,
-                'data' => $selectedCity ? $selectedCity->getZipcode() : ""
             ]);
     }
     public function configureOptions(OptionsResolver $resolver): void

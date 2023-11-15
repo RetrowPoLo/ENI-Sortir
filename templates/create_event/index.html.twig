@@ -5,19 +5,79 @@
 {% block body %}
     <h1 class="text-center pt-5">{{ title }}</h1>
     <div class="container">
+{#        {{ form_start(formCreateEvent, { attr: { id: 'create_event' } }) }}#}
+{#        {{ form_start(formCreateEventCity) }}#}
+{#        {{ form_start(formCreateEventLocation) }}#}
+{#        <div class="row container">#}
+{#            <div class="col-md-5">#}
+{#                {{ form_row(formCreateEvent.name) }}#}
+{#                {{ form_row(formCreateEvent.startDateTime) }}#}
+{#                {% if errorStartTime is not same as "" %}#}
+{#                    {{ errorStartTime }}#}
+{#                {% endif %}#}
+{#                {{ form_row(formCreateEvent.endDateTime) }}#}
+{#                {% if errorEndTime is not same as "" %}#}
+{#                    {{ errorEndTime }}#}
+{#                {% endif %}#}
+{#                {{ form_row(formCreateEvent.limitDateInscription) }}#}
+{#                {% if errorLimitTime is not same as "" %}#}
+{#                    {{ errorLimitTime }}#}
+{#                {% endif %}#}
+{#                {{ form_row(formCreateEvent.nbInscriptionMax) }}#}
+{#                {{ form_row(formCreateEvent.event_info) }}#}
+{#            </div>#}
+{#            <div class="col-md-5">#}
+{#                <div class="mb-3">#}
+{#                    <label for="create_event_user_city" class="form-label">Site</label>#}
+{#                    <input type="text" id="create_event_user_city" name="create_event_user[city]" value="{{ cityName }}" disabled class="border-0 disabled form-control">#}
+{#                </div>#}
+{#                {{ form_row(formCreateEventCity.name, { 'attr': {'class': 'city-select'} }) }}#}
+{#                {{ form_row(formCreateEventLocation.name)}}#}
+{#                {% if errorLocation is not same as "" %}#}
+{#                    {{ errorLocation }}#}
+{#                {% endif %}#}
+{#                {{ form_row(formCreateEventLocation.street, { 'attr' : { 'class': 'border-0 disabled' } }) }}#}
+{#                {{ form_row(formCreateEventCity.zipcode, { 'attr': {'class': 'border-0 zipcode-input disabled'} }) }}#}
+{#                <div class="row save-publish d-flex">#}
+{#                    {{ form_row(formCreateEvent._token) }}#}
+{#                    {{ form_row(formCreateEventLocation._token) }}#}
+{#                    {{ form_row(formCreateEventCity._token) }}#}
+{#                    {{ form_row(formCreateEvent.save, { 'attr' : { 'class': 'btn-outline-main' } }) }}#}
+{#                    {{ form_row(formCreateEvent.publish, { 'attr' : { 'class': 'btn-outline-warning' } }) }}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        {{ form_end(formCreateEventLocation) }}#}
+{#        {{ form_end(formCreateEventCity) }}#}
+{#        {{ form_end(formCreateEvent) }}#}
+
+
+
     {{ form_start(formCreateEvent) }}
         <div class="row">
             <div class="col-md-5">
                 {{ form_row(formCreateEvent.name) }}
                 {{ form_row(formCreateEvent.startDateTime) }}
+                {% if errorStartTime is not same as "" %}
+                    {{ errorStartTime }}
+                {% endif %}
                 {{ form_row(formCreateEvent.endDateTime) }}
+                {% if errorEndTime is not same as "" %}
+                    {{ errorEndTime }}
+                {% endif %}
                 {{ form_row(formCreateEvent.limitDateInscription) }}
+                {% if errorLimitTime is not same as "" %}
+                    {{ errorLimitTime }}
+                {% endif %}
                 {{ form_row(formCreateEvent.nbInscriptionMax) }}
                 {{ form_row(formCreateEvent.event_info) }}
             </div>
             <div class="col-md-5 offset-md-1">
                 {{ form_row(formCreateEvent.locationSiteEvent) }}
                 {{ form_row(formCreateEvent.eventLocation.city.name) }}
+                {% if errorLocation is not same as "" %}
+                    {{ errorLocation }}
+                {% endif %}
 
                 {{ form_label(formCreateEvent.eventLocation.name) }}
                 {{ form_errors(formCreateEvent.eventLocation.name) }}
@@ -31,6 +91,7 @@
                 </div>
                 {{ form_row(formCreateEvent.eventLocation.street) }}
                 {{ form_row(formCreateEvent.eventLocation.city.zipcode) }}
+
                 {{ form_row(formCreateEvent.save) }}
                 {{ form_row(formCreateEvent.publish) }}
             </div>
