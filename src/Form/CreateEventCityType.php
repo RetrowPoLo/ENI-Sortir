@@ -13,11 +13,14 @@ class CreateEventCityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $selectedCity = $options['selectedCity'];
+        dump($selectedCity);
         $builder
             ->add('name', EntityType::class, [
                 'class' => City::class,
                 'choice_label' => 'name',
                 'label' => 'Ville',
+                'data' => $selectedCity
             ])
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal',
@@ -31,6 +34,7 @@ class CreateEventCityType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => City::class,
+            'selectedCity' => null,
         ]);
     }
 }

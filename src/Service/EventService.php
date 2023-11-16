@@ -39,6 +39,8 @@ class EventService
 
             $locationData = $this->locationRepository->find($eventLocation['name']);
             $event->setEventLocation($locationData);
+            $selectedLocationSite = $this->locationSiteRepos->findOneBy(['id' => $event->getLocationSiteEvent()->getId()]);
+            $event->setLocationSiteEvent($selectedLocationSite);
 
             $time = new \DateTime('now', new \DateTimeZone('UTC'));
             $startDateTime = $formCreateEvent->get("startDateTime")->getData();

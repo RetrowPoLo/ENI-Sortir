@@ -16,15 +16,19 @@ class CreateEventLocationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $selectedLocation = $options['selectedLocation'];
+        $selectedCity = $options['selectedCity'];
         $builder
             ->add('city', CreateEventCityType::class, [
                 'label' => false,
+                'selectedCity' => $selectedCity,
             ])
             ->add('name', EntityType::class, [
                 'class' => Location::class,
                 'choice_label' => 'name',
                 'label' => 'Lieu de la sortie',
                 'required' => true,
+                'data' => $selectedLocation
             ])
             ->add('street', TextType::class, [
                 'label' => 'Rue',
@@ -37,6 +41,8 @@ class CreateEventLocationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Location::class,
+            'selectedCity' => null,
+            'selectedLocation' => null,
         ]);
     }
 }
