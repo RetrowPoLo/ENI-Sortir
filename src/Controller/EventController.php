@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Event;
 use App\Entity\Location;
+use App\Entity\LocationSite;
 use App\Entity\User;
 use App\Form\CreateEventCityType;
 use App\Form\CreateEventLocationType;
@@ -16,6 +17,7 @@ use App\Form\EventFilterType;
 use App\Form\LocationType;
 use App\Repository\CityRepository;
 use App\Repository\EventRepository;
+use App\Repository\LocationRepository;
 use App\Repository\LocationSiteRepository;
 use App\Entity\State;
 use App\Repository\UserRepository;
@@ -129,19 +131,33 @@ class EventController extends AbstractController
     }
 
     #[Route('/sortie/modifier/{id}', name: 'app_event_edit')]
-    public function edit(EntityManagerInterface $entityManager, EventRepository $eventRepository, Request $request, EventService $eventService, int $id): Response
+    public function edit(
+        EntityManagerInterface $entityManager,
+        EventRepository $eventRepository,
+        CityRepository $cityRepository,
+        LocationRepository $locationRepository,
+        Request $request,
+        EventService $eventService,
+        int $id
+    ): Response
     {
         $error = "";
-        $event = $eventRepository->findOneByIdNotArchived($id);
-        if($event == null){
-            throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
+        $event = new Event();
+        try {
+            $event = $eventRepository->findOneByIdNotArchived($id);
+            if($event == null){
+                $error = "impossible de trouver la sortie avec l'id: ".$id;
+            }
+        } catch (NonUniqueResultException $e) {
+            $error = $e->getMessage();
         }
-        $selectedCity = $event->getEventLocation()->getCity();
-        $selectedLocation = $event->getEventLocation();
-        $event->getEventLocation()->setCity(new City());
-        $event->setEventLocation(new Location);
+        $selectedCity = $cityRepository->findOneBy(['id'=> $event->getEventLocation()->getCity()->getId()] );
+        $selectedLocation = $locationRepository->findOneBy(['id' => $event->getEventLocation()->getId()]);
 
-        $formCreateEvent = $this->createForm(CreateEventType::class, $event);
+        $event->setEventLocation(new Location());
+        $event->getEventLocation()->setCity(new City());
+
+        $formCreateEvent = $this->createForm(CreateEventType::class, $event, options: ['selectedCity'=>$selectedCity, 'selectedLocation' => $selectedLocation]);
 
         $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
 

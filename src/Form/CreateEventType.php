@@ -18,7 +18,8 @@ class CreateEventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
+        $selectedLocation = $options['selectedLocation'];
+        $selectedCity = $options['selectedCity'];
         $builder
             ->add('name', textType::class, ['label' => 'Nom de la sortie'])
             ->add('startDateTime',DateType::class, [
@@ -44,10 +45,13 @@ class CreateEventType extends AbstractType
                 'class' => LocationSite::class,
                 'choice_label' => 'name',
                 'label' => 'Site',
-                'required' => true,
+                'required' => false,
+                'disabled' => true,
             ])
             ->add('eventLocation', CreateEventLocationType::class, [
                 'label' => false,
+                'selectedLocation' => $selectedLocation,
+                'selectedCity' => $selectedCity,
             ])
 
             ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
@@ -59,6 +63,8 @@ class CreateEventType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
+            'selectedCity' => null,
+            'selectedLocation' => null,
         ]);
     }
 }

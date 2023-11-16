@@ -102,9 +102,9 @@
     <script>
         // Get references to the select and input elements
         const citySelect = document.getElementById('create_event_eventLocation_city_name');
-        const zipcodeInput = document.getElementById('create_event_eventLocation_city_zipcode');
         const locationSelect = document.getElementById('create_event_eventLocation_name');
         const streetInput = document.getElementById('create_event_eventLocation_street');
+        const zipcodeInput = document.getElementById('create_event_eventLocation_city_zipcode');
 
         const base_url = window.location.origin;
         const pathArray = window.location.pathname.split( '/' );
@@ -140,7 +140,6 @@
         // Fonction pour mettre à jour le champ de sélection de l'emplacement en fonction de la ville sélectionnée
         function updateLocationOptions() {
             const selectedCity = citySelect.value;
-
             // Make an AJAX request to fetch the locations based on the selected city
             fetch(completeBaseUrl+`/get-locations/${selectedCity}`)
                 .then(response => response.json())
@@ -155,6 +154,7 @@
                         option.textContent = location.name;
                         locationSelect.appendChild(option);
                     });
+
                     updateZipcodeAndStreet();
                 });
         }
@@ -166,9 +166,18 @@
         citySelect.addEventListener('change', updateZipcodeAndStreet);
         locationSelect.addEventListener('change', updateZipcodeAndStreet);
 
-        // Initialize location options when the page loads
-        updateLocationOptions();
-        // Initialize ZIP code when the page loads
-        updateZipcodeAndStreet();
+        const initialLocation = locationSelect.value;
+        if (initialLocation) {
+            locationSelect.value = initialLocation;
+            updateZipcodeAndStreet();
+        }
+        else{
+            // Initialize location options when the page loads
+            updateLocationOptions();
+            // Initialize ZIP code when the page loads
+            updateZipcodeAndStreet();
+        }
+
+
     </script>
 {% endblock %}
