@@ -60,7 +60,7 @@
             <button class="btn-outline-success m-2 btn" id="changeDisplayType" >Changer type de vue</button>
             {% if app.user and is_granted('ROLE_ADMIN')%}
             {% else %}
-            <a class="btn-outline-success m-2 btn" href="{{ app.request.getBaseURL() }}/create/event">Ajouter une sortie</a>
+            <a class="btn-outline-success m-2 btn" href="{{ app.request.getBaseURL() }}/sortie/creer">Ajouter une sortie</a>
             {% endif %}
         </div>
         <div class="mt-5">
