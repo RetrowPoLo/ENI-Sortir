@@ -31,7 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
 	#[ORM\Column(length: 180, unique: true)]
-	private ?string $username = null;
+         	private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -80,6 +80,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
       )]
     private ?UploadedFile $pictureUpload;
 
+#[ORM\Column]
+private ?int $isPublic = null;
+
     public function __construct()
     {
         $this->registred = new ArrayCollection();
@@ -104,16 +107,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 	public function getUsername(): ?string
-    {
-        return $this->username;
-    }
+             {
+                 return $this->username;
+             }
 
 
 	public function setUsername(string $username): static
-     {
-         $this->username = $username;
-         return $this;
-     }
+              {
+                  $this->username = $username;
+                  return $this;
+              }
 
 	/**
 	 * A visual identifier that represents this user.
@@ -121,9 +124,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @see UserInterface
 	 */
 	public function getUserIdentifier(): string
-     {
-         return (string) $this->email;
-     }
+              {
+                  return (string) $this->email;
+              }
 
     /**
      * @see UserInterface
@@ -358,6 +361,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->picture = $serialized['picture'];
         $this->force_change = $serialized['force_change'];
 
+    }
+
+    public function getIsPublic(): ?int
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(int $isPublic): static
+    {
+        $this->isPublic = $isPublic;
+
+        return $this;
     }
 
 }
