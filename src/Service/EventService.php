@@ -83,6 +83,7 @@ class EventService
                 ]];
             }
             else {
+                //dd($event);
                 $entityManager->persist($event);
                 $entityManager->flush();
                 return ['view' => "event/index.html.twig", 'params' => [
