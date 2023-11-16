@@ -27,7 +27,7 @@
             <div class="col-md-3 offset-md-1">
                 <div class="mb-3 d-flex flex-column">
                     <label for="create_event_site_name" class="form-label">Site</label>
-                    <input type="text" id="create_event_site_name" name="create_event-site[name]" value="{{ cityName }}" class="disabled">
+                    <input type="text" id="create_event_site_name" name="create_event-site[name]" value="{{ cityName }}" class="disabled" disabled>
                 </div>
                 {{ form_row(formCreateEvent.eventLocation.city.name) }}
                 {% if errorLocation is not same as "" %}

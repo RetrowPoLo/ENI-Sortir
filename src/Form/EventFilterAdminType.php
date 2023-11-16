@@ -18,13 +18,14 @@ class EventFilterAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $selectedLocationSite = $options['selectedLocationSite'];
         $builder
 			->add('locationSiteEvent', EntityType::class, [
 				'class' => LocationSite::class,
 				'choice_label' => 'name',
 				'required' => false,
 				'label' => false,
-				'placeholder' => 'Sélectionner le site',
+                'data' => $selectedLocationSite,
 			])
 			->add('name', TextType::class, [
 				'required' => false,
@@ -75,6 +76,7 @@ class EventFilterAdminType extends AbstractType
 			'method' => 'GET',
 			'data_class' => Event::class,
 			'csrf_protection' => false,
+            'selectedLocationSite' => null
         ]);
     }
 }
