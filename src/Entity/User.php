@@ -40,10 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null The hashed password
      */
     #[ORM\Column]
-//    #[Assert\Regex(
-//        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\/-])[^\/-]*$/',
-//        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et ne doit pas avoir de "/" et "-"')]
-
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -68,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?LocationSite $sites_no_site = null;
 
-    #[ORM\Column(length: 255, nullable: false)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
     #[ORM\Column]

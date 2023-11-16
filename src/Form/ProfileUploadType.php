@@ -17,7 +17,12 @@ class ProfileUploadType extends AbstractType
             'label' => 'Photo',
             'attr' => ['placeholder' => 'Veuillez choisir un fichier...']
         ])
-        ->add('submit', SubmitType::class, ['label' => 'Envoyer !'])
+        ->add('submit', SubmitType::class, ['label' => 'Envoyer !',
+            'attr' => ['class' => 'btn m-2 btn-outline-main btn']]);
+//        ->add('cancel', ButtonType::class, [
+//    'attr' => ['class' => 'btn btn-outline-darklight',
+//        'href' => ],
+//]);
     ;
     }
 

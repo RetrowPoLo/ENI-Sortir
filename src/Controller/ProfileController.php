@@ -190,12 +190,10 @@ class ProfileController extends AbstractController
                 $file = $form->get('pictureUpload')->getData();
                 $safeFilename = bin2hex(random_bytes(10)) . uniqid();
 
-                $newFilename = './images/'.$safeFilename.'.'.$file ->guessExtension();
+                $newFilename = $safeFilename.'.'.$file ->guessExtension();
                 $file->move($this->getParameter('profile_dir'), $newFilename);
 
                 $user->setPicture($newFilename);
-
-//                $user->setPicture(null);
 
                 $entityManager->persist($user);
                 $entityManager->flush();
