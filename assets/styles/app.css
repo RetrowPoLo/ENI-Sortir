@@ -20,6 +20,10 @@
 .text-base-blue {
     color: var(--main-color) !important;
 }
+.form-label {
+    font-weight: 500;
+    margin-top: 10px;
+}
 .btn-outline-main {
     border: 1px var(--main-color) solid;
     color: var(--main-color);
@@ -44,11 +48,12 @@ h1,h3 {
     display: inline-block;
 }
 .navbar-brand img {
-    margin-top: -5px;
+    margin-top: -30px;
 }
 .disabled {
     border: none;
     background-color: transparent !important;
+    padding-left: 0px;
 }
 label.required {
     position: relative;
