@@ -24,6 +24,12 @@ Encore
         to: 'js/[path][name].[ext]',
     })
 
+    .copyFiles({
+        from: './assets/img/profiles',
+        to: 'images/profiles/[path][name].[ext]',
+    })
+
+
     /*
      * ENTRY CONFIG
      *
