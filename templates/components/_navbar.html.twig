@@ -41,11 +41,11 @@
 {#                    {{ app.exit(path('app_first_login')) }}#}
 {#                {% endif %}#}
                     <li class="nav-item mx-3">
-{#                        {% if app.user and is_granted('ROLE_ADMIN')%}#}
-{#                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_user_edit', {'id':  app.user.id}) }}"> Mon profil </a>#}
-{#                        {% elseif app.user == user %}#}
-{#                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile_edit', {'userid': app.user.id}) }}"> Mon profil </a>#}
-{#                        {% endif %}#}
+                        {% if app.user and is_granted('ROLE_ADMIN')%}
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_user_edit', {'id':  app.user.id}) }}"> Mon profil </a>
+                        {% else %}
+                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile_edit', {'userid': app.user.id}) }}"> Mon profil </a>
+                        {% endif %}
                     </li>
                     <li class="nav-item mx-3">
                         <a class="nav-link" href="{{ path('app_logout') }}"> Déconnexion </a>

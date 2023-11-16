@@ -144,10 +144,18 @@ class ProfileController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $entityManager->persist($user);
-                $entityManager->flush();
-                $this->addFlash('success', 'Profil mis à jour avec succès.');
-                return $this->redirectToRoute('app_home');
+                $Password = $form->get('plainPassword')->getData();
+
+                if ($passwordHasher->isPasswordValid($user, $Password)) {
+
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Profil mis à jour avec succès.');
+                    return $this->redirectToRoute('app_home');
+                } else {
+                    $this->addFlash('error', 'Mauvais mot de passe.');
+                    $entityManager->refresh($user);
+                }
             } else {
                 $entityManager->refresh($user);
             }

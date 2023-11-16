@@ -21,9 +21,12 @@ class City
     #[ORM\Column(length: 10)]
     private ?string $zipcode = null;
 
+    #[ORM\OneToMany(mappedBy: 'city', targetEntity: Location::class)]
+    private Collection $locations;
 
     public function __construct()
     {
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -55,61 +58,36 @@ class City
         return $this;
     }
 
-//    public function getLocations(): Collection
-//    {
-//        return $this->locations;
-//    }
-//
-//    public function addLocation(Location $location): static
-//    {
-//        if (!$this->locations->contains($location)) {
-//            $this->locations->add($location);
-//            $location->setCity($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeLocation(Location $location): static
-//    {
-//        if ($this->locations->removeElement($location)) {
-//            // set the owning side to null (unless already changed)
-//            if ($location->getCity() === $this) {
-//                $location->setCity(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
-//
-//
-//    public function getUsers(): Collection
-//    {
-//        return $this->users;
-//    }
-//
-//    public function addUser(User $user): self
-//    {
-//        if (!$this->users->contains($user)) {
-//            $this->users[] = $user;
-//            $user->setSitesNoSite($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeUser(User $user): self
-//    {
-//        if ($this->users->contains($user)) {
-//            $this->users->removeElement($user);
-//            // set the owning side to null (unless already changed)
-//            if ($user->getSitesNoSite() === $this) {
-//                $user->setSitesNoSite(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(Location $location): static
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): static
+    {
+        if ($this->locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getCity() === $this) {
+                $location->setCity(null);
+            }
+        }
+
+        return $this;
+    }
+
 
     public function __toString()
     {

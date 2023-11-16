@@ -62,9 +62,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
     private Collection $organizer;
 
-//    #[ORM\ManyToOne]
-//    #[ORM\JoinColumn(nullable: true)]
-//    private ?City $sites_no_site = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?LocationSite $sites_no_site = null;
 
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $picture = null;
@@ -267,17 +267,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getFirstName()." ".substr($this->getName(), 0, 1).".";
     }
 
-//    public function getSitesNoSite(): ?city
-//    {
-//        return $this->sites_no_site;
-//    }
-//
-//    public function setSitesNoSite(?city $sites_no_site): static
-//    {
-//        $this->sites_no_site = $sites_no_site;
-//
-//        return $this;
-//    }
+    public function getSitesNoSite(): ?locationSite
+    {
+        return $this->sites_no_site;
+    }
+
+    public function setSitesNoSite(?locationSite $sites_no_site): static
+    {
+        $this->sites_no_site = $sites_no_site;
+
+        return $this;
+    }
 
     public function getPicture(): ?string
     {
