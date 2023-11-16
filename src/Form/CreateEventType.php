@@ -20,6 +20,7 @@ class CreateEventType extends AbstractType
     {
         $selectedLocation = $options['selectedLocation'];
         $selectedCity = $options['selectedCity'];
+
         $builder
             ->add('name', textType::class, ['label' => 'Nom de la sortie'])
             ->add('startDateTime',DateType::class, [
