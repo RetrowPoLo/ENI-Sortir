@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\EditPasswordType;
 use App\Form\EditUserType;
 use App\Form\FirstLoginType;
+use App\Form\ProfileUploadType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -174,52 +175,52 @@ class ProfileController extends AbstractController
 
     }
 
-    //    #[Route('/editProfile/{userid}/photo', name: 'user_upload')]
-//    public function upload(Request $request, EntityManagerInterface $entityManager): Response
-//    {
-//        $user = $this->getUser();
-//
-//        $previousProfilePicture = $user->getPicture();
-//
-//        $form = $this->createForm(ProfileUploadType::class, $user);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted()) {
-//            if ($form->isValid()) {
-//                $safeFilename = bin2hex(random_bytes(10)) . uniqid();
-//                $newFilename = $safeFilename.'.'.$user->getPicture()->guessExtension();
-//                $user->getPicture()->move($this->getParameter('profile_pic_dir'), $newFilename);
-//
-//                $user->setPicture($newFilename);
-//
-//                $user->setPicture(null);
-//
-//                $entityManager->persist($user);
-//                $entityManager->flush();
-//
-//                if (!empty($previousProfilePicture)){
-//                    $filelocation = $this->getParameter('profile_pic_dir') . "/" . $previousProfilePicture;
-//                    if (file_exists($filelocation)){
-//                        unlink($filelocation);
-//                    }
-//                    $this->addFlash('success', 'Photo de profil modifiée !');
-//                }
-//                else {
-//                    $this->addFlash('success', 'Photo de profil ajoutée !');
-//                }
-//
-//                return $this->redirectToRoute('user_profile', ["id" => $user->getId()]);
-//            }
-//
-//            $user->setPicture(null);
-//        }
-//
-//        $entityManager->refresh($user);
-//
-//        return $this->render('user/upload.html.twig', [
-//            'form' => $form->createView(),
-//        ]);
-//    }
+        #[Route('/editProfile/{userid}/photo', name: 'user_upload')]
+    public function upload(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        $previousProfilePicture = $user->getPicture();
+
+        $form = $this->createForm(ProfileUploadType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $file = $form->get('pictureUpload')->getData();
+                $safeFilename = bin2hex(random_bytes(10)) . uniqid();
+
+                $newFilename = $safeFilename.'.'.$file ->guessExtension();
+                $file->move($this->getParameter('profile_dir'), $newFilename);
+
+                $user->setPicture($newFilename);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                if (!empty($previousProfilePicture)){
+                    $filelocation = $this->getParameter('profile_dir') . "/" . $previousProfilePicture;
+                    if (file_exists($filelocation)){
+                        unlink($filelocation);
+                    }
+                    $this->addFlash('success', 'Photo de profil modifiée !');
+                }
+                else {
+                    $this->addFlash('success', 'Photo de profil ajoutée !');
+                }
+
+                return $this->redirectToRoute('app_profile_edit', ["userid" => $user->getId()]);
+            }
+
+            $user->setPicture(null);
+        }
+
+        $entityManager->refresh($user);
+
+        return $this->render('profile/upload.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 //    #[Route('/uploadImage', name: 'user_upload')]
 //    public function image(Request $request): Response
 //    {

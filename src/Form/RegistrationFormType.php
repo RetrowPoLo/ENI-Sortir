@@ -22,7 +22,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
 				'required' => true,
-				'label' => 'Adresse email*',
+				'label' => 'Adresse email',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Erreur de données',
@@ -43,7 +43,7 @@ class RegistrationFormType extends AbstractType
 				'label' => 'Nom*'
 			])
 			->add('firstName', TextType::class, [
-				'label' => 'Prénom*'
+				'label' => 'Prénom'
 			])
 			->add('phone', TelType::class, [
 				'required' => false,
@@ -51,7 +51,7 @@ class RegistrationFormType extends AbstractType
 
 			])
                 ->add('sites_no_site', null, [
-                    'label' => 'Site*'
+                    'label' => 'Site'
                 ])
 			->add('isActive', CheckboxType::class, [
 				'required' => false,

@@ -43,8 +43,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $picture = 'img/imageProfilDefaut.jpg';
-            $user->setPicture($picture);
+            $user->setPicture(null);
 
             $user->setForceChange(1);
 
