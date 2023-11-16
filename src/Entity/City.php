@@ -21,7 +21,7 @@ class City
     #[ORM\Column(length: 10)]
     private ?string $zipcode = null;
 
-    #[ORM\OneToMany(mappedBy: 'city', targetEntity: Location::class)]
+    #[ORM\OneToMany(mappedBy: 'city', targetEntity: Location::class, cascade: ["persist"])]
     private Collection $locations;
 
     public function __construct()
@@ -71,6 +71,7 @@ class City
         if (!$this->locations->contains($location)) {
             $this->locations->add($location);
             $location->setCity($this);
+            $location->setCity($this); // Add this line to cascade persist
         }
 
         return $this;
@@ -91,6 +92,6 @@ class City
 
     public function __toString()
     {
-        return $this->name;
+        return $this->name?: '';
     }
 }

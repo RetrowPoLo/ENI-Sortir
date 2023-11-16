@@ -25,7 +25,8 @@ class Location
     #[ORM\Column]
     private ?float $longitude = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'locations')]
+    #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
     private ?City $city = null;
 
     public function getId(): ?int
