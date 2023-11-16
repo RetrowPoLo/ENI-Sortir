@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -71,6 +73,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?int $force_change = null;
+
+    //Cette propriété ne sert qu'à recevoir l'objet créé par Symfony lors de l'upload du fichier
+    //Et à faire la validation
+#[Assert\Image(
+    maxSize: "20M",
+    maxWidth: 2000,
+    maxHeight: 2000,
+    minHeight: 200,
+      )]
+    private ?UploadedFile $pictureUpload;
 
     public function __construct()
     {
@@ -301,6 +313,55 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->force_change = $force_change;
 
         return $this;
+    }
+
+    public function getPictureUpload(): ?UploadedFile
+    {
+        return $this->pictureUpload;
+    }
+
+    public function setPictureUpload(?UploadedFile $pictureUpload): void
+    {
+        $this->pictureUpload = $pictureUpload;
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'username' => $this->username,
+            'roles' => $this->roles,
+            'password' => $this->password,
+            'name' => $this->name,
+            'firstName' => $this->firstName,
+            'phone' => $this->phone,
+            'isActive' => $this->isActive,
+            'registred' => $this->registred,
+            'organizer' => $this->organizer,
+            'sites_no_site' => $this->sites_no_site,
+            'picture' => $this->picture,
+            'force_change' => $this->force_change,
+        ];
+    }
+
+    public function __unserialize(array $serialized): void
+    {
+        $this->id = $serialized['id'];
+        $this->email = $serialized['email'];
+        $this->username = $serialized['username'];
+        $this->roles = $serialized['roles'];
+        $this->password = $serialized['password'];
+        $this->name = $serialized['name'];
+        $this->firstName = $serialized['firstName'];
+        $this->phone = $serialized['phone'];
+        $this->isActive = $serialized['isActive'];
+        $this->registred = $serialized['registred'];
+        $this->organizer = $serialized['organizer'];
+        $this->sites_no_site = $serialized['sites_no_site'];
+        $this->picture = $serialized['picture'];
+        $this->force_change = $serialized['force_change'];
+
     }
 
 }

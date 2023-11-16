@@ -14,7 +14,7 @@
 
     <div class="container-fluid form-center w-50 mt-2">
         <div id="profile_pic" style="left: 15%;position: absolute;">
-            <img src="{{ asset(user.picture) }}" alt="{{ user.firstname }} {{ user.name }}">
+            <img style = "width: 150px; height: 200px;" src="{{ asset(user.picture) }}" alt="{{ user.firstname }} {{ user.name }}">
         </div>
         {{ form_start(form) }}
         <div class="d-flex justify-content-center">
@@ -37,6 +37,7 @@
             {{ form_row(form.save) }}
 {#            <button type="submit" class="btn m-2 btn-outline-main">Enregistrer</button>#}
             <a class="btn btn-outline-darklight" href="{{ path('edit_password', {'userid': currentUserId.id}) }}">Modifier le mot de passe</a>
+            <a href="{{ path('user_upload', {'userid': user.id}) }}">Modifier mon image</a><br>
         </div>
         {{ form_end(form) }}
     </div>
