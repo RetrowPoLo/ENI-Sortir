@@ -25,7 +25,6 @@ class EventFilterAdminType extends AbstractType
 				'choice_label' => 'name',
 				'required' => false,
 				'label' => false,
-				'placeholder' => 'Sélectionner le site',
                 'data' => $selectedLocationSite,
 			])
 			->add('name', TextType::class, [
