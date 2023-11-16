@@ -7,6 +7,7 @@ use App\Form\EditSiteType;
 use App\Form\GetVilleType;
 use App\Repository\LocationSiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,8 +85,13 @@ class SiteController extends AbstractController
     public function delete(EntityManagerInterface $entityManager, LocationSite $locationSite): Response
     {
 		// Delete the location site and redirect to the site page
-        $entityManager->remove($locationSite);
-        $entityManager->flush();
+        try {
+            $entityManager->remove($locationSite);
+            $entityManager->flush();
+        }
+        catch (\Exception $e){
+            dump($e);
+        }
 
         return $this->redirectToRoute('app_site');
     }

@@ -15,7 +15,11 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col">
-                        <a href="{{ app.request.getBaseURL() }}/participant/{{ event.user.id }}">{{ event.user.getFullName }}</a>
+                        {% if (is_granted('ROLE_ADMIN') or app.user.id == event.user.id) or event.getIsSub(app.user) == true %}
+                            <a href="{{ app.request.getBaseURL() }}/participant/{{ event.user.id }}">{{ event.user.getFullName }}</a>
+                        {% else %}
+                            <a>{{ event.user.getFullName }}</a>
+                        {% endif %}
                     </div>
                     <div class="col">
                         <div class="float-right">
