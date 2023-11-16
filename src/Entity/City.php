@@ -21,16 +21,12 @@ class City
     #[ORM\Column(length: 10)]
     private ?string $zipcode = null;
 
-    #[ORM\OneToMany(mappedBy: 'city', targetEntity: Location::class)]
+    #[ORM\OneToMany(mappedBy: 'city', targetEntity: Location::class, cascade: ["persist"])]
     private Collection $locations;
-
-    #[ORM\OneToMany(mappedBy: 'city', targetEntity: User::class)]
-    private $users;
 
     public function __construct()
     {
         $this->locations = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +71,7 @@ class City
         if (!$this->locations->contains($location)) {
             $this->locations->add($location);
             $location->setCity($this);
+            $location->setCity($this); // Add this line to cascade persist
         }
 
         return $this;
@@ -93,36 +90,8 @@ class City
     }
 
 
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setSitesNoSite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getSitesNoSite() === $this) {
-                $user->setSitesNoSite(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
-        return $this->name;
+        return $this->name?: '';
     }
 }

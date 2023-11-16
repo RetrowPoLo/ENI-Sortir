@@ -51,6 +51,9 @@ class CityController extends AbstractController
             $cities = $cityRepository->findBy(
                 ['name' => $query],
             );
+            if ($query === null){
+                $cities = $cityRepository->findAll();
+            }
         }
         else{
             $cities = $cityRepository->findAll();

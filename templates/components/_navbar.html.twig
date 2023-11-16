@@ -10,11 +10,11 @@
         <div class="collapse navbar-collapse d-flex align-items-end flex-column">
             <ul class="navbar-nav">
                 <li class="nav-item mx-3">
-                    <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? ' active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Accueil </a>
+                    <a class="nav-link text-white {{ app.request.attributes.get('_route') == 'app_home' ? ' active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Accueil </a>
                 </li>
                 {% if not app.user %}
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="{{ path('app_login') }}"> Connexion </a>
+                        <a class="nav-link text-white" href="{{ path('app_login') }}"> Connexion </a>
                     </li>
                 {% endif %}
                 {% if app.user %}
@@ -42,13 +42,13 @@
 {#                {% endif %}#}
                     <li class="nav-item mx-3">
                         {% if app.user and is_granted('ROLE_ADMIN')%}
-                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_user_edit', {'id':  app.user.id}) }}"> Mon profil </a>
-                        {% elseif app.user == user %}
-                            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile_edit', {'userid': app.user.id}) }}"> Mon profil </a>
+                            <a class="nav-link text-white {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_user_edit', {'id':  app.user.id}) }}"> Mon profil </a>
+                        {% else %}
+                            <a class="nav-link text-white {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile_edit', {'userid': app.user.id}) }}"> Mon profil </a>
                         {% endif %}
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="{{ path('app_logout') }}"> Déconnexion </a>
+                        <a class="nav-link text-white" href="{{ path('app_logout') }}"> Déconnexion </a>
                     </li>
                 {% endif %}
             </ul>

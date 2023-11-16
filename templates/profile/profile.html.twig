@@ -12,8 +12,13 @@
 
     <div class="container"  style="max-width: 25%;">
         <h1 class="fst-italic text-primary">Profil de {{ user.username }}</h1>
+        {% if user.picture != null %}
+            {% set url = './build/images/profiles/'~user.picture %}
+        {% else %}
+            {% set url = './build/images/imageProfilDefaut.jpg' %}
+        {% endif %}
         <div id="profile_pic" style="left: 15%;position: absolute;">
-            <img src="{{ asset(user.picture) }}" alt="{{ user.firstname }} {{ user.name }}">
+            <img style = "width: 150px; height: 200px;" src="{{ asset(url) }}" alt="{{ user.firstname }} {{ user.name }}">
         </div>
         <div class="row">
             <div class="col-md-8">

@@ -17,13 +17,15 @@ class EventFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $selectedLocationSite = $options['selectedLocationSite'];
         $builder
 			->add('locationSiteEvent', EntityType::class, [
 				'class' => LocationSite::class,
 				'choice_label' => 'name',
 				'required' => false,
 				'label' => false,
-				'placeholder' => 'Sélectionner le site',
+				'placeholder' => false,
+                'data' => $selectedLocationSite,
 			])
             ->add('name', TextType::class, [
 				'required' => false,
@@ -48,16 +50,19 @@ class EventFilterType extends AbstractType
 				'required' => false,
 				'label' => 'Sorties dont je suis l\'organisateur/trice',
 				'mapped' => false,
+                'attr' => array('checked'   => 'checked'),
 			])
 			->add('userIsRegistered', CheckboxType::class, [
 				'required' => false,
 				'label' => 'Sorties auxquelles je suis inscrit/e',
 				'mapped' => false,
+                'attr' => array('checked'   => 'checked'),
 			])
 			->add('userIsNotRegistered', CheckboxType::class, [
 				'required' => false,
 				'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
-				'mapped' => false
+				'mapped' => false,
+                'attr' => array('checked'   => 'checked'),
 			])
 			->add('stateIsPassed', CheckboxType::class, [
 				'required' => false,
@@ -79,6 +84,7 @@ class EventFilterType extends AbstractType
 			'method' => 'GET',
 			'data_class' => Event::class,
 			'csrf_protection' => false,
+            'selectedLocationSite' => null
         ]);
     }
 }
