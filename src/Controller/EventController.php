@@ -141,6 +141,13 @@ class EventController extends AbstractController
         int $id
     ): Response
     {
+        $cityName = null;
+        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+        $cityRepository = $entityManager->getRepository(City::class);
+        $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
+        if($city){
+            $cityName = $city->getName();
+        }
         $error = "";
         $event = new Event();
         try {
@@ -163,6 +170,7 @@ class EventController extends AbstractController
         $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
 
         $result['params']['title'] = 'Modifier une sortie';
+        $result['params']['cityName'] = $cityName;
         $result['params']['editing'] = true;
         if($result['view'] == 'event/index.html.twig'){
             return $this->redirectToRoute(('app_event'));
@@ -268,11 +276,18 @@ class EventController extends AbstractController
     public function createEvent(Request $request, EntityManagerInterface $entityManager,
                           EventRepository $eventRepository, EventService $eventService): Response
     {
+        $cityName = null;
+        $userLocationSiteId = $this->getUser()->getSitesNoSite();
+        $cityRepository = $entityManager->getRepository(City::class);
+        $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
+        if($city){
+            $cityName = $city->getName();
+        }
         $event = new Event();
         $formCreateEvent = $this->createForm(CreateEventType::class, $event);
         $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
         $result['params']['title'] = 'Créer une sortie';
-        $result['params']['editing'] = false;
+        $result['params']['cityName'] = $cityName;
         if($result['view'] == 'event/index.html.twig'){
             return $this->redirectToRoute(('app_event'));
         }
