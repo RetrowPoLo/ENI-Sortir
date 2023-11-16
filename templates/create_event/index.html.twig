@@ -118,18 +118,15 @@
         citySelect.addEventListener('change', updateZipcodeAndStreet);
         locationSelect.addEventListener('change', updateZipcodeAndStreet);
 
-        const initialLocation = locationSelect.value;
-        if (initialLocation) {
-            locationSelect.value = initialLocation;
+        if ({{ editing ? 'true' : 'false' }}) {
             updateZipcodeAndStreet();
         }
-        else{
+        else {
             // Initialize location options when the page loads
             updateLocationOptions();
             // Initialize ZIP code when the page loads
             updateZipcodeAndStreet();
         }
-
 
     </script>
 {% endblock %}

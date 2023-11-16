@@ -157,11 +157,13 @@ class EventController extends AbstractController
         $event->setEventLocation(new Location());
         $event->getEventLocation()->setCity(new City());
 
-        $formCreateEvent = $this->createForm(CreateEventType::class, $event, options: ['selectedCity'=>$selectedCity, 'selectedLocation' => $selectedLocation]);
+        $formCreateEvent = $this->createForm(CreateEventType::class, $event,
+            options: ['selectedCity'=>$selectedCity, 'selectedLocation' => $selectedLocation]);
 
         $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
 
         $result['params']['title'] = 'Modifier une sortie';
+        $result['params']['editing'] = true;
         if($result['view'] == 'event/index.html.twig'){
             return $this->redirectToRoute(('app_event'));
         }
@@ -270,6 +272,7 @@ class EventController extends AbstractController
         $formCreateEvent = $this->createForm(CreateEventType::class, $event);
         $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
         $result['params']['title'] = 'Créer une sortie';
+        $result['params']['editing'] = false;
         if($result['view'] == 'event/index.html.twig'){
             return $this->redirectToRoute(('app_event'));
         }
