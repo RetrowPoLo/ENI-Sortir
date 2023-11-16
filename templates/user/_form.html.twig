@@ -3,6 +3,14 @@
 {{ form_start(form) }}
     <div class="d-flex">
         <div class="col-6">
+            {% if user.picture != null %}
+                {% set url = './build/images/profiles/'~user.picture %}
+            {% else %}
+                {% set url = './build/images/imageProfilDefaut.jpg' %}
+            {% endif %}
+            <div id="profile_pic" style="left: 15%;position: absolute;">
+                <img style = "width: 150px; height: 200px;" src="{{ asset(url) }}" alt="{{ user.firstname }} {{ user.name }}">
+            </div>
             {{ form_row(form.username) }}
             {{ form_row(form.firstName) }}
             {{ form_row(form.name) }}
@@ -21,7 +29,8 @@
     <button class="btn btn-outline-main">{{ button_label|default('Save') }}</button>
     <a href="{{ path('app_home') }}" class="btn btn-outline-darklight">Retour</a>
     {% if app.user.id == user.id %}
-        <a class="btn btn-outline-darklight" href="{{ path('edit_password', {'userid': app.user.id}) }}" class="btn btn-secondary">Modifier le mot de passe</a>
+        <a class="btn btn-outline-darklight" style="margin-right: 1%;" href="{{ path('edit_password', {'userid': app.user.id}) }}" >Modifier le mot de passe</a>
+        <a class="btn btn-outline-darklight" href="{{ path('user_upload', {'userid': app.user.id}) }}">Modifier mon image</a><br>
     {% endif %}
     {{ form_end(form) }}
     </div>
