@@ -13,14 +13,18 @@ use App\Form\CreateEventUserType;
 use App\Form\EventCancellationType;
 use App\Form\EventFilterAdminType;
 use App\Form\EventFilterType;
+use App\Form\LocationType;
 use App\Repository\CityRepository;
 use App\Repository\EventRepository;
 use App\Repository\LocationSiteRepository;
 use App\Entity\State;
 use App\Repository\UserRepository;
+use App\Service\EventService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -124,36 +128,30 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/editer/{id}', name: 'app_event_edit')]
-    public function edit(EventRepository $eventRepository, int $id): Response
+    #[Route('/sortie/modifier/{id}', name: 'app_event_edit')]
+    public function edit(EntityManagerInterface $entityManager, EventRepository $eventRepository, Request $request, EventService $eventService, int $id): Response
     {
         $error = "";
         $event = $eventRepository->findOneByIdNotArchived($id);
         if($event == null){
             throw new \Exception("impossible de trouver la sortie avec l'id: ".$id);
         }
-
-        $eventCity = $event->getEventLocation()->getCity();
-        $eventUser = $event->getUser();
-        $eventLocation = $event->getEventLocation();
+        $selectedCity = $event->getEventLocation()->getCity();
+        $selectedLocation = $event->getEventLocation();
+        $event->getEventLocation()->setCity(new City());
+        $event->setEventLocation(new Location);
 
         $formCreateEvent = $this->createForm(CreateEventType::class, $event);
-        $formCreateEventLocation = $this->createForm(CreateEventLocationType::class, $eventLocation);
-        $formCreateEventCity = $this->createForm(CreateEventCityType::class, $eventCity);
-        $formCreateEventUser = $this->createForm(CreateEventUserType::class, $eventUser);
 
-        return $this->render('create_event/index.html.twig', [
+        $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
 
-            'formCreateEvent' => $formCreateEvent,
-            'formCreateEventLocation' => $formCreateEventLocation,
-            'formCreateEventCity' => $formCreateEventCity,
-            'formCreateEventUser' => $formCreateEventUser,
-            'cityName' => $eventCity->getName(),
-            'errorStartTime' => $error,
-            'errorEndTime' => $error,
-            'errorLimitTime' => $error,
-            'errorLocation' => $error,
-        ]);
+        $result['params']['title'] = 'Modifier une sortie';
+        if($result['view'] == 'event/index.html.twig'){
+            return $this->redirectToRoute(('app_event'));
+        }
+        else{
+            return $this->render($result['view'], $result['params']);
+        }
     }
 
 	/**
@@ -246,5 +244,74 @@ class EventController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('app_event');
+    }
+
+    #[Route('/sortie/creer', name: 'app_event_create')]
+    public function createEvent(Request $request, EntityManagerInterface $entityManager,
+                          EventRepository $eventRepository, EventService $eventService): Response
+    {
+        $event = new Event();
+        $formCreateEvent = $this->createForm(CreateEventType::class, $event);
+        $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
+        $result['params']['title'] = 'Créer une sortie';
+        if($result['view'] == 'event/index.html.twig'){
+            return $this->redirectToRoute(('app_event'));
+        }
+        else{
+            return $this->render($result['view'], $result['params']);
+        }
+    }
+
+    #[Route('/get-zipcode/{city}-{location}', name: 'get_zipcode', methods: ['GET'])]
+    public function getZipcodeAction(City $city, Location $location = null): JsonResponse
+    {
+        // Assuming $city is the selected City entity from the database
+        $zipcode = $city->getZipcode();
+
+        if ($location === null) {
+            $locationList = '';
+            $street = '';
+        } else {
+            $locationList = $location->getCity();
+            $street = $location->getStreet();
+        }
+
+        return new JsonResponse([
+            'zipcode' => $zipcode,
+            'street' => $street,
+            'locationList' => $locationList,
+        ]);
+    }
+    #[Route('/get-locations/{city}', name: 'get_locations', methods: ['GET'])]
+    public function getLocationsAction(City $city): JsonResponse
+    {
+        $locations = $city->getLocations();
+
+        $locationData = [];
+        foreach ($locations as $location) {
+            $locationData[] = [
+                'id' => $location->getId(),
+                'name' => $location->getName(),
+            ];
+        }
+
+        return new JsonResponse(['locations' => $locationData]);
+    }
+
+    #[Route('/sortie/lieu/nouveau', name: 'app_event_location_create')]
+    public function createLocation(EntityManagerInterface $entityManager, CityRepository $cityRepository, Request $request): Response
+    {
+        $location = new Location();
+        $form = $this->createForm(LocationType::class, $location);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $location = $form->getData();
+            $entityManager->persist($location);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_event');
+        }
+        return $this->render('event/newLocation.html.twig', [
+            'form' => $form
+        ]);
     }
 }
