@@ -41,13 +41,6 @@ class CreateEventType extends AbstractType
                 'label' => 'Description et infos',
                 'required' => false,
             ])
-            ->add('locationSiteEvent', EntityType::class, [
-                'class' => LocationSite::class,
-                'choice_label' => 'name',
-                'label' => 'Site',
-                'required' => false,
-                'disabled' => true,
-            ])
             ->add('eventLocation', CreateEventLocationType::class, [
                 'label' => false,
                 'selectedLocation' => $selectedLocation,
