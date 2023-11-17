@@ -1,26 +1,26 @@
-<nav class="navbar navbar-expand-lg bg-dark sticky-top" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg sticky-top" style="background: lightgrey;" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ path('app_home') }}">
             <img src="{{ asset('./build/images/logo.jpg') }}" alt="logo" width="100px" height="90px">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
+        <button style="color:grey;"  class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span style="color:grey;" class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse d-flex align-items-end flex-column">
             <ul class="navbar-nav">
                 <li class="nav-item mx-3">
-                    <a class="nav-link text-white {{ app.request.attributes.get('_route') == 'app_home' ? ' active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Accueil </a>
+                    <a style="color:grey; padding-top: 7px;" class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? ' active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Accueil </a>
                 </li>
                 {% if not app.user %}
                     <li class="nav-item mx-3">
-                        <a class="nav-link text-white" href="{{ path('app_login') }}"> Connexion </a>
+                        <a style="color:grey;" class="nav-link" href="{{ path('app_login') }}"> Connexion </a>
                     </li>
                 {% endif %}
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <div class="dropdown">
-                            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button style="color:grey;" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Administration
                             </button>
                             <ul class="dropdown-menu">
@@ -42,19 +42,19 @@
 {#                {% endif %}#}
                     <li class="nav-item mx-3">
                         {% if app.user and is_granted('ROLE_ADMIN')%}
-                            <a class="nav-link text-white {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_user_edit', {'id':  app.user.id}) }}"> Mon profil </a>
+                            <a style="color:grey;" class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_user_edit', {'id':  app.user.id}) }}"> Mon profil </a>
                         {% else %}
-                            <a class="nav-link text-white {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile_edit', {'userid': app.user.id}) }}"> Mon profil </a>
+                            <a style="color:grey;" class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_profile_edit', {'userid': app.user.id}) }}"> Mon profil </a>
                         {% endif %}
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="nav-link text-white" href="{{ path('app_logout') }}"> Déconnexion </a>
+                        <a style="color:grey;" class="nav-link" href="{{ path('app_logout') }}"> Déconnexion </a>
                     </li>
                 {% endif %}
             </ul>
             <div class="info-nav d-flex flex-column pe-5">
-                <p class="text-white">Date du jour : {{ "now"|date("m/d/Y") }}</p>
-                <p class="text-white">Participant : {{ app.user.username }}</p>
+                <p style="color:grey;">Date du jour : {{ "now"|date("m/d/Y") }}</p>
+                <p style="color:grey;">Participant : {{ app.user.username }}</p>
             </div>
         </div>
     </div>
