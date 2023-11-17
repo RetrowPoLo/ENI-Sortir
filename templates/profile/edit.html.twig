@@ -41,8 +41,10 @@
         <div class="d-flex justify-content-end">
             {{ form_row(form.save) }}
 {#            <button type="submit" class="btn m-2 btn-outline-main">Enregistrer</button>#}
-            <a class="btn btn-outline-darklight" style="margin-right: 1%;" href="{{ path('edit_password', {'userid': currentUserId.id}) }}">Modifier le mot de passe</a>
-            <a class="btn btn-outline-darklight" href="{{ path('user_upload', {'userid': user.id}) }}">Modifier mon image</a><br>
+        <div class="mb-3">
+            <a class="btn btn-outline-darklight m-2" style="margin-right: 1%;" href="{{ path('edit_password', {'userid': currentUserId.id}) }}">Modifier le mot de passe</a>
+            <a class="btn btn-outline-darklight m-2" href="{{ path('user_upload', {'userid': user.id}) }}">Modifier mon image</a><br>
+        </div>
         </div>
         {{ form_end(form) }}
     </div>
