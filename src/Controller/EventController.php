@@ -281,7 +281,7 @@ class EventController extends AbstractController
     {
         $cityName = null;
         $userLocationSiteId = $this->getUser()->getSitesNoSite();
-        $cityRepository = $entityManager->getRepository(City::class);
+        $cityRepository = $entityManager->getRepository(LocationSite::class);
         $city = $cityRepository->findOneBy(['id' => $userLocationSiteId]);
         if($city){
             $cityName = $city->getName();
