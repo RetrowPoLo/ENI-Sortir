@@ -122,21 +122,30 @@ class EventRepository extends ServiceEntityRepository
 				->setParameter('name', '%' . $name . '%');
 		}
 
-		// Check if the start date time is set
-		if ($startDateTime !== null and $endDateTime !== null) {
+		// Check if only the start date time is set
+		if ($startDateTime !== null and $endDateTime === null) {
 			// If the start date time is set, add it to the query
 			$query = $query
-				->orWhere('e.startDateTime >= :startDateTime')
+				->andWhere('e.startDateTime >= :startDateTime')
 				->setParameter('startDateTime', $startDateTime);
 		}
 
-		// Check if the end date time is set
-		if ($endDateTime !== null) {
+		// Check if only the end date time is set
+		if ($endDateTime !== null and $startDateTime === null) {
 			// If the end date time is set, add it to the query
 			$query = $query
-				->orWhere('e.startDateTime <= :endDateTime')
+				->andWhere('e.startDateTime <= :endDateTime')
 				->setParameter('endDateTime', $endDateTime);
 		}
+
+        // Check if the start date and the end date time is set
+        if ($startDateTime !== null and $endDateTime !== null) {
+            $query = $query
+                ->andWhere('e.startDateTime >= :startDateTime')
+                ->andWhere('e.endDateTime <= :endDateTime')
+                ->setParameter('startDateTime', $startDateTime)
+                ->setParameter('endDateTime', $endDateTime);
+        }
 
 		// Check if the user is the organizer of the event
 		if ($userIsOrganizer) {
