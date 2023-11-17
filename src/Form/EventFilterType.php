@@ -18,6 +18,7 @@ class EventFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $selectedLocationSite = $options['selectedLocationSite'];
+        $isQuery = $options['isQuery'];
         $builder
 			->add('locationSiteEvent', EntityType::class, [
 				'class' => LocationSite::class,
@@ -50,19 +51,19 @@ class EventFilterType extends AbstractType
 				'required' => false,
 				'label' => 'Sorties dont je suis l\'organisateur/trice',
 				'mapped' => false,
-                'attr' => array('checked'   => 'checked'),
+                'attr' => array('checked' => !$isQuery),
 			])
 			->add('userIsRegistered', CheckboxType::class, [
 				'required' => false,
 				'label' => 'Sorties auxquelles je suis inscrit/e',
 				'mapped' => false,
-                'attr' => array('checked'   => 'checked'),
+                'attr' => array('checked' => !$isQuery),
 			])
 			->add('userIsNotRegistered', CheckboxType::class, [
 				'required' => false,
 				'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
 				'mapped' => false,
-                'attr' => array('checked'   => 'checked'),
+                'attr' => array('checked' => !$isQuery),
 			])
 			->add('stateIsPassed', CheckboxType::class, [
 				'required' => false,
@@ -84,7 +85,8 @@ class EventFilterType extends AbstractType
 			'method' => 'GET',
 			'data_class' => Event::class,
 			'csrf_protection' => false,
-            'selectedLocationSite' => null
+            'selectedLocationSite' => null,
+            'isQuery' => false
         ]);
     }
 }
