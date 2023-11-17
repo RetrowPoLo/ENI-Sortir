@@ -50,9 +50,10 @@ class EventController extends AbstractController
 		$events = $this->eventRepository->findAllNotArchived();
         $firstLocationsSite = $this->locationSiteRepository->findAll()[0];
 		// If the current user is an admin render the admin filter form instead of the user filter form
-		$this->isGranted('ROLE_ADMIN') ? $formFilter =
-            $this->createForm(EventFilterAdminType::class, null, options: ['selectedLocationSite'=>$firstLocationsSite]) :
-            $formFilter = $this->createForm(EventFilterType::class,  null, options: ['selectedLocationSite'=>$firstLocationsSite]);
+        dump($_GET == true);
+		$this->isGranted('ROLE_ADMIN') ?
+            $formFilter = $this->createForm(EventFilterAdminType::class, null, options: ['selectedLocationSite'=>$firstLocationsSite]) :
+            $formFilter = $this->createForm(EventFilterType::class,  null, options: ['selectedLocationSite'=>$firstLocationsSite, 'isQuery'=> ($_GET)]);
 		$formFilter->handleRequest($request);
 
 		// Check if the form is submitted and valid
