@@ -4,11 +4,13 @@
             <img src="{{ asset('./build/images/logo.jpg') }}" alt="logo" width="100px" height="90px">
         </a>
 
-
+        <button style="color:grey;"  class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span style="color:grey;" class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse d-flex align-items-end flex-column">
             <ul class="navbar-nav">
                 <li class="nav-item mx-3">
-                    <a style="color:grey; padding-top: 7px;"class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? ' active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Accueil </a>
+                    <a style="color:grey; padding-top: 7px;" class="nav-link {{ app.request.attributes.get('_route') == 'app_home' ? ' active' : '' }}" {{ app.request.attributes.get('_route') == 'app_home' ? 'aria-current="page"' : '' }} href="{{ path('app_home') }}"> Accueil </a>
                 </li>
                 {% if not app.user %}
                     <li class="nav-item mx-3">
