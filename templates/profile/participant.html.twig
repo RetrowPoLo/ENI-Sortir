@@ -12,7 +12,7 @@
 
     <div class="container"  style="max-width: 25%;">
         <h1 class="fst-italic text-primary">Profil de {{ user.username }}</h1>
-        {% if user.picture != null %}
+        {% if user.picture != null and (user.id != app.user.id and user.isPublic == 1) %}
             {% set url = './build/images/profiles/'~user.picture %}
         {% else %}
             {% set url = './build/images/imageProfilDefaut.jpg' %}
