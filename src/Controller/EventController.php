@@ -290,6 +290,7 @@ class EventController extends AbstractController
         $result = $eventService->createEditEvent($entityManager, $request, $event, $this->getUser(), $formCreateEvent);
         $result['params']['title'] = 'Créer une sortie';
         $result['params']['cityName'] = $cityName;
+        $result['params']['editing'] = false;
         if($result['view'] == 'event/index.html.twig'){
             return $this->redirectToRoute(('app_event'));
         }
