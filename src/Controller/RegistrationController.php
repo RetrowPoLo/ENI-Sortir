@@ -46,6 +46,7 @@ class RegistrationController extends AbstractController
             $user->setPicture(null);
 
             $user->setForceChange(1);
+            $user->setIsPublic(0);
 
 			// Persist the user to the database
             $entityManager->persist($user);
