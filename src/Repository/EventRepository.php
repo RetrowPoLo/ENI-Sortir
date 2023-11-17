@@ -124,6 +124,7 @@ class EventRepository extends ServiceEntityRepository
 
 		// Check if only the start date time is set
 		if ($startDateTime !== null and $endDateTime === null) {
+
 			// If the start date time is set, add it to the query
 			$query = $query
 				->andWhere('e.startDateTime >= :startDateTime')

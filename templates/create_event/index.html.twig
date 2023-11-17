@@ -30,10 +30,6 @@
                     <input type="text" id="create_event_site_name" name="create_event-site[name]" value="{{ cityName }}" class="disabled" disabled>
                 </div>
                 {{ form_row(formCreateEvent.eventLocation.city.name) }}
-                {% if errorLocation is not same as "" %}
-                    {{ errorLocation }}
-                {% endif %}
-
                 {{ form_label(formCreateEvent.eventLocation.name) }}
                 {{ form_errors(formCreateEvent.eventLocation.name) }}
                 <div class="d-flex justify-content-center">
@@ -44,6 +40,9 @@
                         </a>
                     </div>
                 </div>
+                {% if errorLocation is not same as "" %}
+                    {{ errorLocation }}
+                {% endif %}
                 {{ form_row(formCreateEvent.eventLocation.street, { 'attr' : { 'class': 'disabled' } }) }}
                 {{ form_row(formCreateEvent.eventLocation.city.zipcode, { 'attr' : { 'class': 'disabled' } }) }}
                 <div class="d-flex">
@@ -52,7 +51,7 @@
                 </div>
             </div>
         </div>
-    {{ form_end(formCreateEvent) }}
+        {{ form_end(formCreateEvent) }}
     </div>
 
     <script>
