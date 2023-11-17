@@ -28,6 +28,17 @@ class EventService
         $formCreateEvent->handleRequest($request);
 
         if ($formCreateEvent->isSubmitted() && $formCreateEvent->isValid()) {
+            $Getlocation = $formCreateEvent->get("eventLocation")->getData()->getName();
+            if ($Getlocation === null) {
+                $error = "vous avez besoin de créer un lieu si non existant";
+                return ['view' => "create_event/index.html.twig", 'params' => [
+                    'formCreateEvent' => $formCreateEvent,
+                    'errorLocation' => $error,
+                    'errorStartTime' => '',
+                    'errorEndTime' => '',
+                    'errorLimitTime' => '',
+                ]];
+            }
             $locationSite = $this->locationSiteRepos->find(['id'=> '1']);
             $event->setLocationSiteEvent($locationSite);
             $event->setUser($user);
@@ -44,6 +55,7 @@ class EventService
 
             $time = new \DateTime('now', new \DateTimeZone('UTC'));
             $startDateTime = $formCreateEvent->get("startDateTime")->getData();
+
             $endDateTime = $formCreateEvent->get("endDateTime")->getData();
             $limitDateInscription = $formCreateEvent->get("limitDateInscription")->getData();
 
@@ -73,15 +85,6 @@ class EventService
                     'errorEndTime' => '',
                     'errorLimitTime' => $error,
                     'errorLocation' => '',
-                ]];
-            } elseif ($event->getEventLocation() == null) {
-                $error = "Le lieu ne peux pas être vide";
-                return ['view' => "create_event/index.html.twig", 'params' => [
-                    'formCreateEvent' => $formCreateEvent,
-                    'errorStartTime' => '',
-                    'errorEndTime' => '',
-                    'errorLimitTime' => '',
-                    'errorLocation' => $error,
                 ]];
             }
             else {
